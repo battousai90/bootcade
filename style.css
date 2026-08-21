@@ -1,30 +1,32 @@
 /* Bootcade — landing page.
-   Colours are lifted straight from the app's GTK stylesheets so the site and the
-   application read as one product:
-     accent      #7c6bff / #9a8cff / #4a3fd0   (style-common.css)
-     surfaces    #101219 #14161f #1a1d28 #212536 #2a2f3d  (style-dark.css)
-     text/muted  #e9ebf2 / #939aab
-     statuses    #41d08a ok · #f0b54a warn · #f85149 missing · #a371f7 unknown */
+   Colours come from the Bootcade brand kit (BRAND.md):
+     accent      #2563EB electric blue · #7C3AED purple · #06B6D4 cyan
+     surfaces    #0B0F14 deep black · #151B24 background (rest interpolated
+                 in the same blue-slate hue to keep the original step count)
+     text/muted  #F8FAFC / #A1A7B3
+     statuses    #41d08a ok · #f0b54a warn · #f85149 missing · #a371f7 unknown
+                 (functional colours, not part of the brand palette — left
+                 as-is on purpose) */
 
 :root {
-  --accent:   #7c6bff;
-  --accent2:  #9a8cff;
-  --accent3:  #4a3fd0;
-  --bg:       #101219;
-  --bg2:      #14161f;
-  --surface:  #1a1d28;
-  --surface2: #212536;
-  --border:   #2a2f3d;
-  --text:     #e9ebf2;
-  --muted:    #939aab;
+  --accent:   #2563eb;
+  --accent2:  #7c3aed;
+  --accent3:  #06b6d4;
+  --bg:       #0b0f14;
+  --bg2:      #151b24;
+  --surface:  #1b222e;
+  --surface2: #232b3a;
+  --border:   #2e3849;
+  --text:     #f8fafc;
+  --muted:    #a1a7b3;
   --ok:       #41d08a;
   --warn:     #f0b54a;
   --bad:      #f85149;
   --info:     #58a6ff;
   --violet:   #a371f7;
 
-  --sunken:    #0c0e15;                   /* inputs and code blocks */
-  --header-bg: rgba(16, 18, 25, 0.82);
+  --sunken:    #070a0e;                   /* inputs and code blocks */
+  --header-bg: rgba(11, 15, 20, 0.82);
   --shadow:    rgba(0, 0, 0, 0.85);
   --flag-edge: rgba(255, 255, 255, 0.14);
   --tint:      rgba(128, 128, 128, 0.10); /* neutral hover wash */
@@ -33,7 +35,7 @@
   --radius:   12px;
   --maxw:     1120px;
   --mono: ui-monospace, "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
-  --sans: system-ui, -apple-system, "Segoe UI", Cantarell, "Noto Sans", sans-serif;
+  --sans: "Inter", system-ui, -apple-system, "Segoe UI", Cantarell, "Noto Sans", sans-serif;
 }
 
 /* ── Light theme ─────────────────────────────────────────────────────────────

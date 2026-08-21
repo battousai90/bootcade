@@ -22,11 +22,11 @@
 (function () {
   'use strict';
 
-  var DATA_URL = 'https://files.gcourtot.duckdns.org/dat/catalog-data.json';
-  var MANIFEST_URL = 'https://files.gcourtot.duckdns.org/dat/manifest.json';
-  var ART_BASE = 'https://files.gcourtot.duckdns.org/artwork/';
-  var DAT_BASE = 'https://files.gcourtot.duckdns.org/dat/';
-  var ROMS_BASE = 'https://roms.gcourtot.duckdns.org/roms/';
+  var DATA_URL = 'https://files.bootcade.duckdns.org/dat/catalog-data.json';
+  var MANIFEST_URL = 'https://files.bootcade.duckdns.org/dat/manifest.json';
+  var ART_BASE = 'https://files.bootcade.duckdns.org/artwork/';
+  var DAT_BASE = 'https://files.bootcade.duckdns.org/dat/';
+  var ROMS_BASE = 'https://roms.bootcade.duckdns.org/roms/';
   var PAGE_SIZE = 80;
 
   function previewUrl(g) { return ART_BASE + 'previews/' + encodeURIComponent(g.n) + '.png'; }
