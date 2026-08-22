@@ -45,6 +45,7 @@ const I18N = win.I18N;
 const PAGES = [
   { file: 'index.html', dir: '', metaTitleKey: 'meta.title', metaDescKey: 'meta.desc' },
   { file: 'catalog/index.html', dir: 'catalog/', metaTitleKey: 'catalog.meta.title', metaDescKey: 'catalog.meta.desc' },
+  { file: 'catalog/changes/index.html', dir: 'catalog/changes/', metaTitleKey: 'catalog.changes.meta.title', metaDescKey: 'catalog.changes.meta.desc' },
 ];
 
 // Locate every data-i18n element and capture its inner HTML, honouring nesting.

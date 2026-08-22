@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bootcade — บันทึกการเปลี่ยนแปลง DAT</title>
+<meta name="description" content="เกมทั้งหมดที่ถูกเพิ่มหรือลบออกในการจัดทำดัชนีไฟล์ DAT อย่างเป็นทางการของ FinalBurn Neo ครั้งล่าสุด จัดกลุ่มตามระบบ">
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/catalog/catalog.css">
+<link rel="canonical" href="https://bootcade.netlify.app/th/catalog/changes/">
+<link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/catalog/changes/">
+<link rel="alternate" hreflang="fr" href="https://bootcade.netlify.app/fr/catalog/changes/">
+<link rel="alternate" hreflang="es" href="https://bootcade.netlify.app/es/catalog/changes/">
+<link rel="alternate" hreflang="de" href="https://bootcade.netlify.app/de/catalog/changes/">
+<link rel="alternate" hreflang="pt" href="https://bootcade.netlify.app/pt/catalog/changes/">
+<link rel="alternate" hreflang="ja" href="https://bootcade.netlify.app/ja/catalog/changes/">
+<link rel="alternate" hreflang="zh" href="https://bootcade.netlify.app/zh/catalog/changes/">
+<link rel="alternate" hreflang="th" href="https://bootcade.netlify.app/th/catalog/changes/">
+<link rel="alternate" hreflang="x-default" href="https://bootcade.netlify.app/catalog/changes/">
+
+<meta property="og:locale" content="th">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Bootcade — บันทึกการเปลี่ยนแปลง DAT">
+<meta property="og:description" content="เกมทั้งหมดที่ถูกเพิ่มหรือลบออกในการจัดทำดัชนีไฟล์ DAT อย่างเป็นทางการของ FinalBurn Neo ครั้งล่าสุด จัดกลุ่มตามระบบ">
+<meta property="og:image" content="https://bootcade.netlify.app/og.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<script>
+(function () {
+  try {
+    var m = localStorage.getItem('fbneo-theme');
+    if (m === 'light' || m === 'dark') document.documentElement.dataset.theme = m;
+  } catch (e) {}
+})();
+</script>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" data-href="home" href="/th/" style="color:inherit">
+      <img src="/logo.svg" alt="">
+      <span>Bootcade<small data-i18n="brand.sub">คลังเกมอาร์เคดสำหรับ Linux</small></span>
+    </a>
+    <nav class="nav-links">
+      <a data-href="catalog" href="/th/catalog/" data-i18n="catalog.changes.back">← กลับไปที่แคตตาล็อก</a>
+      <button type="button" id="theme-btn" class="theme-btn" aria-label="Theme" title="Theme">
+        <svg class="ico-sys"   viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zm0 1.5v10a5 5 0 010-10z" fill="currentColor"/></svg>
+        <svg class="ico-light" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3.2" fill="currentColor"/><path d="M8 .8v2M8 13.2v2M.8 8h2M13.2 8h2M2.9 2.9l1.4 1.4M11.7 11.7l1.4 1.4M13.1 2.9l-1.4 1.4M4.3 11.7l-1.4 1.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <svg class="ico-dark"  viewBox="0 0 16 16" aria-hidden="true"><path d="M13.3 9.6A5.8 5.8 0 016.4 2.7a5.9 5.9 0 106.9 6.9z" fill="currentColor"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap chg-main">
+  <div class="section-head">
+    <p class="eyebrow" data-i18n="catalog.changes.eyebrow">การเปลี่ยนแปลง DAT</p>
+    <h1 data-i18n="catalog.changes.h1">สิ่งที่เปลี่ยนแปลงในไฟล์ DAT</h1>
+    <p data-i18n="catalog.changes.intro">Bootcade จะวิเคราะห์ไฟล์ DAT อย่างเป็นทางการของ FinalBurn Neo ใหม่ทุก 15 นาที เมื่อใดก็ตามที่มีเกมถูกเพิ่มหรือลบออกจากไฟล์เหล่านั้น จะแสดงที่นี่ — จัดกลุ่มตามระบบ เรียงจากล่าสุดไปเก่าสุด</p>
+  </div>
+  <p id="chg-status" class="chg-status" data-i18n="catalog.changes.loading">กำลังโหลดประวัติการเปลี่ยนแปลง…</p>
+  <div id="chg-list" class="chg-list"></div>
+</main>
+
+<script src="/i18n.js"></script>
+<script src="/app.js"></script>
+<script src="/catalog/changes/changes.js"></script>
+</body>
+</html>

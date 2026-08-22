@@ -66,6 +66,7 @@ button.cat-dat-toggle.cat-filter-head {
 .cat-dat-body-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
 .cat-dat-body-head p { margin: 0; color: var(--muted); font-size: 12.5px; max-width: 480px; }
 .cat-dat-body-head .btn { flex: none; white-space: nowrap; }
+.cat-dat-body-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 .cat-dat-list {
   margin-top: 14px;
   display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0 20px;
@@ -307,3 +308,31 @@ button.cat-dat-toggle.cat-filter-head {
 @media (max-width: 520px) {
   .cat-row-year { display: none; }
 }
+
+/* ── DAT change log page (catalog/changes/) — ordinary scrolling document,
+   not the fixed 3-pane app shell, so none of the .cat-page rules apply. */
+.chg-main { padding: 40px 0 80px; }
+.chg-status { color: var(--muted); padding: 30px 0; }
+.chg-list { display: flex; flex-direction: column; gap: 16px; }
+.chg-entry {
+  border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--surface); padding: 16px 18px;
+}
+.chg-entry-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding-bottom: 10px; margin-bottom: 10px; border-bottom: 1px solid var(--border);
+}
+.chg-entry-date { font-weight: 600; font-size: 13.5px; }
+.chg-entry-totals { display: flex; gap: 8px; }
+.chg-count { font-size: 12.5px; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
+.chg-count-add { color: var(--ok); background: rgba(65,208,138,0.14); }
+.chg-count-rem { color: var(--bad); background: rgba(248,81,73,0.14); }
+.chg-system + .chg-system { margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--border); }
+.chg-system h3 { margin: 0 0 6px; font-size: 13px; font-weight: 700; }
+.chg-system-body { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.chg-group h4 { margin: 0 0 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .03em; color: var(--muted); }
+.chg-added h4 { color: var(--ok); }
+.chg-removed h4 { color: var(--bad); }
+.chg-group ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 3px; }
+.chg-group li { font-size: 12.5px; display: flex; flex-direction: column; }
+.chg-group li span { color: var(--muted); font-size: 11px; }
