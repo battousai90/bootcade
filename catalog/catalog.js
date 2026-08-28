@@ -1,10 +1,12 @@
 /* Bootcade — game catalog.
  *
- * Static page, dynamic data: catalog-data.json and manifest.json are
- * generated on the homelab from the published FBNeo DAT files (see
- * PLAN-fbneo-web.md) and fetched cross-origin from here. This file never
- * talks to any backend of its own — it only filters/renders data already
- * sitting in memory.
+ * Static page, dynamic data: catalog-data.json and manifest.json are built
+ * from the published FBNeo DAT files and fetched cross-origin from here.
+ * This file never talks to any backend of its own — it only filters and
+ * renders data already sitting in memory.
+ *
+ * This file is served publicly: keep it free of detail about where that
+ * data is produced, or how often.
  *
  * Release-type classification mirrors src/Game.h exactly (is_hack/
  * is_homebrew/is_bootleg/is_prototype/is_original), so a game is tagged the

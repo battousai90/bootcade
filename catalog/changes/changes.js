@@ -1,20 +1,20 @@
 /* Bootcade — DAT change log.
  *
- * changes.json is generated on the homelab (same cron/run as
- * catalog-data.json, see generate-catalog-data.py) as a history of
- * added/removed games per run, newest first — most runs change nothing and
- * add no entry, so this is usually a short list even though the cron
- * itself fires every 15 minutes.
+ * changes.json is a history of games added to or removed from the DAT
+ * files, newest first. An entry is only recorded when something actually
+ * changed, so the list stays short.
+ *
+ * Kept free of any detail about how or how often it is produced: this file
+ * is served publicly, and the page it drives says the same thing.
  */
 (function () {
   'use strict';
 
   var CHANGES_URL = 'https://files.bootcade.duckdns.org/dat/changes.json';
-  // One folder per change date, created by generate-catalog-data.py at the
-  // moment the change is recorded — so this link always resolves, even
-  // when no ROM has been fixed for that change yet (the folder is simply
-  // empty). Behind HTTP Basic Auth, with its own credentials, separate
-  // from the ones guarding the full ROM collection.
+  // One folder per change date, created alongside the change itself, so
+  // this link always resolves — a change with no fixed ROM yet simply
+  // points at an empty folder. Behind HTTP Basic Auth, with its own
+  // credentials, separate from the ones guarding the ROM collection.
   var ROMFIX_BASE = 'https://roms.bootcade.duckdns.org/romfix/';
 
   var LANG = document.documentElement.lang || 'en';
