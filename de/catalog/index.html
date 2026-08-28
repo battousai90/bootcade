@@ -70,6 +70,10 @@
         <p data-i18n="catalog.datHint">Eine DAT pro System — deckt alle unten aufgeführten Spiele für dieses System ab.</p>
         <div class="cat-dat-body-actions">
           <a class="btn" href="changes/" data-i18n="catalog.datChanges">Änderungsdetails</a>
+          <!-- href posé par catalog.js une fois la date du dernier change
+               connue ; masqué tant qu'on ne l'a pas, pour ne jamais
+               pointer vers un dossier RomFix inexistant. -->
+          <a class="btn" id="cat-romfix" href="#" rel="noopener" hidden data-i18n="catalog.romFix">Korrigierte ROMs</a>
           <a class="btn btn-accent" href="https://files.bootcade.duckdns.org/dat/all-dats.zip" rel="noopener" data-i18n="catalog.datZip">Alles herunterladen (.zip)</a>
         </div>
       </div>

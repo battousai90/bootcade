@@ -10,6 +10,12 @@
   'use strict';
 
   var CHANGES_URL = 'https://files.bootcade.duckdns.org/dat/changes.json';
+  // One folder per change date, created by generate-catalog-data.py at the
+  // moment the change is recorded — so this link always resolves, even
+  // when no ROM has been fixed for that change yet (the folder is simply
+  // empty). Behind HTTP Basic Auth, with its own credentials, separate
+  // from the ones guarding the full ROM collection.
+  var ROMFIX_BASE = 'https://roms.bootcade.duckdns.org/romfix/';
 
   var LANG = document.documentElement.lang || 'en';
   var CAT = (window.I18N && window.I18N[LANG]) || {};
@@ -45,12 +51,25 @@
   }
 
   function entryCard(entry) {
+    // Rendered in UTC, not the visitor's zone, so the date shown here is
+    // always the same one as the RomFix folder linked next to it (built
+    // from generated[:10], which is UTC). Showing local time instead makes
+    // a change generated at 23:30 UTC read as "the 28th" while its folder
+    // is named 2026-08-27 — an off-by-one that has already caused a
+    // mis-named folder in practice.
     var date = new Date(entry.generated);
     var formatted = isNaN(date) ? entry.generated : date.toLocaleString(LANG, {
       year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit',
+      timeZone: 'UTC', timeZoneName: 'short',
     });
     var systems = (entry.systems || []).slice().sort(function (a, b) { return a.system.localeCompare(b.system); });
     var totals = entry.totals || { added: 0, removed: 0 };
+
+    var day = (entry.generated || '').slice(0, 10);
+    var romfix = day
+      ? '<a class="chg-romfix" href="' + ROMFIX_BASE + encodeURIComponent(day) + '/" rel="noopener">' +
+          escapeHtml(t('catalog.changes.romFix', 'Fixed ROMs')) + '</a>'
+      : '';
 
     return (
       '<article class="chg-entry">' +
@@ -59,6 +78,7 @@
           '<span class="chg-entry-totals">' +
             (totals.added ? '<b class="chg-count chg-count-add">+' + totals.added + '</b>' : '') +
             (totals.removed ? '<b class="chg-count chg-count-rem">−' + totals.removed + '</b>' : '') +
+            romfix +
           '</span>' +
         '</div>' +
         systems.map(systemBlock).join('') +

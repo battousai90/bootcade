@@ -70,6 +70,10 @@
         <p data-i18n="catalog.datHint">หนึ่ง DAT ต่อหนึ่งระบบ — ครอบคลุมทุกเกมที่แสดงด้านล่างสำหรับระบบนั้น</p>
         <div class="cat-dat-body-actions">
           <a class="btn" href="changes/" data-i18n="catalog.datChanges">รายละเอียดการเปลี่ยนแปลง</a>
+          <!-- href posé par catalog.js une fois la date du dernier change
+               connue ; masqué tant qu'on ne l'a pas, pour ne jamais
+               pointer vers un dossier RomFix inexistant. -->
+          <a class="btn" id="cat-romfix" href="#" rel="noopener" hidden data-i18n="catalog.romFix">ROM ที่แก้ไขแล้ว</a>
           <a class="btn btn-accent" href="https://files.bootcade.duckdns.org/dat/all-dats.zip" rel="noopener" data-i18n="catalog.datZip">ดาวน์โหลดทั้งหมด (.zip)</a>
         </div>
       </div>

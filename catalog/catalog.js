@@ -24,9 +24,11 @@
 
   var DATA_URL = 'https://files.bootcade.duckdns.org/dat/catalog-data.json';
   var MANIFEST_URL = 'https://files.bootcade.duckdns.org/dat/manifest.json';
+  var CHANGES_URL = 'https://files.bootcade.duckdns.org/dat/changes.json';
   var ART_BASE = 'https://files.bootcade.duckdns.org/artwork/';
   var DAT_BASE = 'https://files.bootcade.duckdns.org/dat/';
   var ROMS_BASE = 'https://roms.bootcade.duckdns.org/roms/';
+  var ROMFIX_BASE = 'https://roms.bootcade.duckdns.org/romfix/';
   var PAGE_SIZE = 80;
 
   function previewUrl(g) { return ART_BASE + 'previews/' + encodeURIComponent(g.n) + '.png'; }
@@ -428,6 +430,20 @@
     }
   }
 
+  // The "Fixed ROMs" button points at RomFix/<date of the latest change>/,
+  // which only exists for dates that actually produced a change entry —
+  // hence reading changes.json rather than reusing the DAT date badge
+  // above: a DAT can be republished without adding or removing a single
+  // game, and that date would 404.
+  function buildRomFixButton(entries) {
+    var latest = (entries || [])[0];
+    var date = latest && (latest.generated || '').slice(0, 10);
+    if (!date) return;
+    var btn = document.getElementById('cat-romfix');
+    btn.href = ROMFIX_BASE + encodeURIComponent(date) + '/';
+    btn.hidden = false;
+  }
+
   // ── Boot ─────────────────────────────────────────────────────────────────
   fetch(DATA_URL)
     .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
@@ -460,6 +476,13 @@
           buildDatList(byFile);
         })
         .catch(function () { /* DAT panel just stays empty */ });
+
+      // Same reasoning again, one failure domain further: no changes.json,
+      // no "Fixed ROMs" button, everything else still renders.
+      fetch(CHANGES_URL)
+        .then(function (r) { return r.ok ? r.json() : []; })
+        .then(buildRomFixButton)
+        .catch(function () { /* button just stays hidden */ });
     })
     .catch(function () {
       els.count.textContent = t('catalog.error', 'Could not load the catalog right now — please try again later.');
