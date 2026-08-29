@@ -37,19 +37,27 @@
     }).join('');
   }
 
-  // Un jeu modifié garde son nom : sans afficher CE QUI a changé, la ligne
-  // serait indistinguable d'un jeu inchangé. On montre donc les champs
-  // touchés, et l'ancien titre quand c'est lui qui a bougé — c'est ce qui
-  // rend une révision (« v0.93 » -> « v1.00 ») lisible d'un coup d'œil.
+  // Un jeu modifié garde son nom : sans dire CE QUI a changé, la ligne
+  // serait indistinguable d'un jeu inchangé.
+  //
+  // On ne liste PAS les champs bruts : « titre, année, éditeur, rom » ne
+  // veut rien dire pour un visiteur. Ce qui compte, c'est l'unique
+  // information actionnable — le ROM a changé, donc la copie que possède
+  // le lecteur est périmée. D'où un badge pour ça, l'ancien titre en clair
+  // quand c'est lui qui a bougé, et le reste dans la ligne de métadonnées
+  // habituelle.
   function modifiedList(games) {
     return games.map(function (g) {
-      var bits = [];
-      if (g.was) bits.push(escapeHtml(g.was) + ' →');
-      var meta = (g.changed || []).join(', ');
-      return '<li><b>' + escapeHtml(g.d || g.n) + '</b>' +
-        (bits.length ? '<span>' + bits.join(' ') + '</span>' : '') +
-        (meta ? '<span class="chg-fields">' + escapeHtml(meta) + '</span>' : '') +
-        '</li>';
+      var changed = g.changed || [];
+      var meta = [g.y, g.mf].filter(Boolean).join(' · ');
+      var badge = changed.indexOf('rom') >= 0
+        ? '<em class="chg-rom-badge">' + escapeHtml(t('catalog.changes.romChanged', 'ROM updated')) + '</em>'
+        : '';
+      var was = g.was
+        ? '<span>' + escapeHtml(t('catalog.changes.previously', 'previously {d}').replace('{d}', g.was)) + '</span>'
+        : '';
+      return '<li><b>' + escapeHtml(g.d || g.n) + badge + '</b>' + was +
+        (meta ? '<span>' + escapeHtml(meta) + '</span>' : '') + '</li>';
     }).join('');
   }
 
