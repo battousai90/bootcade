@@ -41,22 +41,19 @@
   // serait indistinguable d'un jeu inchangé.
   //
   // On ne liste PAS les champs bruts : « titre, année, éditeur, rom » ne
-  // veut rien dire pour un visiteur. Ce qui compte, c'est l'unique
-  // information actionnable — le ROM a changé, donc la copie que possède
-  // le lecteur est périmée. D'où un badge pour ça, l'ancien titre en clair
-  // quand c'est lui qui a bougé, et le reste dans la ligne de métadonnées
-  // habituelle.
+  // veut rien dire pour un visiteur. Et pas de pastille non plus : les
+  // groupes « ajoutés » et « retirés » n'ont qu'un titre coloré et une
+  // liste, un ornement supplémentaire ici romprait la charte. Le titre de
+  // groupe suffit à dire qu'il s'agit d'une mise à jour ; l'ancien titre
+  // en clair dit ce qui a bougé, dans la même typographie que la ligne de
+  // métadonnées.
   function modifiedList(games) {
     return games.map(function (g) {
-      var changed = g.changed || [];
       var meta = [g.y, g.mf].filter(Boolean).join(' · ');
-      var badge = changed.indexOf('rom') >= 0
-        ? '<em class="chg-rom-badge">' + escapeHtml(t('catalog.changes.romChanged', 'ROM updated')) + '</em>'
-        : '';
       var was = g.was
         ? '<span>' + escapeHtml(t('catalog.changes.previously', 'previously {d}').replace('{d}', g.was)) + '</span>'
         : '';
-      return '<li><b>' + escapeHtml(g.d || g.n) + badge + '</b>' + was +
+      return '<li><b>' + escapeHtml(g.d || g.n) + '</b>' + was +
         (meta ? '<span>' + escapeHtml(meta) + '</span>' : '') + '</li>';
     }).join('');
   }

@@ -329,11 +329,6 @@ button.cat-dat-toggle.cat-filter-head {
 .chg-count-rem { color: var(--bad); background: rgba(248,81,73,0.14); }
 .chg-count-mod { color: var(--warn); background: rgba(240,181,74,0.16); }
 .chg-modified h4 { color: var(--warn); }
-.chg-rom-badge {
-  font-style: normal; font-size: 9.5px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: .04em; color: var(--warn); background: rgba(240,181,74,0.16);
-  border-radius: 999px; padding: 2px 7px; margin-left: 7px; white-space: nowrap;
-}
 .chg-romfix {
   font-size: 11.5px; font-weight: 600; color: var(--accent2); text-decoration: none;
   border: 1px solid var(--border); border-radius: 7px; padding: 3px 9px; white-space: nowrap;
