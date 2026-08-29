@@ -85,6 +85,7 @@
   var els = {
     count: document.getElementById('cat-count'),
     search: document.getElementById('cat-search'),
+    sort: document.getElementById('cat-sort'),
     systems: document.getElementById('cat-systems'),
     types: document.getElementById('cat-types'),
     manufacturers: document.getElementById('cat-manufacturers'),
@@ -153,10 +154,38 @@
            activeYears.size || activeAspects.size || activeOrientations.size;
   }
 
+  // `fs` (first seen) n'existe que pour les jeux apparus depuis que le
+  // suivi tourne : impossible de dater rétroactivement les 29 000 autres,
+  // et leur inventer une date les ferait tous passer pour des nouveautés.
+  // Les non-datés sont donc renvoyés en fin de liste, ce qui met justement
+  // les ajouts récents en tête — le but recherché.
+  function compare(mode) {
+    if (mode === 'added') {
+      return function (a, b) {
+        var fa = a.fs || '', fb = b.fs || '';
+        if (fa !== fb) return fa && fb ? fb.localeCompare(fa) : (fa ? -1 : 1);
+        return a.d.localeCompare(b.d);
+      };
+    }
+    if (mode === 'year' || mode === 'yearAsc') {
+      var dir = mode === 'year' ? -1 : 1;
+      return function (a, b) {
+        // Une année vide ne doit jamais occuper la tête du classement,
+        // quel que soit le sens du tri.
+        var ya = a.y || '', yb = b.y || '';
+        if (!ya !== !yb) return ya ? -1 : 1;
+        if (ya !== yb) return ya.localeCompare(yb) * dir;
+        return a.d.localeCompare(b.d);
+      };
+    }
+    return function (a, b) { return a.d.localeCompare(b.d); };
+  }
+
   function applyFilters() {
     var raw = els.search.value.trim().toLowerCase();
     var query = raw ? raw.split(/\s+/) : [];
     filtered = GAMES.filter(function (g) { return matches(g, query); });
+    filtered.sort(compare(els.sort ? els.sort.value : 'name'));
     shown = 0;
     selectedRow = null;
     els.grid.innerHTML = '';
@@ -385,6 +414,7 @@
   }
 
   els.search.addEventListener('input', applyFilters);
+  if (els.sort) els.sort.addEventListener('change', applyFilters);
   els.more.addEventListener('click', renderMore);
   els.reset.addEventListener('click', function () {
     activeSystems.clear();

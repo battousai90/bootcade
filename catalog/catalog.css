@@ -42,6 +42,21 @@
 }
 .cat-search:focus { outline: none; border-color: var(--accent); }
 
+/* Recherche et tri sur la même ligne : le tri est un réglage de la liste,
+   pas une section à part. La recherche prend toute la place restante. */
+.cat-toolbar-row { display: flex; gap: 8px; align-items: center; }
+.cat-toolbar-row .cat-search { flex: 1; min-width: 0; }
+.cat-sort {
+  flex: none; padding: 9px 12px; border-radius: 9px;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text);
+  font-size: 13px; font-family: inherit; cursor: pointer;
+}
+.cat-sort:focus { outline: none; border-color: var(--accent); }
+@media (max-width: 520px) {
+  .cat-toolbar-row { flex-wrap: wrap; }
+  .cat-sort { width: 100%; }
+}
+
 /* ── DAT files: accordion, folded by default. Secondary resource, not part
    of the 3-pane app — folded, it costs one header row; unfolded, it just
    shrinks the app area below it (.cat-page still never scrolls). */

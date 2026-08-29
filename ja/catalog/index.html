@@ -88,8 +88,16 @@
       <span class="cat-section-title" data-i18n="catalog.eyebrow">ゲームカタログ</span>
       <span class="cat-count" id="cat-count" data-i18n="catalog.loading">カタログを読み込み中…</span>
     </div>
-    <input type="search" id="cat-search" class="cat-search" autocomplete="off"
-           placeholder="Search by title, manufacturer, ROM name…">
+    <div class="cat-toolbar-row">
+      <input type="search" id="cat-search" class="cat-search" autocomplete="off"
+             placeholder="Search by title, manufacturer, ROM name…">
+      <select id="cat-sort" class="cat-sort" aria-label="Sort">
+        <option value="name" data-i18n="catalog.sort.name">名前 (A–Z)</option>
+        <option value="added" data-i18n="catalog.sort.added">最近の追加</option>
+        <option value="year" data-i18n="catalog.sort.year">新しい順</option>
+        <option value="yearAsc" data-i18n="catalog.sort.yearAsc">古い順</option>
+      </select>
+    </div>
   </div>
 </div>
 

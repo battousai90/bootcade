@@ -88,8 +88,16 @@
       <span class="cat-section-title" data-i18n="catalog.eyebrow">Catalogue de jeux</span>
       <span class="cat-count" id="cat-count" data-i18n="catalog.loading">Chargement du catalogue…</span>
     </div>
-    <input type="search" id="cat-search" class="cat-search" autocomplete="off"
-           placeholder="Search by title, manufacturer, ROM name…">
+    <div class="cat-toolbar-row">
+      <input type="search" id="cat-search" class="cat-search" autocomplete="off"
+             placeholder="Search by title, manufacturer, ROM name…">
+      <select id="cat-sort" class="cat-sort" aria-label="Sort">
+        <option value="name" data-i18n="catalog.sort.name">Nom (A–Z)</option>
+        <option value="added" data-i18n="catalog.sort.added">Ajouts récents</option>
+        <option value="year" data-i18n="catalog.sort.year">Plus récents</option>
+        <option value="yearAsc" data-i18n="catalog.sort.yearAsc">Plus anciens</option>
+      </select>
+    </div>
   </div>
 </div>
 
