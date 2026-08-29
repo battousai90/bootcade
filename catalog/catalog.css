@@ -327,6 +327,9 @@ button.cat-dat-toggle.cat-filter-head {
 .chg-count { font-size: 12.5px; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
 .chg-count-add { color: var(--ok); background: rgba(65,208,138,0.14); }
 .chg-count-rem { color: var(--bad); background: rgba(248,81,73,0.14); }
+.chg-count-mod { color: var(--warn); background: rgba(240,181,74,0.14); }
+.chg-modified h4 { color: var(--warn); }
+.chg-group li .chg-fields { color: var(--warn); font-size: 10.5px; text-transform: uppercase; letter-spacing: .03em; }
 .chg-romfix {
   font-size: 11.5px; font-weight: 600; color: var(--accent2); text-decoration: none;
   border: 1px solid var(--border); border-radius: 7px; padding: 3px 9px; white-space: nowrap;

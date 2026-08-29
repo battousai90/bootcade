@@ -37,13 +37,33 @@
     }).join('');
   }
 
+  // Un jeu modifié garde son nom : sans afficher CE QUI a changé, la ligne
+  // serait indistinguable d'un jeu inchangé. On montre donc les champs
+  // touchés, et l'ancien titre quand c'est lui qui a bougé — c'est ce qui
+  // rend une révision (« v0.93 » -> « v1.00 ») lisible d'un coup d'œil.
+  function modifiedList(games) {
+    return games.map(function (g) {
+      var bits = [];
+      if (g.was) bits.push(escapeHtml(g.was) + ' →');
+      var meta = (g.changed || []).join(', ');
+      return '<li><b>' + escapeHtml(g.d || g.n) + '</b>' +
+        (bits.length ? '<span>' + bits.join(' ') + '</span>' : '') +
+        (meta ? '<span class="chg-fields">' + escapeHtml(meta) + '</span>' : '') +
+        '</li>';
+    }).join('');
+  }
+
   function systemBlock(sys) {
     var groups = '';
-    if (sys.added.length) {
+    if (sys.added && sys.added.length) {
       groups += '<div class="chg-group chg-added"><h4>' + escapeHtml(t('catalog.changes.added', 'Added')) +
         ' (' + sys.added.length + ')</h4><ul>' + gameList(sys.added) + '</ul></div>';
     }
-    if (sys.removed.length) {
+    if (sys.modified && sys.modified.length) {
+      groups += '<div class="chg-group chg-modified"><h4>' + escapeHtml(t('catalog.changes.modified', 'Updated')) +
+        ' (' + sys.modified.length + ')</h4><ul>' + modifiedList(sys.modified) + '</ul></div>';
+    }
+    if (sys.removed && sys.removed.length) {
       groups += '<div class="chg-group chg-removed"><h4>' + escapeHtml(t('catalog.changes.removed', 'Removed')) +
         ' (' + sys.removed.length + ')</h4><ul>' + gameList(sys.removed) + '</ul></div>';
     }
@@ -77,6 +97,7 @@
           '<span class="chg-entry-date">' + escapeHtml(formatted) + '</span>' +
           '<span class="chg-entry-totals">' +
             (totals.added ? '<b class="chg-count chg-count-add">+' + totals.added + '</b>' : '') +
+            (totals.modified ? '<b class="chg-count chg-count-mod">~' + totals.modified + '</b>' : '') +
             (totals.removed ? '<b class="chg-count chg-count-rem">−' + totals.removed + '</b>' : '') +
             romfix +
           '</span>' +
