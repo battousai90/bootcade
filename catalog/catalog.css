@@ -11,7 +11,11 @@
 
 [hidden] { display: none !important; }
 
-.cat-page { height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+/* La page défile, elle n'est plus figée à la hauteur de la fenêtre. C'est ce
+   qui permet au volet de détail de s'allonger autant que son contenu l'exige
+   — un classement de cinquante entrées, une longue liste de ROMs — et d'être
+   lu en faisant défiler la page, plutôt que d'être coupé net. */
+.cat-page { min-height: 100vh; display: flex; flex-direction: column; }
 .cat-page header { flex: none; }
 
 /* One title style, used verbatim by both section headers (DAT files below,
@@ -24,7 +28,12 @@
 }
 
 /* ── Toolbar: title/count on top, search on its own row below ───────────── */
-.cat-toolbar { flex: none; border-bottom: 1px solid var(--border); background: var(--bg2); }
+/* Collante depuis que la page défile : recherche, tri et compteur doivent
+   rester sous la main quand on descend dans un volet de détail très haut. */
+.cat-toolbar {
+  flex: none; border-bottom: 1px solid var(--border); background: var(--bg2);
+  position: sticky; top: 0; z-index: 20;
+}
 /* padding-top/-bottom only — this element also carries the shared .wrap
    class (24px left/right); a padding SHORTHAND here would reset those
    sides to 0 and pull this row 24px further left than every other row
@@ -99,24 +108,38 @@ button.cat-dat-toggle.cat-filter-head {
 }
 .cat-dat-row a:hover { border-color: var(--accent); }
 
-/* ── App shell: sidebar | list | detail, each its own scrolling box ──────── */
-.cat-app { flex: 1; min-height: 0; overflow: hidden; }
+/* ── App shell: sidebar | list | detail ──────────────────────────────────── */
+.cat-app { flex: 1; min-height: 0; }
 /* Same padding-shorthand trap as .cat-toolbar-inner above — top/bottom only,
    .wrap's 24px left/right must survive untouched. */
 .cat-app-wrap {
-  height: 100%; padding-top: 14px; padding-bottom: 14px;
+  padding-top: 14px; padding-bottom: 14px;
   display: grid;
   grid-template-columns: 220px minmax(0, 1fr) 360px;
   gap: 16px;
+  /* Les colonnes ne s'étirent plus à la hauteur de la plus haute : le volet
+     de détail doit pouvoir dépasser sans imposer sa taille aux autres. */
+  align-items: start;
 }
 
 .cat-panel {
   border: 1px solid var(--border); border-radius: var(--radius);
-  background: var(--surface); overflow: hidden; min-height: 0;
+  background: var(--surface); min-height: 0;
 }
 
-/* The one and only scroll zone on the page. */
+/* Barre latérale et liste restent à l'écran pendant qu'on descend dans un
+   volet de détail plus haut que la fenêtre : sans cela, choisir le jeu
+   suivant obligerait à remonter toute la page. Elles gardent leur propre
+   défilement, borné à la fenêtre ; le volet de détail, lui, n'en a aucun. */
+.cat-sidebar, .cat-list-panel {
+  position: sticky; top: 14px;
+  max-height: calc(100vh - 28px);
+}
 .cat-list-panel { overflow-y: auto; }
+/* Le radius doit encore rogner les coins des vignettes et de l'artwork, mais
+   sur l'axe horizontal seulement — `hidden` sur les deux axes couperait le
+   contenu vertical, ce qu'on vient précisément de supprimer. */
+.cat-sidebar, .cat-list-panel, .cat-detail { overflow-x: clip; }
 
 /* ── Sidebar filters ─────────────────────────────────────────────────────── */
 .cat-sidebar { display: flex; flex-direction: column; padding: 4px 10px; }
@@ -200,9 +223,11 @@ button.cat-dat-toggle.cat-filter-head {
 .cat-detail .cat-modal-close { display: none; }
 .cat-modal-panel { background: var(--bg2); }
 
-/* Side by side, not stacked: this panel doesn't scroll, so the media block
-   must stay short enough to leave room for specs/actions below it. Thumbnails
-   are still real size (click opens the lightbox at full scale), not stamps. */
+/* Côte à côte plutôt qu'empilées, et plafonnées en hauteur : le volet peut
+   maintenant s'allonger, mais deux artworks pleine taille repousseraient les
+   caractéristiques et le classement sous la ligne de flottaison à chaque
+   ouverture. Les vignettes restent à taille lisible — un clic ouvre la
+   visionneuse en grand. */
 .cat-modal-media { background: var(--surface2); display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
 .cat-modal-media img { width: 100%; max-height: 190px; display: block; object-fit: contain; background: var(--surface2); cursor: zoom-in; }
 .cat-modal-media .cat-modal-shot { padding: 8px; text-align: center; }
@@ -267,7 +292,7 @@ button.cat-dat-toggle.cat-filter-head {
 }
 .cat-roms-archive span { color: var(--muted); }
 .cat-roms-archive b { font-weight: 600; font-family: ui-monospace, Consolas, monospace; }
-.cat-roms .cat-roms-scroll { max-height: 220px; overflow-y: auto; margin-top: 8px; border: 1px solid var(--border); border-radius: 8px; }
+.cat-roms .cat-roms-scroll { margin-top: 8px; border: 1px solid var(--border); border-radius: 8px; }
 .cat-roms table { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: 11.5px; }
 .cat-roms td { padding: 4px 6px; border-top: 1px solid var(--border); vertical-align: top; overflow-wrap: anywhere; }
 .cat-roms tr:first-child td { border-top: none; }
@@ -290,8 +315,10 @@ button.cat-dat-toggle.cat-filter-head {
   .cat-page { height: auto; overflow: visible; }
   .cat-app { overflow: visible; }
   .cat-app-wrap { height: auto; grid-template-columns: 1fr; }
-  /* Below the fixed-shell breakpoint the page itself scrolls, so these two
-     need their own scrollbar back to stay within their capped height. */
+  /* Empilées ici, elles ne doivent plus être collantes : trois boîtes fixées
+     sur un téléphone ne laisseraient rien voir. Elles reprennent leur hauteur
+     plafonnée et leur propre barre. */
+  .cat-sidebar, .cat-list-panel { position: static; }
   .cat-sidebar { max-height: 260px; overflow-y: auto; }
   .cat-list-panel { max-height: 70vh; overflow-y: auto; }
 
@@ -359,3 +386,47 @@ button.cat-dat-toggle.cat-filter-head {
 .chg-group ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 3px; }
 .chg-group li { font-size: 12.5px; display: flex; flex-direction: column; }
 .chg-group li span { color: var(--muted); font-size: 11px; }
+
+/* ── Highscore ──────────────────────────────────────────────────────────────
+   Bleu, délibérément à l'écart des couleurs de type de version (original,
+   clone, hack…) : celles-là disent ce qu'EST un jeu, celle-ci ce qu'il
+   PERMET. Réutiliser leur palette en ferait lire un septième type. */
+.cat-badge.hiscore {
+  color: #7aa2ff;
+  border-color: rgba(122, 162, 255, .45);
+  background: rgba(122, 162, 255, .12);
+}
+.cat-row-hi {
+  color: #7aa2ff;
+  font-size: .85em;
+  margin-right: 2px;
+}
+.cat-filter-hiscore.on {
+  color: #7aa2ff;
+  background: rgba(122, 162, 255, .14);
+}
+.cat-hiscore { margin-top: 18px; }
+.cat-hiscore h3 {
+  font-size: .78rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--muted);
+  margin: 0 0 8px;
+}
+.cat-hi-note { color: var(--muted); font-size: .86rem; margin: 0; }
+/* Aucun cadre défilant ici : le volet s'allonge et c'est la page qui défile,
+   pour qu'il n'y ait qu'une seule barre à manipuler pour lire un classement. */
+.cat-hi-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+.cat-hi-table td {
+  padding: 5px 8px 5px 0;
+  border-bottom: 1px solid rgba(128, 128, 128, .16);
+}
+.cat-hi-table tr:last-child td { border-bottom: none; }
+.cat-hi-rank { color: var(--muted); width: 2em; font-variant-numeric: tabular-nums; }
+/* Chiffres tabulaires et alignement à droite : un classement se lit en
+   colonne, et des scores en chasse proportionnelle se comparent mal. */
+.cat-hi-score { text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
+.cat-hi-player { padding-left: 10px; }
+.cat-hi-date { color: var(--muted); text-align: right; white-space: nowrap; font-size: .82rem; }
+/* Places libres : présentes et numérotées, mais visiblement à prendre. */
+.cat-hi-table .cat-hi-free td { color: var(--muted); opacity: .5; }

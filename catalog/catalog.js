@@ -31,6 +31,9 @@
   var DAT_BASE = 'https://files.bootcade.duckdns.org/dat/';
   var ROMS_BASE = 'https://roms.bootcade.duckdns.org/roms/';
   var ROMFIX_BASE = 'https://roms.bootcade.duckdns.org/romfix/';
+  // Score service. Its own host and its own failure domain: a leaderboard that
+  // is down must cost the catalog nothing but the leaderboard itself.
+  var SCORES_BASE = 'https://scores.bootcade.duckdns.org';
   var PAGE_SIZE = 80;
 
   function previewUrl(g) { return ART_BASE + 'previews/' + encodeURIComponent(g.n) + '.png'; }
@@ -106,6 +109,8 @@
     modalClone: document.getElementById('cat-modal-clone'),
     modalSpecs: document.getElementById('cat-modal-specs'),
     modalActions: document.getElementById('cat-modal-actions'),
+    modalScores: document.getElementById('cat-modal-scores'),
+    hiscoreFilter: document.getElementById('cat-hiscore-filter'),
     datList: document.getElementById('cat-dat-list'),
     lightbox: document.getElementById('cat-lightbox'),
     lightboxImg: document.getElementById('cat-lightbox-img'),
@@ -123,6 +128,13 @@
   var filtered = [];
   var shown = 0;
   var selectedRow = null;
+  // "<system>|<game>" for every game the score service can rank. Empty until
+  // the list arrives, and empty for good if it never does — in which case no
+  // badge, no filter and no leaderboard appear anywhere.
+  var ranked = new Set();
+  var onlyRanked = false;
+  // Guards against a late reply painting over a game the visitor has left.
+  var scoreSeq = 0;
 
   function escapeHtml(s) {
     return String(s).replace(/[&<>"]/g, function (c) {
@@ -142,6 +154,7 @@
       for (var i = 0; i < flags.length; i++) if (activeTypes.has(flags[i])) { hit = true; break; }
       if (!hit) return false;
     }
+    if (onlyRanked && !isRanked(g)) return false;
     if (query) {
       var hay = g._hay;
       for (var j = 0; j < query.length; j++) if (hay.indexOf(query[j]) === -1) return false;
@@ -150,6 +163,11 @@
   }
 
   function anyFilterActive() {
+    if (onlyRanked) return true;
+    return anyFilterActive_();
+  }
+
+  function anyFilterActive_() {
     return activeSystems.size || activeTypes.size || activeManufacturers.size ||
            activeYears.size || activeAspects.size || activeOrientations.size;
   }
@@ -213,13 +231,17 @@
       .replace('{s}', sys.size);
   }
 
+  function isRanked(g) { return ranked.has(g.s + '|' + g.n); }
+
   function badgesHtml(g, limit) {
     var flags = limit ? g._flags.slice(0, limit) : g._flags;
     return flags.map(function (id) {
       var def = TYPES.filter(function (x) { return x.id === id; })[0];
       var cls = id === 'original' ? ' original' : '';
       return '<span class="cat-badge' + cls + '">' + escapeHtml(t('catalog.type.' + id, def.fallback)) + '</span>';
-    }).join('');
+    }).join('') + (isRanked(g)
+      ? '<span class="cat-badge hiscore">◆ ' + escapeHtml(t('catalog.hiscore', 'Highscore')) + '</span>'
+      : '');
   }
 
   function actionsHtml(g) {
@@ -238,6 +260,8 @@
     el.innerHTML =
       '<div class="cat-row-art"><img loading="lazy" alt="" src="' + previewUrl(g) + '" onerror="this.parentNode.textContent=\'🕹️\'"></div>' +
       '<div class="cat-row-title"><b>' + escapeHtml(g.d) + '</b><span>' + escapeHtml(g.n) + '</span></div>' +
+      (isRanked(g) ? '<span class="cat-row-hi" title="' +
+          escapeHtml(t('catalog.hiscore.hint', 'Scores for this game are ranked online.')) + '">◆</span>' : '') +
       '<span class="cat-row-sys">' + escapeHtml(g.s) + '</span>' +
       '<span class="cat-row-year">' + escapeHtml(g.y) + '</span>';
     el.addEventListener('click', function () { openModal(g, el); });
@@ -327,14 +351,93 @@
       romsHtml(g);
 
     els.modalActions.innerHTML = actionsHtml(g);
+    renderScores(g);
 
     els.modal.hidden = false;
+  }
+
+  // ── Leaderboard ──────────────────────────────────────────────────────────
+  // Only for games the service says it can rank. Asking for the rest would be
+  // 29 000 requests answering "nothing", and would put an empty score table
+  // under games that will never have one.
+  function renderScores(g) {
+    var box = els.modalScores;
+    if (!box) return;
+    if (!isRanked(g)) { box.hidden = true; box.innerHTML = ''; return; }
+
+    box.hidden = false;
+    box.innerHTML = '<h3>' + escapeHtml(t('catalog.hiscore', 'Highscore')) + '</h3>' +
+                    '<p class="cat-hi-note">' + escapeHtml(t('catalog.hiscore.loading', 'Loading the leaderboard…')) + '</p>';
+
+    var seq = ++scoreSeq;
+    fetch(SCORES_BASE + '/api/scores/' + encodeURIComponent(g.s) + '/' + encodeURIComponent(g.n) + '/top?limit=50')
+      .then(function (r) { return r.ok ? r.json() : []; })
+      .then(function (rows) {
+        if (seq !== scoreSeq) return;      // visitor has moved on
+        box.innerHTML = '<h3>' + escapeHtml(t('catalog.hiscore', 'Highscore')) + '</h3>' + scoresHtml(rows || []);
+      })
+      .catch(function () {
+        if (seq !== scoreSeq) return;
+        // Said plainly rather than shown as an empty table: "no scores" and
+        // "we could not ask" are different things, and a visitor deserves to
+        // know which one they are looking at.
+        box.innerHTML = '<h3>' + escapeHtml(t('catalog.hiscore', 'Highscore')) + '</h3>' +
+          '<p class="cat-hi-note">' + escapeHtml(t('catalog.hiscore.error', 'The leaderboard is unavailable right now.')) + '</p>';
+      });
+  }
+
+  // "FR" -> 🇫🇷, built from regional indicators so a system without flag
+  // glyphs degrades to the two letters rather than to a blank.
+  function countryFlag(iso) {
+    if (!iso || iso.length !== 2) return '';
+    var out = '';
+    for (var i = 0; i < 2; i++) {
+      var c = iso.toUpperCase().charCodeAt(i);
+      if (c < 65 || c > 90) return '';
+      out += String.fromCodePoint(0x1F1E6 + (c - 65));
+    }
+    return out;
+  }
+
+  // Une borne d'arcade affiche TOUJOURS dix lignes : les places libres portent
+  // des initiales d'usine, et le joueur les remplace une par une. C'est ce qui
+  // donne envie de s'y mettre — une ligne unique, ou pas de ligne du tout, ne
+  // dit rien à personne. Le remplissage est purement visuel : aucune valeur
+  // n'est inventée, les places libres n'affichent pas de score.
+  var BOARD_ROWS = 10;
+
+  function scoresHtml(rows) {
+    var body = '';
+    for (var i = 0; i < BOARD_ROWS; i++) {
+      var r = rows[i];
+      if (r) {
+        var flag = countryFlag(r.country);
+        body += '<tr><td class="cat-hi-rank">' + (i + 1) + '</td>' +
+                '<td class="cat-hi-score">' + escapeHtml(Number(r.score).toLocaleString(LANG)) + '</td>' +
+                '<td class="cat-hi-player">' + escapeHtml(r.player) + (flag ? ' ' + flag : '') + '</td>' +
+                '<td class="cat-hi-date">' + escapeHtml((r.since || '').slice(0, 10)) + '</td></tr>';
+      } else {
+        body += '<tr class="cat-hi-free"><td class="cat-hi-rank">' + (i + 1) + '</td>' +
+                '<td class="cat-hi-score">—</td>' +
+                '<td class="cat-hi-player">AAA</td>' +
+                '<td class="cat-hi-date"></td></tr>';
+      }
+    }
+    return '<table class="cat-hi-table">' + body + '</table>';
   }
 
   function closeModal() {
     els.modal.hidden = true;
     if (selectedRow) selectedRow.classList.remove('active');
     selectedRow = null;
+  }
+
+  if (els.hiscoreFilter) {
+    els.hiscoreFilter.addEventListener('click', function () {
+      onlyRanked = !onlyRanked;
+      els.hiscoreFilter.classList.toggle('on', onlyRanked);
+      applyFilters();
+    });
   }
 
   els.modalClose.addEventListener('click', closeModal);
@@ -517,6 +620,24 @@
           buildDatList(byFile);
         })
         .catch(function () { /* DAT panel just stays empty */ });
+
+      // And again for the score service, which lives on another host
+      // entirely: unreachable, the catalog simply shows no leaderboards.
+      fetch(SCORES_BASE + '/api/supported')
+        .then(function (r) { return r.ok ? r.json() : []; })
+        .then(function (list) {
+          (list || []).forEach(function (x) { ranked.add(x.system + '|' + x.game); });
+          if (!ranked.size) return;
+          if (els.hiscoreFilter) {
+            els.hiscoreFilter.hidden = false;
+            els.hiscoreFilter.textContent = '◆ ' + t('catalog.hiscore', 'Highscore') +
+                                            ' (' + ranked.size + ')';
+          }
+          // The list lands after the first rows are already on screen, so
+          // what is displayed has to be rebuilt to carry the badges.
+          applyFilters();
+        })
+        .catch(function () { /* no leaderboards, everything else stands */ });
 
       // Same reasoning again, one failure domain further: no changes.json,
       // no "Fixed ROMs" button, everything else still renders.

@@ -85,6 +85,7 @@
     </a>
     <nav class="nav-links">
       <a href="#features" data-i18n="nav.features">機能</a>
+      <a href="#hiscore" data-i18n="nav.hiscore">ハイスコア</a>
       <a href="#rom-manager" data-i18n="nav.rom">ROM管理</a>
       <a href="#steamos" data-i18n="nav.steam">SteamOS</a>
       <a href="#download" data-i18n="nav.dl">ダウンロード</a>
@@ -252,7 +253,7 @@
       <div class="card">
         <div class="ico">⭐</div>
         <h3 data-i18n="card4.t">お気に入りと履歴</h3>
-        <p data-i18n="card4.p1">何度も遊ぶゲームに星を付ければ、プレイ回数とプレイ時間を記録します。</p>
+        <p data-i18n="card4.p1">何度も戻ってくるゲームに星を付けましょう。ランチャーはプレイ回数、前回の長さ、最長記録、そして累計を記録します。</p>
       </div>
       <div class="card">
         <div class="ico">🖼️</div>
@@ -277,6 +278,35 @@
       <p data-i18n="s6.intro">ランチャーが対応する全システムを、公式のFBNeo DATファイルから直接インデックス化。検索やシステム・リリースタイプでの絞り込みができ、どのセットのDATやアートワークもダウンロードできます。インストール不要ですぐに見られます。</p>
     </div>
     <a class="btn btn-accent" data-href="catalog" href="/ja/catalog/" data-i18n="s6.cta">カタログを見る</a>
+  </div>
+</section>
+
+<!-- ── Highscore ─────────────────────────────────────────────────────────── -->
+<section id="hiscore" class="alt">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow" data-i18n="s7.eyebrow">スコア</p>
+      <h2 data-i18n="s7.h2">ゲーム本体から読み取った、あなたのスコア</h2>
+      <p data-i18n="s7.intro">プレイを終えると、ランチャーがゲームの実際にメモリへ書き込んだ内容を読み取ります。数字を打ち込む必要も、スクリーンショットを送る必要もありません。ランチャーからでも Web カタログからでも、みんなと競えます。</p>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="ico">🏆</div>
+        <h3 data-i18n="card7.t">何もしなくていい</h3>
+        <p data-i18n="card7.p1">ランキング対応のゲームには <em>Highscore</em> のバッジが付きます。遊んで終了すれば、それだけでスコアが送られます。ランチャーはプレイ前後のスコア表を比べるので、公開されるのは<em>あなた</em>が出した記録であり、新品の表に最初から入っている工場出荷値ではありません。</p>
+      </div>
+      <div class="card">
+        <div class="ico">⏱️</div>
+        <h3 data-i18n="card8.t">ゲームごとのプレイ時間</h3>
+        <p data-i18n="card8.p1">前回のプレイ、最長のプレイ、そして累計を、ゲームごとに記録します。再構築されたカタログではほとんどが失われるなか、DAT の更新をまたいでも残ります。</p>
+      </div>
+      <div class="card">
+        <div class="ico">🔒</div>
+        <h3 data-i18n="card9.t">あなたが許可するまではオフ</h3>
+        <p data-i18n="card9.p1">署名する名前と明確な同意がなければ、何も送信されません。スコアの送信はプレイ時間も公開することになり、それはゲームというより生活の習慣に関わる情報だからです。オフラインではスコアを保存し、あとで送信します。失われることはありません。</p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -325,19 +355,19 @@
     <div class="grid">
       <div class="card">
         <div class="ico">📀</div>
-        <h3 data-i18n="card7.t">本物の CRC 検証</h3>
-        <p data-i18n="card7.p1">すべての書庫のすべてのエントリーを展開して CRC32 を再計算し、DAT と照合します。破損した書庫が正常を装うことはできません。</p>
+        <h3 data-i18n="card7.t">何もしなくていい</h3>
+        <p data-i18n="card7.p1">ランキング対応のゲームには <em>Highscore</em> のバッジが付きます。遊んで終了すれば、それだけでスコアが送られます。ランチャーはプレイ前後のスコア表を比べるので、公開されるのは<em>あなた</em>が出した記録であり、新品の表に最初から入っている工場出荷値ではありません。</p>
       </div>
       <div class="card">
         <div class="ico">🔬</div>
-        <h3 data-i18n="card8.t">ライブラリ監査</h3>
-        <p data-i18n="card8.p1"><em>どのセット</em>が壊れていて<em>どのファイル</em>が原因かを、4 つの明確な判定で示します。</p>
+        <h3 data-i18n="card8.t">ゲームごとのプレイ時間</h3>
+        <p data-i18n="card8.p1">前回のプレイ、最長のプレイ、そして累計を、ゲームごとに記録します。再構築されたカタログではほとんどが失われるなか、DAT の更新をまたいでも残ります。</p>
         <ul data-i18n="card8.ul"><li><strong style="color:var(--ok)">OK</strong> — 名前もデータも正しい</li> <li><strong style="color:var(--warn)">名前違い</strong> — データは正しいが名前が違う</li> <li><strong style="color:var(--warn)">破損</strong> — 存在するが内容が誤り</li> <li><strong style="color:var(--bad)">欠落</strong> — セットに存在しない</li></ul>
       </div>
       <div class="card">
         <div class="ico">📥</div>
-        <h3 data-i18n="card9.t">受信箱 → 送信箱の再構築</h3>
-        <p data-i18n="card9.p1">ダウンロードを受信フォルダーに置いて「解析」を押すだけ。完全なセットは移動され、壊れたセットはダウンロード内<em>および</em>既存ライブラリ内で見つかった部品から再構築されます。</p>
+        <h3 data-i18n="card9.t">あなたが許可するまではオフ</h3>
+        <p data-i18n="card9.p1">署名する名前と明確な同意がなければ、何も送信されません。スコアの送信はプレイ時間も公開することになり、それはゲームというより生活の習慣に関わる情報だからです。オフラインではスコアを保存し、あとで送信します。失われることはありません。</p>
       </div>
       <div class="card">
         <div class="ico">🛡️</div>

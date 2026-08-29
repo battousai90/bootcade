@@ -85,6 +85,7 @@
     </a>
     <nav class="nav-links">
       <a href="#features" data-i18n="nav.features">Fonctionnalités</a>
+      <a href="#hiscore" data-i18n="nav.hiscore">Highscore</a>
       <a href="#rom-manager" data-i18n="nav.rom">Gestion des ROMs</a>
       <a href="#steamos" data-i18n="nav.steam">SteamOS</a>
       <a href="#download" data-i18n="nav.dl">Télécharger</a>
@@ -252,7 +253,7 @@
       <div class="card">
         <div class="ico">⭐</div>
         <h3 data-i18n="card4.t">Favoris et historique</h3>
-        <p data-i18n="card4.p1">Marquez les jeux sur lesquels vous revenez, et laissez le lanceur suivre le nombre de parties et le temps de jeu.</p>
+        <p data-i18n="card4.p1">Marque d'une étoile les jeux sur lesquels tu reviens. Le lanceur enregistre le nombre de parties, la durée de la dernière, celle de la plus longue et le cumul.</p>
       </div>
       <div class="card">
         <div class="ico">🖼️</div>
@@ -277,6 +278,35 @@
       <p data-i18n="s6.intro">Tous les systèmes pris en charge par le lanceur, indexés directement depuis les fichiers DAT officiels de FBNeo — recherchez, filtrez par système ou type de version, et récupérez le DAT ou l'artwork de n'importe quel set. Aucune installation nécessaire pour jeter un œil.</p>
     </div>
     <a class="btn btn-accent" data-href="catalog" href="/fr/catalog/" data-i18n="s6.cta">Parcourir le catalogue</a>
+  </div>
+</section>
+
+<!-- ── Highscore ─────────────────────────────────────────────────────────── -->
+<section id="hiscore" class="alt">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow" data-i18n="s7.eyebrow">Les scores</p>
+      <h2 data-i18n="s7.h2">Ton score, lu directement dans le jeu</h2>
+      <p data-i18n="s7.intro">Termine une partie et le lanceur lit ce que le jeu a réellement écrit en mémoire — aucun chiffre à saisir, aucune capture à envoyer. Compare-toi aux autres au classement, depuis le lanceur ou depuis le catalogue en ligne.</p>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="ico">🏆</div>
+        <h3 data-i18n="card7.t">Rien à faire</h3>
+        <p data-i18n="card7.p1">Les jeux classables portent une pastille <em>Highscore</em>. Tu joues, tu quittes, ton score part. Le lanceur compare la table des scores avant et après ta partie : ce qui est publié est donc bien ce que <em>tu</em> as fait, et non les valeurs d'usine dont toute table neuve est remplie.</p>
+      </div>
+      <div class="card">
+        <div class="ico">⏱️</div>
+        <h3 data-i18n="card8.t">Temps de jeu, par jeu</h3>
+        <p data-i18n="card8.p1">Dernière partie, plus longue partie et cumul, tenus pour chaque jeu — et conservés à travers une mise à jour des DAT, contrairement à presque tout le reste d'un catalogue reconstruit.</p>
+      </div>
+      <div class="card">
+        <div class="ico">🔒</div>
+        <h3 data-i18n="card9.t">Désactivé jusqu'à ton accord</h3>
+        <p data-i18n="card9.p1">Rien ne part sans un nom pour signer et un oui explicite : envoyer un score publie aussi ton temps de jeu, qui relève de tes habitudes plus que du jeu. Hors ligne, les scores sont conservés et envoyés plus tard, jamais perdus.</p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -325,19 +355,19 @@
     <div class="grid">
       <div class="card">
         <div class="ico">📀</div>
-        <h3 data-i18n="card7.t">Vraie vérification CRC</h3>
-        <p data-i18n="card7.p1">Chaque entrée de chaque archive est décompressée et son CRC32 recalculé, puis confronté au DAT. Une archive corrompue ne peut pas se faire passer pour valide.</p>
+        <h3 data-i18n="card7.t">Rien à faire</h3>
+        <p data-i18n="card7.p1">Les jeux classables portent une pastille <em>Highscore</em>. Tu joues, tu quittes, ton score part. Le lanceur compare la table des scores avant et après ta partie : ce qui est publié est donc bien ce que <em>tu</em> as fait, et non les valeurs d'usine dont toute table neuve est remplie.</p>
       </div>
       <div class="card">
         <div class="ico">🔬</div>
-        <h3 data-i18n="card8.t">Audit de la bibliothèque</h3>
-        <p data-i18n="card8.p1">Vous dit <em>quels</em> sets sont cassés et <em>quel fichier</em> est en cause, avec quatre verdicts distincts.</p>
+        <h3 data-i18n="card8.t">Temps de jeu, par jeu</h3>
+        <p data-i18n="card8.p1">Dernière partie, plus longue partie et cumul, tenus pour chaque jeu — et conservés à travers une mise à jour des DAT, contrairement à presque tout le reste d'un catalogue reconstruit.</p>
         <ul data-i18n="card8.ul"><li><strong style="color:var(--ok)">OK</strong> — bon nom, bonnes données</li> <li><strong style="color:var(--warn)">Mal nommé</strong> — bonnes données, mauvais nom</li> <li><strong style="color:var(--warn)">Corrompu</strong> — présent mais contenu erroné</li> <li><strong style="color:var(--bad)">Absent</strong> — pas dans le set du tout</li></ul>
       </div>
       <div class="card">
         <div class="ico">📥</div>
-        <h3 data-i18n="card9.t">Reconstruction entrée → sortie</h3>
-        <p data-i18n="card9.p1">Déposez vos téléchargements dans un dossier d'entrée et lancez Analyser. Les sets complets sont déplacés, les cassés reconstruits à partir de pièces trouvées dans vos téléchargements <em>et</em> dans votre bibliothèque existante.</p>
+        <h3 data-i18n="card9.t">Désactivé jusqu'à ton accord</h3>
+        <p data-i18n="card9.p1">Rien ne part sans un nom pour signer et un oui explicite : envoyer un score publie aussi ton temps de jeu, qui relève de tes habitudes plus que du jeu. Hors ligne, les scores sont conservés et envoyés plus tard, jamais perdus.</p>
       </div>
       <div class="card">
         <div class="ico">🛡️</div>

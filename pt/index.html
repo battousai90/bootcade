@@ -85,6 +85,7 @@
     </a>
     <nav class="nav-links">
       <a href="#features" data-i18n="nav.features">Funcionalidades</a>
+      <a href="#hiscore" data-i18n="nav.hiscore">Highscore</a>
       <a href="#rom-manager" data-i18n="nav.rom">Gestão de ROMs</a>
       <a href="#steamos" data-i18n="nav.steam">SteamOS</a>
       <a href="#download" data-i18n="nav.dl">Descarregar</a>
@@ -252,7 +253,7 @@
       <div class="card">
         <div class="ico">⭐</div>
         <h3 data-i18n="card4.t">Favoritos e histórico</h3>
-        <p data-i18n="card4.p1">Marca os jogos aos quais voltas, e deixa o lançador registar o número de partidas e o tempo de jogo.</p>
+        <p data-i18n="card4.p1">Marca com estrela os jogos a que voltas. O lançador regista quantas partidas, quanto durou a última, qual foi a mais longa e o total.</p>
       </div>
       <div class="card">
         <div class="ico">🖼️</div>
@@ -277,6 +278,35 @@
       <p data-i18n="s6.intro">Todos os sistemas suportados pelo launcher, indexados diretamente dos arquivos DAT oficiais do FBNeo — pesquise, filtre por sistema ou tipo de lançamento, e baixe o DAT ou a arte de qualquer set. Não é preciso instalar nada para dar uma olhada.</p>
     </div>
     <a class="btn btn-accent" data-href="catalog" href="/pt/catalog/" data-i18n="s6.cta">Explorar o catálogo</a>
+  </div>
+</section>
+
+<!-- ── Highscore ─────────────────────────────────────────────────────────── -->
+<section id="hiscore" class="alt">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow" data-i18n="s7.eyebrow">As pontuações</p>
+      <h2 data-i18n="s7.h2">A tua pontuação, lida do próprio jogo</h2>
+      <p data-i18n="s7.intro">Termina uma partida e o lançador lê o que o jogo escreveu de facto na memória — nenhum número a escrever, nenhuma captura a enviar. Compara-te com os outros na classificação, a partir do lançador ou do catálogo online.</p>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="ico">🏆</div>
+        <h3 data-i18n="card7.t">Nada a fazer</h3>
+        <p data-i18n="card7.p1">Os jogos classificáveis têm um distintivo <em>Highscore</em>. Jogas, sais, e a pontuação segue. O lançador compara a tabela de pontuações antes e depois da partida: o que é publicado é o que <em>tu</em> fizeste, e não os valores de fábrica que qualquer tabela nova traz.</p>
+      </div>
+      <div class="card">
+        <div class="ico">⏱️</div>
+        <h3 data-i18n="card8.t">Tempo de jogo, por jogo</h3>
+        <p data-i18n="card8.p1">Última partida, partida mais longa e total acumulado, para cada jogo — e sobrevivem a uma atualização dos DAT, ao contrário de quase tudo o resto num catálogo reconstruído.</p>
+      </div>
+      <div class="card">
+        <div class="ico">🔒</div>
+        <h3 data-i18n="card9.t">Desligado até dizeres que sim</h3>
+        <p data-i18n="card9.p1">Nada é enviado sem um nome para assinar e um sim explícito: enviar uma pontuação publica também o teu tempo de jogo, que diz mais dos teus hábitos do que do jogo. Sem ligação, as pontuações ficam guardadas e são enviadas mais tarde, nunca perdidas.</p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -325,19 +355,19 @@
     <div class="grid">
       <div class="card">
         <div class="ico">📀</div>
-        <h3 data-i18n="card7.t">Verificação CRC real</h3>
-        <p data-i18n="card7.p1">Cada entrada de cada arquivo é descomprimida e o seu CRC32 recalculado, e depois confrontado com o DAT. Um arquivo corrompido não se pode fazer passar por válido.</p>
+        <h3 data-i18n="card7.t">Nada a fazer</h3>
+        <p data-i18n="card7.p1">Os jogos classificáveis têm um distintivo <em>Highscore</em>. Jogas, sais, e a pontuação segue. O lançador compara a tabela de pontuações antes e depois da partida: o que é publicado é o que <em>tu</em> fizeste, e não os valores de fábrica que qualquer tabela nova traz.</p>
       </div>
       <div class="card">
         <div class="ico">🔬</div>
-        <h3 data-i18n="card8.t">Auditoria da biblioteca</h3>
-        <p data-i18n="card8.p1">Diz-te <em>quais</em> conjuntos estão danificados e <em>que ficheiro</em> tem culpa, com quatro veredictos distintos.</p>
+        <h3 data-i18n="card8.t">Tempo de jogo, por jogo</h3>
+        <p data-i18n="card8.p1">Última partida, partida mais longa e total acumulado, para cada jogo — e sobrevivem a uma atualização dos DAT, ao contrário de quase tudo o resto num catálogo reconstruído.</p>
         <ul data-i18n="card8.ul"><li><strong style="color:var(--ok)">OK</strong> — nome certo, dados certos</li> <li><strong style="color:var(--warn)">Nome errado</strong> — dados certos, mal nomeado</li> <li><strong style="color:var(--warn)">Corrompido</strong> — presente mas com conteúdo errado</li> <li><strong style="color:var(--bad)">Ausente</strong> — nem sequer está no conjunto</li></ul>
       </div>
       <div class="card">
         <div class="ico">📥</div>
-        <h3 data-i18n="card9.t">Reconstrutor entrada → saída</h3>
-        <p data-i18n="card9.p1">Deixa as tuas transferências numa pasta de entrada e carrega em Analisar. Os conjuntos completos são deslocados, os danificados reconstruídos a partir de peças encontradas nas tuas transferências <em>e</em> na tua biblioteca atual.</p>
+        <h3 data-i18n="card9.t">Desligado até dizeres que sim</h3>
+        <p data-i18n="card9.p1">Nada é enviado sem um nome para assinar e um sim explícito: enviar uma pontuação publica também o teu tempo de jogo, que diz mais dos teus hábitos do que do jogo. Sem ligação, as pontuações ficam guardadas e são enviadas mais tarde, nunca perdidas.</p>
       </div>
       <div class="card">
         <div class="ico">🛡️</div>

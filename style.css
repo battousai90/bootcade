@@ -33,7 +33,17 @@
   --tint-line: rgba(128, 128, 128, 0.20);
 
   --radius:   12px;
-  --maxw:     1120px;
+  /* 1120 px datait d'une barre à six liens ; à huit elle débordait de son
+     propre conteneur, ce qui la désalignait du contenu — les deux défauts
+     n'en faisaient qu'un. 1280 est aussi la largeur de contenu la plus
+     courante aujourd'hui sur ce genre de page, et donne aux cartes ~420 px
+     au lieu de ~340.
+
+     Ce plafond vaut quelle que soit la taille de l'écran : une barre trop
+     large déborde donc AUSSI en 1920, et resserrer seulement en dessous d'un
+     seuil de fenêtre ne corrige rien. Le format compact des liens est pour
+     cette raison le format par défaut, pas une adaptation. */
+  --maxw:     1360px;
   --mono: ui-monospace, "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
   --sans: "Inter", system-ui, -apple-system, "Segoe UI", Cantarell, "Noto Sans", sans-serif;
 }
@@ -99,17 +109,25 @@ header {
   border-bottom: 1px solid var(--border);
 }
 .nav { display: flex; align-items: center; gap: 16px; height: 62px; }
-.brand { display: flex; align-items: center; gap: 11px; font-weight: 700; letter-spacing: -0.01em; }
+/* La marque ne se comprime pas : privée de place elle repliait « Arcade
+   library for Linux » sur trois lignes, ce qui déformait toute la barre. */
+.brand { display: flex; align-items: center; gap: 11px; font-weight: 700; letter-spacing: -0.01em; flex: none; }
 .brand img { width: 32px; height: 32px; border-radius: 8px; }
 .brand small {
   display: block; font-weight: 500; font-size: 11px;
   color: var(--muted); letter-spacing: 0.02em; margin-top: -3px;
+  white-space: nowrap;
 }
-.nav-links { margin-left: auto; display: flex; gap: 6px; align-items: center; }
+.nav-links { margin-left: auto; display: flex; gap: 2px; align-items: center; min-width: 0; }
 .nav-links a {
-  color: var(--muted); font-size: 14.5px; font-weight: 500;
-  padding: 7px 12px; border-radius: 8px; text-decoration: none;
+  color: var(--muted); font-size: 13.5px; font-weight: 500;
+  padding: 7px 9px; border-radius: 8px; text-decoration: none;
   transition: color .15s, background-color .15s;
+  /* Un libellé en deux mots — « ROM manager », « Gestion des ROMs » — se
+     coupait en deux lignes dès que la barre manquait de place, et cassait
+     l'alignement de tous les autres. Il déborde ou il s'efface, il ne se
+     replie pas. */
+  white-space: nowrap;
 }
 .nav-links a:hover { color: var(--text); background: var(--surface); text-decoration: none; }
 
@@ -249,7 +267,7 @@ header {
 .dot { width: 7px; height: 7px; border-radius: 999px; background: var(--ok); flex: none; }
 
 /* ── Section furniture ───────────────────────────────────────────────────── */
-section { padding: 76px 0; }
+section { padding: 88px 0; }
 .section-head { max-width: 680px; margin-bottom: 42px; }
 .eyebrow {
   color: var(--accent2); font-weight: 700; font-size: 12.5px;
@@ -263,12 +281,12 @@ section { padding: 76px 0; }
 .alt { background: var(--bg2); border-block: 1px solid var(--border); }
 
 /* ── Feature cards ───────────────────────────────────────────────────────── */
-.grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
+.grid { display: grid; gap: 22px; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 26px;
+  padding: 30px;
   transition: border-color .15s ease, transform .15s ease, box-shadow .15s ease;
 }
 .card:hover {
@@ -407,6 +425,31 @@ footer { border-top: 1px solid var(--border); background: var(--bg2); padding: 4
 .foot .links { margin-left: auto; display: flex; gap: 20px; flex-wrap: wrap; }
 
 /* ── Responsive ──────────────────────────────────────────────────────────── */
+/* La barre porte huit liens plus trois commandes, et les libellés traduits
+   sont plus longs qu'en anglais (« Fonctionnalités », « Télécharger »).
+   L'étranglement commence donc bien avant le point de rupture historique de
+   860 px : on resserre d'abord, on n'efface qu'ensuite, et en commençant par
+   les entrées dont la section reste atteignable en faisant défiler la page. */
+/* Le sous-titre part en premier : c'est de l'ornement, il vaut environ
+   170 px en français, et le supprimer garde tous les liens. Retirer un lien
+   avant lui sacrifierait une fonction pour préserver une décoration. */
+@media (max-width: 1300px) {
+  .brand small { display: none; }
+}
+/* Puis les liens, du moins utile au plus utile, et seulement quand la place
+   manque vraiment : chaque section reste atteignable en faisant défiler la
+   page, aucun contenu n'est perdu. Les seuils sont réglés sur le français,
+   dont les libellés sont les plus longs des huit langues. */
+@media (max-width: 1120px) {
+  .nav-links a[href="#build"] { display: none; }
+}
+@media (max-width: 1020px) {
+  .nav-links a[href="#steamos"] { display: none; }
+}
+@media (max-width: 940px) {
+  .nav-links a[href="#download"] { display: none; }
+}
+
 @media (max-width: 860px) {
   .mock-body { grid-template-columns: 1fr; }
   .mock-side { display: none; }

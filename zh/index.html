@@ -85,6 +85,7 @@
     </a>
     <nav class="nav-links">
       <a href="#features" data-i18n="nav.features">功能</a>
+      <a href="#hiscore" data-i18n="nav.hiscore">最高分</a>
       <a href="#rom-manager" data-i18n="nav.rom">ROM 管理</a>
       <a href="#steamos" data-i18n="nav.steam">SteamOS</a>
       <a href="#download" data-i18n="nav.dl">下载</a>
@@ -252,7 +253,7 @@
       <div class="card">
         <div class="ico">⭐</div>
         <h3 data-i18n="card4.t">收藏与记录</h3>
-        <p data-i18n="card4.p1">给常玩的游戏加星，让启动器记录游玩次数和时长。</p>
+        <p data-i18n="card4.p1">给你反复回味的游戏加上星标。启动器会记录游玩次数、上一局时长、最长一局和累计时长。</p>
       </div>
       <div class="card">
         <div class="ico">🖼️</div>
@@ -277,6 +278,35 @@
       <p data-i18n="s6.intro">启动器支持的所有系统，直接从官方 FBNeo DAT 文件建立索引——搜索、按系统或发行类型筛选，并下载任意一套的 DAT 或美术素材。无需安装即可浏览。</p>
     </div>
     <a class="btn btn-accent" data-href="catalog" href="/zh/catalog/" data-i18n="s6.cta">浏览游戏目录</a>
+  </div>
+</section>
+
+<!-- ── Highscore ─────────────────────────────────────────────────────────── -->
+<section id="hiscore" class="alt">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow" data-i18n="s7.eyebrow">成绩</p>
+      <h2 data-i18n="s7.h2">你的成绩，直接从游戏里读取</h2>
+      <p data-i18n="s7.intro">玩完一局，启动器会读取游戏真正写入内存的内容 —— 不用手动输入数字，也不用上传截图。无论在启动器还是网页目录里，都能和其他人比一比。</p>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="ico">🏆</div>
+        <h3 data-i18n="card7.t">什么都不用做</h3>
+        <p data-i18n="card7.p1">可参与排行的游戏带有 <em>Highscore</em> 标记。玩一局、退出，成绩就上路了。启动器会比较游玩前后的成绩表，所以发布的是<em>你</em>打出的分数，而不是新表里自带的出厂记录。</p>
+      </div>
+      <div class="card">
+        <div class="ico">⏱️</div>
+        <h3 data-i18n="card8.t">每个游戏的游玩时长</h3>
+        <p data-i18n="card8.p1">每个游戏都会记录上次时长、最长一局和累计时长 —— 而且能在 DAT 更新后保留下来，这在重建的目录里几乎是唯一的例外。</p>
+      </div>
+      <div class="card">
+        <div class="ico">🔒</div>
+        <h3 data-i18n="card9.t">在你同意之前一直关闭</h3>
+        <p data-i18n="card9.p1">没有署名和明确的同意，就什么都不会发送：发送成绩同时也会公开你的游玩时长，那更多关乎习惯而非游戏本身。离线时成绩会被保存并稍后发送，绝不会丢失。</p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -325,19 +355,19 @@
     <div class="grid">
       <div class="card">
         <div class="ico">📀</div>
-        <h3 data-i18n="card7.t">真正的 CRC 校验</h3>
-        <p data-i18n="card7.p1">每个压缩包的每个条目都会被解压并重算 CRC32，再与 DAT 比对。损坏的压缩包无法伪装成有效。</p>
+        <h3 data-i18n="card7.t">什么都不用做</h3>
+        <p data-i18n="card7.p1">可参与排行的游戏带有 <em>Highscore</em> 标记。玩一局、退出，成绩就上路了。启动器会比较游玩前后的成绩表，所以发布的是<em>你</em>打出的分数，而不是新表里自带的出厂记录。</p>
       </div>
       <div class="card">
         <div class="ico">🔬</div>
-        <h3 data-i18n="card8.t">游戏库审计</h3>
-        <p data-i18n="card8.p1">告诉你<em>哪些</em>游戏集损坏，以及<em>哪个文件</em>出了问题，给出四种明确判定。</p>
+        <h3 data-i18n="card8.t">每个游戏的游玩时长</h3>
+        <p data-i18n="card8.p1">每个游戏都会记录上次时长、最长一局和累计时长 —— 而且能在 DAT 更新后保留下来，这在重建的目录里几乎是唯一的例外。</p>
         <ul data-i18n="card8.ul"><li><strong style="color:var(--ok)">正常</strong> — 名称正确，数据正确</li> <li><strong style="color:var(--warn)">名称错误</strong> — 数据正确但命名有误</li> <li><strong style="color:var(--warn)">损坏</strong> — 文件存在但内容不符</li> <li><strong style="color:var(--bad)">缺失</strong> — 游戏集中根本没有</li></ul>
       </div>
       <div class="card">
         <div class="ico">📥</div>
-        <h3 data-i18n="card9.t">输入 → 输出 重建</h3>
-        <p data-i18n="card9.p1">把下载的文件放进输入目录并点击「分析」。完整的游戏集会被移动，损坏的则用下载文件<em>以及</em>你现有游戏库中找到的零件重建。</p>
+        <h3 data-i18n="card9.t">在你同意之前一直关闭</h3>
+        <p data-i18n="card9.p1">没有署名和明确的同意，就什么都不会发送：发送成绩同时也会公开你的游玩时长，那更多关乎习惯而非游戏本身。离线时成绩会被保存并稍后发送，绝不会丢失。</p>
       </div>
       <div class="card">
         <div class="ico">🛡️</div>

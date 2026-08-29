@@ -116,6 +116,12 @@
           <div class="cat-filter-list" id="cat-systems"></div>
         </div>
       </div>
+      <!-- Masqué tant que le service de scores n'a pas répondu : un filtre
+           qui ne trouverait rien vaut mieux absent. Son libellé porte le
+           nombre de jeux concernés, écrit par catalog.js. -->
+      <div class="cat-filter-section">
+        <button type="button" class="cat-filter-row cat-filter-hiscore" id="cat-hiscore-filter" hidden>◆ Highscore</button>
+      </div>
       <div class="cat-filter-section">
         <button type="button" class="cat-filter-head" aria-expanded="true" data-target="cat-types">
           <span data-i18n="catalog.types">类型</span><i>▾</i>
@@ -181,6 +187,7 @@
           <div id="cat-modal-badges" class="cat-badges"></div>
           <p id="cat-modal-clone" class="cat-modal-clone"></p>
           <div id="cat-modal-specs" class="cat-specs"></div>
+          <div id="cat-modal-scores" class="cat-hiscore" hidden></div>
           <div id="cat-modal-actions" class="cat-actions cat-modal-actions"></div>
         </div>
       </div>
