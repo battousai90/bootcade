@@ -178,14 +178,23 @@
         return a.d.localeCompare(b.d);
       };
     }
-    return function (a, b) { return a.d.localeCompare(b.d); };
+    if (mode === 'name') {
+      return function (a, b) { return a.d.localeCompare(b.d); };
+    }
+    // 'default' : on ne trie PAS. L'ordre naturel de GAMES est celui des
+    // fichiers DAT — donc groupé par système, puis alphabétique à
+    // l'intérieur. C'était le comportement du catalogue avant l'ajout du
+    // tri, et il reste le plus lisible : un trieur alphabétique global
+    // entrelacerait Arcade, SNES et NES sans repère.
+    return null;
   }
 
   function applyFilters() {
     var raw = els.search.value.trim().toLowerCase();
     var query = raw ? raw.split(/\s+/) : [];
     filtered = GAMES.filter(function (g) { return matches(g, query); });
-    filtered.sort(compare(els.sort ? els.sort.value : 'name'));
+    var order = compare(els.sort ? els.sort.value : 'default');
+    if (order) filtered.sort(order);
     shown = 0;
     selectedRow = null;
     els.grid.innerHTML = '';
