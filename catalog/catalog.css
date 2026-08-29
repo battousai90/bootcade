@@ -11,11 +11,10 @@
 
 [hidden] { display: none !important; }
 
-/* La page défile, elle n'est plus figée à la hauteur de la fenêtre. C'est ce
-   qui permet au volet de détail de s'allonger autant que son contenu l'exige
-   — un classement de cinquante entrées, une longue liste de ROMs — et d'être
-   lu en faisant défiler la page, plutôt que d'être coupé net. */
-.cat-page { min-height: 100vh; display: flex; flex-direction: column; }
+/* Application, pas document : la page occupe exactement la fenêtre et ne
+   défile jamais. En-tête, panneau DAT et barre de recherche restent donc
+   visibles en permanence, et chaque colonne défile de son côté. */
+.cat-page { height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
 .cat-page header { flex: none; }
 
 /* One title style, used verbatim by both section headers (DAT files below,
@@ -28,12 +27,7 @@
 }
 
 /* ── Toolbar: title/count on top, search on its own row below ───────────── */
-/* Collante depuis que la page défile : recherche, tri et compteur doivent
-   rester sous la main quand on descend dans un volet de détail très haut. */
-.cat-toolbar {
-  flex: none; border-bottom: 1px solid var(--border); background: var(--bg2);
-  position: sticky; top: 0; z-index: 20;
-}
+.cat-toolbar { flex: none; border-bottom: 1px solid var(--border); background: var(--bg2); }
 /* padding-top/-bottom only — this element also carries the shared .wrap
    class (24px left/right); a padding SHORTHAND here would reset those
    sides to 0 and pull this row 24px further left than every other row
@@ -108,38 +102,33 @@ button.cat-dat-toggle.cat-filter-head {
 }
 .cat-dat-row a:hover { border-color: var(--accent); }
 
-/* ── App shell: sidebar | list | detail ──────────────────────────────────── */
-.cat-app { flex: 1; min-height: 0; }
+/* ── App shell: sidebar | list | detail, chacune sa zone de défilement ───── */
+.cat-app { flex: 1; min-height: 0; overflow: hidden; }
 /* Same padding-shorthand trap as .cat-toolbar-inner above — top/bottom only,
    .wrap's 24px left/right must survive untouched. */
 .cat-app-wrap {
-  padding-top: 14px; padding-bottom: 14px;
+  height: 100%; padding-top: 14px; padding-bottom: 14px;
   display: grid;
   grid-template-columns: 220px minmax(0, 1fr) 360px;
   gap: 16px;
-  /* Les colonnes ne s'étirent plus à la hauteur de la plus haute : le volet
-     de détail doit pouvoir dépasser sans imposer sa taille aux autres. */
-  align-items: start;
 }
 
 .cat-panel {
   border: 1px solid var(--border); border-radius: var(--radius);
-  background: var(--surface); min-height: 0;
+  background: var(--surface); overflow: hidden; min-height: 0;
 }
 
-/* Barre latérale et liste restent à l'écran pendant qu'on descend dans un
-   volet de détail plus haut que la fenêtre : sans cela, choisir le jeu
-   suivant obligerait à remonter toute la page. Elles gardent leur propre
-   défilement, borné à la fenêtre ; le volet de détail, lui, n'en a aucun. */
-.cat-sidebar, .cat-list-panel {
-  position: sticky; top: 14px;
-  max-height: calc(100vh - 28px);
-}
-.cat-list-panel { overflow-y: auto; }
+/* Trois zones de défilement indépendantes, une par colonne. Chacune est
+   bornée à la fenêtre, donc « Charger plus » se trouve au bout du défilement
+   de la LISTE — pas au fond d'un défilement de page par-dessus, ce qui
+   obligeait à descendre deux fois pour atteindre un bouton.
+   Le volet de détail a la sienne aussi : c'est ce qui manquait à l'origine,
+   il se contentait de couper son contenu. */
+.cat-sidebar, .cat-list-panel, .cat-detail { overflow-y: auto; }
 /* Le radius doit encore rogner les coins des vignettes et de l'artwork, mais
    sur l'axe horizontal seulement — `hidden` sur les deux axes couperait le
    contenu vertical, ce qu'on vient précisément de supprimer. */
-.cat-sidebar, .cat-list-panel, .cat-detail { overflow-x: clip; }
+
 
 /* ── Sidebar filters ─────────────────────────────────────────────────────── */
 .cat-sidebar { display: flex; flex-direction: column; padding: 4px 10px; }

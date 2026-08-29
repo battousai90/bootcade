@@ -354,6 +354,11 @@
     renderScores(g);
 
     els.modal.hidden = false;
+
+    // Le volet est toujours à l'écran, dans sa propre colonne : rien à
+    // ramener en vue. On remet seulement son défilement en haut, sinon la
+    // fiche d'un jeu s'ouvrirait au milieu du classement du précédent.
+    els.modal.scrollTop = 0;
   }
 
   // ── Leaderboard ──────────────────────────────────────────────────────────
