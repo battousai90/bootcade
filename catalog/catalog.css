@@ -328,7 +328,6 @@ button.cat-dat-toggle.cat-filter-head {
 .chg-count-add { color: var(--ok); background: rgba(65,208,138,0.14); }
 .chg-count-rem { color: var(--bad); background: rgba(248,81,73,0.14); }
 .chg-count-mod { color: var(--warn); background: rgba(240,181,74,0.16); }
-.chg-modified h4 { color: var(--warn); }
 .chg-romfix {
   font-size: 11.5px; font-weight: 600; color: var(--accent2); text-decoration: none;
   border: 1px solid var(--border); border-radius: 7px; padding: 3px 9px; white-space: nowrap;
@@ -340,6 +339,7 @@ button.cat-dat-toggle.cat-filter-head {
 .chg-system-body { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
 .chg-group h4 { margin: 0 0 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .03em; color: var(--muted); }
 .chg-added h4 { color: var(--ok); }
+.chg-modified h4 { color: var(--warn); }
 .chg-removed h4 { color: var(--bad); }
 .chg-group ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 3px; }
 .chg-group li { font-size: 12.5px; display: flex; flex-direction: column; }
