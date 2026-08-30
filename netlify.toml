@@ -1,4 +1,4 @@
-# Netlify — the landing page is a static folder, no build step.
+# Netlify : the landing page is a static folder, no build step.
 # Binaries are NOT served from here: they live on GitHub Releases, so a new
 # version needs no deploy and does not eat Netlify bandwidth.
 [build]
@@ -7,7 +7,7 @@
   # has a real, indexable URL instead of being swapped in by JavaScript.
   command = "node build.js"
   # This repo IS the site now (split out of the app repo, which had an
-  # `ignore` here to skip builds on app-only pushes) — every push here is
+  # `ignore` here to skip builds on app-only pushes). Every push here is
   # relevant, so no `ignore` filter.
 
 [[headers]]

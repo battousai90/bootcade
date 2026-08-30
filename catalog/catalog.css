@@ -1,11 +1,11 @@
-/* Bootcade — game catalog. Extends style.css (design tokens, .btn, .wrap).
+/* Bootcade : game catalog. Extends style.css (design tokens, .btn, .wrap).
  *
  * Fixed app shell, like the desktop launcher: the page itself never scrolls.
- * Only ONE thing scrolls on the whole screen — the game list. Sidebar and
+ * Only ONE thing scrolls on the whole screen : the game list. Sidebar and
  * detail panel are sized to fit their content (facet lists and the ROM
  * table cap their own height instead of turning the whole panel into a
  * scroll zone); earlier versions gave every panel its own scrollbar and it
- * was disorienting — four scroll zones fighting for the same wheel/trackpad
+ * was disorienting : four scroll zones fighting for the same wheel/trackpad
  * gesture depending on which pixel the cursor happened to be over.
  */
 
@@ -18,7 +18,7 @@
 .cat-page header { flex: none; }
 
 /* One title style, used verbatim by both section headers (DAT files below,
-   Game catalog here) so they can never drift apart again — explicit resets
+   Game catalog here) so they can never drift apart again : explicit resets
    because .cat-dat-toggle-label's button ancestor (.cat-filter-head, shared
    with the sidebar) imposes uppercase/small/muted by inheritance otherwise. */
 .cat-section-title {
@@ -28,7 +28,7 @@
 
 /* ── Toolbar: title/count on top, search on its own row below ───────────── */
 .cat-toolbar { flex: none; border-bottom: 1px solid var(--border); background: var(--bg2); }
-/* padding-top/-bottom only — this element also carries the shared .wrap
+/* padding-top/-bottom only : this element also carries the shared .wrap
    class (24px left/right); a padding SHORTHAND here would reset those
    sides to 0 and pull this row 24px further left than every other row
    (that's exactly what was happening: DAT files, the one row using a bare
@@ -61,11 +61,11 @@
 }
 
 /* ── DAT files: accordion, folded by default. Secondary resource, not part
-   of the 3-pane app — folded, it costs one header row; unfolded, it just
+   of the 3-pane app : folded, it costs one header row; unfolded, it just
    shrinks the app area below it (.cat-page still never scrolls). */
 .cat-dat-panel { flex: none; border-bottom: 1px solid var(--border); background: var(--surface); }
 /* Compound selector so this reliably beats .cat-filter-head's own padding
-   (same specificity otherwise — .cat-filter-head sits later in this file
+   (same specificity otherwise : .cat-filter-head sits later in this file
    and was silently winning the padding tie, offsetting this row from the
    toolbar's title below it by a couple of pixels). */
 button.cat-dat-toggle.cat-filter-head {
@@ -104,7 +104,7 @@ button.cat-dat-toggle.cat-filter-head {
 
 /* ── App shell: sidebar | list | detail, chacune sa zone de défilement ───── */
 .cat-app { flex: 1; min-height: 0; overflow: hidden; }
-/* Same padding-shorthand trap as .cat-toolbar-inner above — top/bottom only,
+/* Same padding-shorthand trap as .cat-toolbar-inner above : top/bottom only,
    .wrap's 24px left/right must survive untouched. */
 .cat-app-wrap {
   height: 100%; padding-top: 14px; padding-bottom: 14px;
@@ -120,13 +120,13 @@ button.cat-dat-toggle.cat-filter-head {
 
 /* Trois zones de défilement indépendantes, une par colonne. Chacune est
    bornée à la fenêtre, donc « Charger plus » se trouve au bout du défilement
-   de la LISTE — pas au fond d'un défilement de page par-dessus, ce qui
+   de la LISTE : pas au fond d'un défilement de page par-dessus, ce qui
    obligeait à descendre deux fois pour atteindre un bouton.
    Le volet de détail a la sienne aussi : c'est ce qui manquait à l'origine,
    il se contentait de couper son contenu. */
 .cat-sidebar, .cat-list-panel, .cat-detail { overflow-y: auto; }
 /* Le radius doit encore rogner les coins des vignettes et de l'artwork, mais
-   sur l'axe horizontal seulement — `hidden` sur les deux axes couperait le
+   sur l'axe horizontal seulement : `hidden` sur les deux axes couperait le
    contenu vertical, ce qu'on vient précisément de supprimer. */
 
 
@@ -138,7 +138,7 @@ button.cat-dat-toggle.cat-filter-head {
 }
 .cat-reset:hover { text-decoration: underline; }
 
-/* flex-shrink: 0 is load-bearing here — .cat-sidebar is a height-constrained
+/* flex-shrink: 0 is load-bearing here : .cat-sidebar is a height-constrained
    flex column, and without this its children can get squeezed below their
    content size instead of the panel just scrolling. */
 .cat-filter-section { padding: 4px 0; flex-shrink: 0; }
@@ -154,7 +154,7 @@ button.cat-dat-toggle.cat-filter-head {
 .cat-filter-head[aria-expanded="false"] i { transform: rotate(-90deg); }
 
 /* Wraps a search box + the list for facets long enough to need one
-   (Manufacturers, Years, ...) — the box stays put while the list below it
+   (Manufacturers, Years, ...) : the box stays put while the list below it
    scrolls, and folds away with the rest of the section when collapsed. */
 .cat-filter-body { display: flex; flex-direction: column; }
 .cat-filter-body.is-collapsed { display: none; }
@@ -215,7 +215,7 @@ button.cat-dat-toggle.cat-filter-head {
 /* Côte à côte plutôt qu'empilées, et plafonnées en hauteur : le volet peut
    maintenant s'allonger, mais deux artworks pleine taille repousseraient les
    caractéristiques et le classement sous la ligne de flottaison à chaque
-   ouverture. Les vignettes restent à taille lisible — un clic ouvre la
+   ouverture. Les vignettes restent à taille lisible : un clic ouvre la
    visionneuse en grand. */
 .cat-modal-media { background: var(--surface2); display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
 .cat-modal-media img { width: 100%; max-height: 190px; display: block; object-fit: contain; background: var(--surface2); cursor: zoom-in; }
@@ -268,7 +268,7 @@ button.cat-dat-toggle.cat-filter-head {
    image/title/specs above out of view while browsing the CRC list.
    grid-column span is load-bearing: #cat-modal-specs (.cat-specs) is a
    2-column grid, and without this the ROM list/table only got ONE of
-   those columns — about half the panel's real width — instead of
+   those columns : about half the panel's real width : instead of
    spanning the full row like everything else here. */
 .cat-roms { grid-column: 1 / -1; padding-top: 10px; border-top: 1px solid var(--border); }
 .cat-roms summary {
@@ -298,8 +298,7 @@ button.cat-dat-toggle.cat-filter-head {
 
 /* Below this width: single column, one panel visible at a time. The list
    becomes the main (tallest) panel; sidebar sits above it at a capped
-   height; the detail panel turns into a full-screen overlay on selection —
-   there is no room for three permanently-visible boxes on a phone. */
+   height; the detail panel turns into a full-screen overlay on selection there is no room for three permanently-visible boxes on a phone. */
 @media (max-width: 980px) {
   .cat-page { height: auto; overflow: visible; }
   .cat-app { overflow: visible; }
@@ -340,7 +339,7 @@ button.cat-dat-toggle.cat-filter-head {
   .cat-row-year { display: none; }
 }
 
-/* ── DAT change log page (catalog/changes/) — ordinary scrolling document,
+/* ── DAT change log page (catalog/changes/) : ordinary scrolling document,
    not the fixed 3-pane app shell, so none of the .cat-page rules apply. */
 .chg-main { padding: 40px 0 80px; }
 .chg-status { color: var(--muted); padding: 30px 0; }

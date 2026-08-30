@@ -1,4 +1,4 @@
-/* Bootcade — landing page runtime.
+/* Bootcade : landing page runtime.
  *
  * Deliberately small. Translation happens at build time (build.js writes one static
  * page per language), so nothing here touches the copy: each URL is already in its

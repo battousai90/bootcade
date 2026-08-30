@@ -1,4 +1,4 @@
-# Bootcade — https://bootcade.netlify.app
+# Bootcade | https://bootcade.netlify.app
 # Everything here is public documentation; crawlers and AI agents are welcome.
 # A structured summary for language models lives at /llms.txt
 

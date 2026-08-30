@@ -1,4 +1,4 @@
-/* Bootcade — DAT change log.
+/* Bootcade : DAT change log.
  *
  * changes.json is a history of games added to or removed from the DAT
  * files, newest first. An entry is only recorded when something actually
@@ -12,7 +12,7 @@
 
   var CHANGES_URL = 'https://files.bootcade.duckdns.org/dat/changes.json';
   // One folder per change date, created alongside the change itself, so
-  // this link always resolves — a change with no fixed ROM yet simply
+  // this link always resolves : a change with no fixed ROM yet simply
   // points at an empty folder. Behind HTTP Basic Auth, with its own
   // credentials, separate from the ones guarding the ROM collection.
   var ROMFIX_BASE = 'https://roms.bootcade.duckdns.org/romfix/';
@@ -80,7 +80,7 @@
     // always the same one as the RomFix folder linked next to it (built
     // from generated[:10], which is UTC). Showing local time instead makes
     // a change generated at 23:30 UTC read as "the 28th" while its folder
-    // is named 2026-08-27 — an off-by-one that has already caused a
+    // is named 2026-08-27 : an off-by-one that has already caused a
     // mis-named folder in practice.
     var date = new Date(entry.generated);
     var formatted = isNaN(date) ? entry.generated : date.toLocaleString(LANG, {
@@ -117,13 +117,13 @@
     .then(function (entries) {
       entries = entries || [];
       if (!entries.length) {
-        statusEl.textContent = t('catalog.changes.empty', 'No changes recorded yet — check back after the next DAT update.');
+        statusEl.textContent = t('catalog.changes.empty', 'No changes recorded yet : check back after the next DAT update.');
         return;
       }
       statusEl.hidden = true;
       listEl.innerHTML = entries.map(entryCard).join('');
     })
     .catch(function () {
-      statusEl.textContent = t('catalog.changes.error', 'Could not load the change history right now — please try again later.');
+      statusEl.textContent = t('catalog.changes.error', 'Could not load the change history right now : please try again later.');
     });
 })();

@@ -7,7 +7,7 @@
 
 The project solves two problems retro-gaming collectors hit constantly: finding a
 game in a huge library, and knowing whether that library is actually intact. It is
-a desktop application, not a web service — the website is only a landing page.
+a desktop application, not a web service : the website is only a landing page.
 
 Licence: MIT. Platform: Linux (x86_64). Not affiliated with the FinalBurn Neo team.
 
@@ -15,7 +15,7 @@ Licence: MIT. Platform: Linux (x86_64). Not affiliated with the FinalBurn Neo te
 
 It targets Linux gaming machines and living-room SteamOS boxes (Steam Machines).
 SteamOS 3 is Arch-based with a read-only system partition, which makes Flatpak the
-supported way to install desktop software on it — the Flatpak bundle installs in
+supported way to install desktop software on it : the Flatpak bundle installs in
 Desktop Mode without unlocking the filesystem or touching pacman. The launcher can
 also be added to Steam as a non-Steam game to appear in Game Mode.
 
@@ -34,10 +34,10 @@ size or timestamp changed.
 
 Each ROM inside a set gets one of four verdicts:
 
-- **OK** — right filename, right data
-- **Wrong name** — correct data stored under a different filename
-- **Corrupt** — file present under the expected name, but the content does not match the DAT
-- **Absent** — not in the set at all
+- **OK** : right filename, right data
+- **Wrong name** : correct data stored under a different filename
+- **Corrupt** : file present under the expected name, but the content does not match the DAT
+- **Absent** : not in the set at all
 
 A set is *available* when every ROM is OK, *incorrect* when some are misnamed or
 corrupt, and *missing* when at least one is absent.
@@ -45,7 +45,7 @@ corrupt, and *missing* when at least one is absent.
 ## The inbox/outbox rebuilder
 
 Downloaded archives are dropped into an *inbox*. Analysis identifies which DAT sets
-they can satisfy — by filename, and by content, so an archive named
+they can satisfy : by filename, and by content, so an archive named
 `Metal Slug (1996).zip` is still recognised. Fix then writes results into a separate
 *outbox* laid out like the DATs, one folder per system.
 

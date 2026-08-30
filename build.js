@@ -103,7 +103,7 @@ function render(page, source, pageSlots, lang) {
   // Cross-page links: elements carry a stable `data-href="home|catalog"`
   // marker right before their href, e.g. `data-href="catalog" href="/catalog/">`.
   // The regex below recomputes href from the marker every run, regardless of
-  // what is currently there — unlike a one-shot placeholder, this survives
+  // what is currently there, unlike a one-shot placeholder, this survives
   // index.html being both the source AND (for English) the written output:
   // a placeholder would get consumed on the very first build and silently
   // freeze at the English path on every build after that.

@@ -1,11 +1,11 @@
-/* Bootcade — landing page.
+/* Bootcade : landing page.
    Colours come from the Bootcade brand kit (BRAND.md):
      accent      #2563EB electric blue · #7C3AED purple · #06B6D4 cyan
      surfaces    #0B0F14 deep black · #151B24 background (rest interpolated
                  in the same blue-slate hue to keep the original step count)
      text/muted  #F8FAFC / #A1A7B3
      statuses    #41d08a ok · #f0b54a warn · #f85149 missing · #a371f7 unknown
-                 (functional colours, not part of the brand palette — left
+                 (functional colours, not part of the brand palette : left
                  as-is on purpose) */
 
 :root {
@@ -34,7 +34,7 @@
 
   --radius:   12px;
   /* 1120 px datait d'une barre à six liens ; à huit elle débordait de son
-     propre conteneur, ce qui la désalignait du contenu — les deux défauts
+     propre conteneur, ce qui la désalignait du contenu : les deux défauts
      n'en faisaient qu'un. 1280 est aussi la largeur de contenu la plus
      courante aujourd'hui sur ce genre de page, et donne aux cartes ~420 px
      au lieu de ~340.
@@ -50,7 +50,7 @@
 
 /* ── Light theme ─────────────────────────────────────────────────────────────
    The application offers System / Dark / Light, so the page does too. The accent
-   is unchanged — it is the brand — while the surfaces invert and the status
+   is unchanged : it is the brand : while the surfaces invert and the status
    colours are darkened enough to stay legible on white.
 
    Applied either because the visitor's system asks for it and no explicit choice
@@ -123,7 +123,7 @@ header {
   color: var(--muted); font-size: 13.5px; font-weight: 500;
   padding: 7px 9px; border-radius: 8px; text-decoration: none;
   transition: color .15s, background-color .15s;
-  /* Un libellé en deux mots — « ROM manager », « Gestion des ROMs » — se
+  /* Un libellé en deux mots : « ROM manager », « Gestion des ROMs » : se
      coupait en deux lignes dès que la barre manquait de place, et cassait
      l'alignement de tous les autres. Il déborde ou il s'efface, il ne se
      replie pas. */
@@ -131,7 +131,7 @@ header {
 }
 .nav-links a:hover { color: var(--text); background: var(--surface); text-decoration: none; }
 
-/* Theme toggle — cycles System → Light → Dark, mirroring the app's three options.
+/* Theme toggle : cycles System → Light → Dark, mirroring the app's three options.
    Only the icon matching the current mode is shown. */
 .theme-btn {
   display: inline-flex; align-items: center; justify-content: center;
@@ -194,7 +194,7 @@ header {
 
 /* ── FinalBurn Neo attribution band ──────────────────────────────────────── */
 /* Logo top-left, text to its right taking the rest of the width, link
-   buttons on their own full row underneath — aligned with the text, not
+   buttons on their own full row underneath : aligned with the text, not
    the logo, via the same grid column. */
 .fbneo { display: grid; grid-template-columns: auto 1fr; column-gap: 22px; row-gap: 14px; align-items: start; }
 .fbneo img { border-radius: 16px; grid-row: 1; grid-column: 1; }
