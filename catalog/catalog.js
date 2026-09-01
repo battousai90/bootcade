@@ -410,6 +410,17 @@
   // n'est inventée, les places libres n'affichent pas de score.
   var BOARD_ROWS = 10;
 
+  // Certains jeux se classent au chrono et non au score. La valeur stockee est
+  // alors les trois octets du temps lus comme un seul nombre : minutes,
+  // secondes, centiemes. Ca se classe tel quel, mais ca ne se lit pas, 917504
+  // valant en realite 14'00"00.
+  function formatScore(row) {
+    var value = Number(row.score);
+    if (row.metric !== 'time') return value.toLocaleString(LANG);
+    var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+    return ((value >> 16) & 255) + "'" + pad((value >> 8) & 255) + '"' + pad(value & 255);
+  }
+
   function scoresHtml(rows) {
     var body = '';
     for (var i = 0; i < BOARD_ROWS; i++) {
@@ -417,7 +428,7 @@
       if (r) {
         var flag = countryFlag(r.country);
         body += '<tr><td class="cat-hi-rank">' + (i + 1) + '</td>' +
-                '<td class="cat-hi-score">' + escapeHtml(Number(r.score).toLocaleString(LANG)) + '</td>' +
+                '<td class="cat-hi-score">' + escapeHtml(formatScore(r)) + '</td>' +
                 '<td class="cat-hi-player">' + escapeHtml(r.player) + (flag ? ' ' + flag : '') + '</td>' +
                 '<td class="cat-hi-date">' + escapeHtml((r.since || '').slice(0, 10)) + '</td></tr>';
       } else {
