@@ -410,15 +410,23 @@
   // n'est inventée, les places libres n'affichent pas de score.
   var BOARD_ROWS = 10;
 
-  // Certains jeux se classent au chrono et non au score. La valeur stockee est
-  // alors les trois octets du temps lus comme un seul nombre : minutes,
-  // secondes, centiemes. Ca se classe tel quel, mais ca ne se lit pas, 917504
-  // valant en realite 14'00"00.
+  // Tous les jeux ne rangent pas des points. Au chrono la valeur est les trois
+  // octets du temps lus comme un seul nombre, minutes, secondes, centiemes :
+  // ca se classe tel quel mais ca ne se lit pas, 917504 valant 14'00"00. Au
+  // golf c'est un ecart au par, ou moins trois bat zero.
   function formatScore(row) {
     var value = Number(row.score);
-    if (row.metric !== 'time') return value.toLocaleString(LANG);
-    var pad = function (n) { return (n < 10 ? '0' : '') + n; };
-    return ((value >> 16) & 255) + "'" + pad((value >> 8) & 255) + '"' + pad(value & 255);
+    if (row.metric === 'time') {
+      var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+      return ((value >> 16) & 255) + "'" + pad((value >> 8) & 255) + '"' + pad(value & 255);
+    }
+    // Au golf le resultat est un ecart au par : le signe fait tout son sens,
+    // et zero se dit EVEN.
+    if (row.metric === 'par') {
+      if (value === 0) return 'EVEN';
+      return (value > 0 ? '+' : '-') + Math.abs(value);
+    }
+    return value.toLocaleString(LANG);
   }
 
   function scoresHtml(rows) {
