@@ -45,6 +45,7 @@ const I18N = win.I18N;
 const PAGES = [
   { file: 'index.html', dir: '', metaTitleKey: 'meta.title', metaDescKey: 'meta.desc' },
   { file: 'catalog/index.html', dir: 'catalog/', metaTitleKey: 'catalog.meta.title', metaDescKey: 'catalog.meta.desc' },
+  { file: 'leaderboard/index.html', dir: 'leaderboard/', metaTitleKey: 'lb.meta.title', metaDescKey: 'lb.meta.desc' },
   { file: 'catalog/changes/index.html', dir: 'catalog/changes/', metaTitleKey: 'catalog.changes.meta.title', metaDescKey: 'catalog.changes.meta.desc' },
 ];
 
@@ -109,6 +110,7 @@ function render(page, source, pageSlots, lang) {
   // freeze at the English path on every build after that.
   const home = lang === 'en' ? '/' : `/${lang}/`;
   const catalogHref = lang === 'en' ? '/catalog/' : `/${lang}/catalog/`;
+  const boardHref   = lang === 'en' ? '/leaderboard/' : `/${lang}/leaderboard/`;
 
   html = html
     // Strip anything a previous run injected, so building twice is a no-op rather
@@ -123,7 +125,8 @@ function render(page, source, pageSlots, lang) {
     .replace(/<link rel="canonical" href="[^"]*">/, `<link rel="canonical" href="${canonical}">\n${alternates(page, lang)}`)
     .replace(/<meta property="og:type"/, `<meta property="og:locale" content="${lang}">\n<meta property="og:type"`)
     .replace(/data-href="home" href="[^"]*"/g, `data-href="home" href="${home}"`)
-    .replace(/data-href="catalog" href="[^"]*"/g, `data-href="catalog" href="${catalogHref}"`);
+    .replace(/data-href="catalog" href="[^"]*"/g, `data-href="catalog" href="${catalogHref}"`)
+    .replace(/data-href="leaderboard" href="[^"]*"/g, `data-href="leaderboard" href="${boardHref}"`);
 
   return html;
 }

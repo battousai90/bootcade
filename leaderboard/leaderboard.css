@@ -1,0 +1,204 @@
+/* Bootcade : page Leaderboard.
+ *
+ * REGLES SUIVIES DANS TOUT CE FICHIER, POUR NE PAS REPRODUIRE LES BUGS
+ * DEJA RENCONTRES ICI :
+ *
+ * 1. Aucune couleur, taille ou graisse n'est inventee : tout vient soit des
+ *    jetons de style.css (--surface/--border/--radius/--muted/--maxw), soit
+ *    est copie verbatim d'une regle reelle du site (.hero, .card,
+ *    .section-head), avec un commentaire qui dit d'ou.
+ *
+ * 2. Jamais de raccourci "margin"/"padding" a 3 valeurs sur un element qui
+ *    porte aussi .wrap : ca remettrait son inset gauche/droite herite a 0.
+ *    Toujours padding-top/padding-bottom explicites quand seul le vertical
+ *    doit changer.
+ *
+ * 3. Jamais de selecteur "classe-du-bloc balise" (ex ".lb-head p") sur un
+ *    element qui porte lui-meme une classe plus specifique (ex .lb-cta) :
+ *    la specificite (classe+balise > classe seule) ecraserait la regle
+ *    ciblee en silence. Cibler par classe explicite, jamais par balise.
+ *
+ * 4. UN SEUL ecart entre deux blocs = UNE SEULE declaration. Jamais un
+ *    padding-bottom sur le bloc du dessus ET un padding-top/margin-top sur
+ *    celui du dessous pour le meme intervalle visuel : ca s'additionne sans
+ *    prevenir. La regle qui suit fixe l'echelle une fois pour toutes.
+ */
+
+/* ── Echelle d'espacement de la page ─────────────────────────────────────── */
+.lb-page {
+  /* Le seul et unique ecart entre deux blocs de premier niveau (boutons ->
+     chiffres, chiffres -> classements, classements -> bloc de contribution).
+     Une seule variable : la changer ici la change partout, sans jamais
+     l'ecrire deux fois pour un meme intervalle. */
+  --lb-gap: 32px;
+}
+
+.lb-page main { padding-bottom: 4rem; }
+
+/* ── En-tete : clone de .hero (style.css) ────────────────────────────────
+   .hero et son .wrap sont deux elements distincts sur la page d'accueil ;
+   ici .lb-head porte les deux classes sur le MEME element. D'ou l'usage
+   strict de padding-top/-bottom (jamais le raccourci "88px 0 40px" de
+   .hero, qui remettrait le padding gauche/droit de .wrap a 0). */
+.lb-head {
+  position: relative;
+  padding-top: 88px;
+  overflow: hidden;
+}
+.lb-head::before {
+  /* .hero::before, copie a l'identique */
+  content: "";
+  position: absolute;
+  inset: -50% 0 auto 50%;
+  width: 1100px;
+  height: 700px;
+  transform: translateX(-50%);
+  background: radial-gradient(closest-side, rgba(124, 107, 255, 0.20), transparent 70%);
+  pointer-events: none;
+}
+.lb-head > * { position: relative; }
+
+.lb-head h1 {
+  /* .hero h1, copie a l'identique */
+  font-size: clamp(2.3rem, 6vw, 3.9rem);
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  font-weight: 800;
+  margin: 0 0 20px;
+}
+
+.lb-head p {
+  /* .hero p.lead, sans le max-width : ce paragraphe doit occuper toute la
+     largeur du bloc, comme le reste de cette page (demande explicite,
+     contrairement au hero qui a de l'espace vide a cote de son texte). */
+  font-size: clamp(1.05rem, 2vw, 1.24rem);
+  color: var(--muted);
+  margin: 0;
+}
+
+.lb-status {
+  margin: 20px 0 0;
+  padding: 0.8rem 1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+
+.lb-cta {
+  /* .hero-actions : meme agencement, meme ecart entre boutons (12px) */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.lb-head .lb-cta {
+  /* .hero-actions margin-top, mais cible avec deux classes : un simple
+     ".lb-cta" se ferait ecraser par ".lb-head p" si ce dernier existait
+     encore avec un margin plus specifique (regle 3 ci-dessus). */
+  margin-top: 34px;
+}
+
+.lb-totals {
+  display: grid;
+  /* Quatre colonnes fixes : ces quatre chiffres doivent toujours tenir sur
+     une seule ligne, jamais passer a la ligne comme le ferait un
+     auto-fit/minmax en dessous d'une certaine largeur. */
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+  /* L'UNIQUE occurrence de --lb-gap pour "boutons -> chiffres". */
+  margin-top: var(--lb-gap);
+}
+.lb-stat {
+  /* .card : meme fond, meme bordure, meme rayon, meme rembourrage */
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 30px;
+}
+.lb-stat b { display: block; font-size: 1.7rem; line-height: 1.15; }
+.lb-stat span { font-size: 0.85rem; color: var(--muted); }
+
+/* ── Classements : clone de .grid / .card (style.css) ────────────────────
+   .lb-boards est l'element qui porte l'ecart "chiffres -> classements" :
+   une seule declaration, jamais de padding-bottom concurrent sur .lb-head
+   pour le meme intervalle (c'est exactement le bug corrige ici). */
+.lb-boards { margin-top: var(--lb-gap); }
+
+.lb-grid {
+  /* .grid, meme formule que .lb-totals utiliserait si elle n'etait pas
+     volontairement figee a 4 colonnes : garantit que les deux rangees de
+     cartes de la page s'alignent sur les memes limites de colonne. */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 22px;
+}
+.lb-card {
+  /* .card, a l'identique */
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 30px;
+}
+.lb-card h2 {
+  /* .card h3, meme taille, meme graisse (l'element est un h2 ici pour la
+     hierarchie du document, pas pour son style visuel) */
+  margin: 0 0 8px;
+  font-size: 1.13rem;
+  letter-spacing: -0.012em;
+}
+.lb-card > p {
+  /* .card p, a l'identique */
+  margin: 0 0 20px;
+  font-size: 0.955rem;
+  color: var(--muted);
+}
+
+.lb-list { list-style: none; margin: 0; padding: 0; }
+.lb-list li {
+  display: grid;
+  grid-template-columns: 1.6rem minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 0.1rem 0.6rem;
+  padding: 0.5rem 0;
+  border-top: 1px solid var(--border);
+}
+.lb-list li:first-child { border-top: 0; }
+
+.lb-rank { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 0.85rem; }
+.lb-main { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lb-main a { color: inherit; }
+.lb-value { font-variant-numeric: tabular-nums; font-weight: 600; white-space: nowrap; }
+/* Le joueur et la date passent sous le titre : les serrer sur la meme ligne
+   tronquait le nom du jeu, qui est ce qu'on cherche d'abord. */
+.lb-who, .lb-when { grid-column: 2 / 3; font-size: 0.8rem; color: var(--muted); }
+.lb-when { grid-column: 3 / 4; text-align: right; }
+
+.lb-empty { margin: 0.6rem 0 0; font-size: 0.88rem; color: var(--muted); }
+
+/* ── Bloc de contribution : une carte pleine largeur ──────────────────────
+   Reprend .card plutot qu'un paragraphe flottant dans une colonne etroite,
+   pour rester homogene avec le reste de la page pleine largeur. */
+.lb-contribute {
+  /* L'UNIQUE occurrence de --lb-gap pour "classements -> bloc du bas". */
+  margin-top: var(--lb-gap);
+}
+.lb-contribute-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 36px;
+}
+.lb-contribute-card h2 {
+  /* .section-head h2, meme taille, meme graisse (750) que tous les titres
+     de section du reste du site */
+  margin: 0 0 14px;
+  font-size: clamp(1.7rem, 3.6vw, 2.35rem);
+  letter-spacing: -0.022em;
+  font-weight: 750;
+}
+.lb-contribute-card p {
+  /* .section-head p, meme couleur, meme taille, meme rythme (14px) */
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-size: 1.03rem;
+}
+.lb-contribute-card p:first-of-type { margin-top: 0; }
+.lb-contribute-card .lb-cta { margin-top: 24px; }
