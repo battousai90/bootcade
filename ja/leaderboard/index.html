@@ -9,7 +9,7 @@
 <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="stylesheet" href="/style.css">
-<link rel="stylesheet" href="/leaderboard/leaderboard.css?v=28">
+<link rel="stylesheet" href="/leaderboard/leaderboard.css?v=29">
 <link rel="canonical" href="https://bootcade.netlify.app/ja/leaderboard/">
 <link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/leaderboard/">
 <link rel="alternate" hreflang="fr" href="https://bootcade.netlify.app/fr/leaderboard/">
@@ -97,7 +97,12 @@
         <div id="lb-longest"></div>
       </section>
       <section class="lb-card">
-        <h2 data-i18n="lb.players.h2">プレイヤー</h2>
+        <h2 data-i18n="lb.top.h2">トップランキング</h2>
+        <p data-i18n="lb.top.hint">全ゲーム通算のポイント：1位で10、2位で7、3位で5、10位まで逓減。</p>
+        <div id="lb-top"></div>
+      </section>
+      <section class="lb-card">
+        <h2 data-i18n="lb.players.h2">最もよく遊んだ人</h2>
         <p data-i18n="lb.players.hint">プレイ時間でランク付け。コツコツ続けることは、上手いことと同じくらい価値があります。</p>
         <div id="lb-players"></div>
       </section>
@@ -124,6 +129,6 @@
 <script src="/app.js"></script>
 <script src="/auth.js"></script>
 <script src="/auth-ui.js"></script>
-<script src="/leaderboard/leaderboard.js?v=25"></script>
+<script src="/leaderboard/leaderboard.js?v=26"></script>
 </body>
 </html>

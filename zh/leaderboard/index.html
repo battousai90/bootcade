@@ -9,7 +9,7 @@
 <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="stylesheet" href="/style.css">
-<link rel="stylesheet" href="/leaderboard/leaderboard.css?v=28">
+<link rel="stylesheet" href="/leaderboard/leaderboard.css?v=29">
 <link rel="canonical" href="https://bootcade.netlify.app/zh/leaderboard/">
 <link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/leaderboard/">
 <link rel="alternate" hreflang="fr" href="https://bootcade.netlify.app/fr/leaderboard/">
@@ -97,7 +97,12 @@
         <div id="lb-longest"></div>
       </section>
       <section class="lb-card">
-        <h2 data-i18n="lb.players.h2">玩家</h2>
+        <h2 data-i18n="lb.top.h2">顶尖玩家</h2>
+        <p data-i18n="lb.top.hint">所有游戏累计积分：第1名10分，第2名7分，第3名5分，递减至第10名。</p>
+        <div id="lb-top"></div>
+      </section>
+      <section class="lb-card">
+        <h2 data-i18n="lb.players.h2">最活跃玩家</h2>
         <p data-i18n="lb.players.hint">按游玩时长排名：坚持游玩和玩得好一样重要。</p>
         <div id="lb-players"></div>
       </section>
@@ -124,6 +129,6 @@
 <script src="/app.js"></script>
 <script src="/auth.js"></script>
 <script src="/auth-ui.js"></script>
-<script src="/leaderboard/leaderboard.js?v=25"></script>
+<script src="/leaderboard/leaderboard.js?v=26"></script>
 </body>
 </html>

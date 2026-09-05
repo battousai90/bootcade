@@ -217,6 +217,30 @@
     .then(render)
     .catch(failed);
 
+  /* Classement transversal en points.
+   *
+   * A cote de « Les plus assidus », qui classe au temps : les deux cartes
+   * repondent a deux questions differentes, et les confondre etait le
+   * defaut de la page. Quelqu'un qui laisse tourner un jeu quarante heures
+   * est assidu, il n'est pas le meilleur joueur.
+   *
+   * Le rang affiche est celui de la liste : ici, contrairement au profil,
+   * la position DANS le classement est bien ce qu'on veut lire.
+   */
+  fetch(API + '/api/ranking?limit=10')
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (rows) {
+      if (!rows) return;
+      fill('lb-top', rows, function (r) {
+        return '<span class="lb-main">' + player(r) + '</span>'
+             + '<span class="lb-value">' + esc(r.points) + ' '
+             + esc(t('lb.top.pts', 'pts')) + '</span>'
+             + '<span class="lb-when">' + esc(r.records) + ' '
+             + esc(t('lb.me.records', 'world records')) + '</span>';
+      });
+    })
+    .catch(function () {});
+
   // Requete separee, et son echec est silencieux : le feed est un agrement,
   // les classements sont le propos de la page. Les lier ferait disparaitre
   // les seconds si le premier tombait.

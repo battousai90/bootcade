@@ -9,7 +9,7 @@
 <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="stylesheet" href="/style.css">
-<link rel="stylesheet" href="/leaderboard/leaderboard.css?v=28">
+<link rel="stylesheet" href="/leaderboard/leaderboard.css?v=29">
 <link rel="canonical" href="https://bootcade.netlify.app/de/leaderboard/">
 <link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/leaderboard/">
 <link rel="alternate" hreflang="fr" href="https://bootcade.netlify.app/fr/leaderboard/">
@@ -97,7 +97,12 @@
         <div id="lb-longest"></div>
       </section>
       <section class="lb-card">
-        <h2 data-i18n="lb.players.h2">Spieler</h2>
+        <h2 data-i18n="lb.top.h2">Beste Spieler</h2>
+        <p data-i18n="lb.top.hint">Punkte über alle Spiele: 10 für Platz 1, 7 für Platz 2, 5 für Platz 3, absteigend bis Platz 10.</p>
+        <div id="lb-top"></div>
+      </section>
+      <section class="lb-card">
+        <h2 data-i18n="lb.players.h2">Die Fleißigsten</h2>
         <p data-i18n="lb.players.hint">Nach Spielzeit gerankt: regelmäßig zu spielen zählt genauso viel wie gut zu sein.</p>
         <div id="lb-players"></div>
       </section>
@@ -124,6 +129,6 @@
 <script src="/app.js"></script>
 <script src="/auth.js"></script>
 <script src="/auth-ui.js"></script>
-<script src="/leaderboard/leaderboard.js?v=25"></script>
+<script src="/leaderboard/leaderboard.js?v=26"></script>
 </body>
 </html>
