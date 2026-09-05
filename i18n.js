@@ -15,6 +15,13 @@
 window.I18N = {
 
 fr: {
+  "pf.avatar.hint":"Choisis le tien, puis enregistre. Il te suit partout, et tu peux en changer quand tu veux.",
+  "pf.avatar.save":"Enregistrer l'avatar",
+  "pf.avatar.saving":"Enregistrement…",
+  "pf.avatar.saved":"Enregistré",
+  "pf.avatar":"Avatar",
+  "pf.avatar.failed":"Ton avatar n'a pas pu être enregistré. Réessaie dans un instant.",
+  "pf.noCountry":"Pays non renseigné",
   "pf.account":"Compte",
   "pf.account.hint":"Ton email, ton nom, ton mot de passe et tes sessions se gèrent dans ton compte Bootcade.",
   "pf.account.cta":"Gérer mon compte",
@@ -241,6 +248,13 @@ fr: {
 },
 
 es: {
+  "pf.avatar.hint":"Elige el tuyo y guarda. Te acompaña en todas partes y puedes cambiarlo cuando quieras.",
+  "pf.avatar.save":"Guardar avatar",
+  "pf.avatar.saving":"Guardando…",
+  "pf.avatar.saved":"Guardado",
+  "pf.avatar":"Avatar",
+  "pf.avatar.failed":"No se ha podido guardar tu avatar. Inténtalo de nuevo en un momento.",
+  "pf.noCountry":"País no indicado",
   "pf.account":"Cuenta",
   "pf.account.hint":"Tu correo, tu nombre, tu contraseña y tus sesiones se gestionan en tu cuenta Bootcade.",
   "pf.account.cta":"Gestionar mi cuenta",
@@ -467,6 +481,13 @@ es: {
 },
 
 de: {
+  "pf.avatar.hint":"Wähle einen aus und speichere. Er begleitet dich überall, und du kannst ihn jederzeit wechseln.",
+  "pf.avatar.save":"Avatar speichern",
+  "pf.avatar.saving":"Wird gespeichert…",
+  "pf.avatar.saved":"Gespeichert",
+  "pf.avatar":"Avatar",
+  "pf.avatar.failed":"Dein Avatar konnte nicht gespeichert werden. Versuche es gleich noch einmal.",
+  "pf.noCountry":"Kein Land angegeben",
   "pf.account":"Konto",
   "pf.account.hint":"Deine E-Mail, dein Name, dein Passwort und deine Sitzungen werden in deinem Bootcade-Konto verwaltet.",
   "pf.account.cta":"Mein Konto verwalten",
@@ -693,6 +714,13 @@ de: {
 },
 
 pt: {
+  "pf.avatar.hint":"Escolhe o teu e guarda. Acompanha-te em todo o lado e podes mudá-lo quando quiseres.",
+  "pf.avatar.save":"Guardar avatar",
+  "pf.avatar.saving":"A guardar…",
+  "pf.avatar.saved":"Guardado",
+  "pf.avatar":"Avatar",
+  "pf.avatar.failed":"Não foi possível guardar o teu avatar. Tenta de novo daqui a pouco.",
+  "pf.noCountry":"País não indicado",
   "pf.account":"Conta",
   "pf.account.hint":"O teu email, o teu nome, a tua palavra-passe e as tuas sessões são geridos na tua conta Bootcade.",
   "pf.account.cta":"Gerir a minha conta",
@@ -919,6 +947,13 @@ pt: {
 },
 
 ja: {
+  "pf.avatar.hint":"好きなものを選んで保存してください。どこでも表示され、いつでも変更できます。",
+  "pf.avatar.save":"アバターを保存",
+  "pf.avatar.saving":"保存中…",
+  "pf.avatar.saved":"保存しました",
+  "pf.avatar":"アバター",
+  "pf.avatar.failed":"アバターを保存できませんでした。少し時間をおいてもう一度お試しください。",
+  "pf.noCountry":"国が未設定です",
   "pf.account":"アカウント",
   "pf.account.hint":"メールアドレス、名前、パスワード、セッションは Bootcade アカウントで管理します。",
   "pf.account.cta":"アカウントを管理",
@@ -1145,6 +1180,13 @@ ja: {
 },
 
 zh: {
+  "pf.avatar.hint":"挑一个然后保存。它会跟着你出现在各处，随时可以更换。",
+  "pf.avatar.save":"保存头像",
+  "pf.avatar.saving":"保存中…",
+  "pf.avatar.saved":"已保存",
+  "pf.avatar":"头像",
+  "pf.avatar.failed":"头像未能保存，请稍后再试。",
+  "pf.noCountry":"未设置国家",
   "pf.account":"账号",
   "pf.account.hint":"你的邮箱、姓名、密码和会话都在你的 Bootcade 账号中管理。",
   "pf.account.cta":"管理我的账号",
@@ -1372,6 +1414,13 @@ zh: {
 ,
 
 th: {
+  "pf.avatar.hint":"เลือกของคุณแล้วกดบันทึก จะติดตามคุณไปทุกที่ และเปลี่ยนได้ทุกเมื่อ",
+  "pf.avatar.save":"บันทึกอวาตาร์",
+  "pf.avatar.saving":"กำลังบันทึก…",
+  "pf.avatar.saved":"บันทึกแล้ว",
+  "pf.avatar":"อวาตาร์",
+  "pf.avatar.failed":"บันทึกอวาตาร์ไม่สำเร็จ กรุณาลองใหม่อีกครั้ง",
+  "pf.noCountry":"ยังไม่ได้ตั้งค่าประเทศ",
   "pf.account":"บัญชี",
   "pf.account.hint":"อีเมล ชื่อ รหัสผ่าน และเซสชันของคุณ จัดการได้ในบัญชี Bootcade ของคุณ",
   "pf.account.cta":"จัดการบัญชีของฉัน",

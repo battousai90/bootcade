@@ -54,7 +54,15 @@
     return h;
   }
 
-  function avatar(name) {
+  /* L'avatar choisi dans le profil, sinon les initiales. Les initiales ne
+     sont pas un pis-aller : elles donnent une image reconnaissable des la
+     premiere seconde, la ou une silhouette grise ne dit rien, et un joueur
+     qui n'en choisit jamais garde quelque chose qui lui ressemble. */
+  function avatar(name, id) {
+    if (id) {
+      return '<img class="avatar" src="/avatars/' + esc(id) + '.svg" alt="" '
+           + 'aria-hidden="true">';
+    }
     return '<span class="avatar" style="--avatar-hue:' + hue(name) + '" aria-hidden="true">'
          + esc(initials(name)) + '</span>';
   }
@@ -93,7 +101,7 @@
     var href = lang === 'en' ? '/profile/' : '/' + lang + '/profile/';
     slot.innerHTML =
       '<a class="nav-user" href="' + href + '">'
-      + avatar(name)
+      + avatar(name, user.avatar)
       + '<span class="nav-user-name">' + esc(name) + '</span></a>'
       + '<button type="button" class="nav-signout" id="signout-btn" title="'
       + esc(t('auth.signout', 'Sign out')) + '" aria-label="'
@@ -115,6 +123,13 @@
   // joueur qui revient de Keycloak verrait « Se connecter » une fraction de
   // seconde avant que son nom n'apparaisse.
   window.BootcadeAuth.complete().then(function () {
+    render(window.BootcadeAuth.user());
+  });
+
+  // Le profil emet cet evenement apres avoir change quelque chose au compte et
+  // renouvele le jeton : la barre se redessine alors tout de suite, au lieu
+  // d'afficher l'ancien avatar jusqu'au prochain rafraichissement.
+  window.addEventListener('bootcade:user-changed', function () {
     render(window.BootcadeAuth.user());
   });
 })();

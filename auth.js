@@ -206,6 +206,36 @@
       }).catch(function () { clear(); return null; });
   }
 
+  /* Force le renouvellement du jeton, sans attendre son expiration.
+
+     Utile apres un changement de compte : les informations du joueur (avatar,
+     pays, nom) voyagent DANS le jeton, et un jeton deja signe ne change pas.
+     Sans ce renouvellement, la barre du haut afficherait l'ancien avatar
+     jusqu'au prochain rafraichissement automatique, plusieurs minutes plus
+     tard, ce qui donne l'impression que l'enregistrement n'a pas pris.
+
+     Emet `bootcade:user-changed` pour que toute page affichant le joueur se
+     redessine, sans que auth.js ait a connaitre ces pages. */
+  function refresh() {
+    var t = stored();
+    if (!t || !t.refresh_token) return Promise.resolve(null);
+    return fetch(ISSUER + '/protocol/openid-connect/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        grant_type: 'refresh_token',
+        client_id: CLIENT_ID,
+        refresh_token: t.refresh_token
+      })
+    }).then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (fresh) {
+        if (!fresh || !fresh.access_token) return null;
+        save(fresh);
+        window.dispatchEvent(new CustomEvent('bootcade:user-changed'));
+        return user();
+      }).catch(function () { return null; });
+  }
+
   function user() {
     var t = stored();
     return t && t.access_token ? claims(t.access_token) : null;
@@ -217,6 +247,7 @@
     logout: logout,
     complete: complete,
     token: token,
+    refresh: refresh,
     user: user,
     isLoggedIn: function () { return !!user(); }
   };

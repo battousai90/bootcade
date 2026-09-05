@@ -274,3 +274,49 @@
 /* Les choix s'enroulent : huit langues ne tiennent pas sur une ligne d'écran
    étroit, et les tronquer cacherait justement celle que le visiteur cherche. */
 .pf-choices { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.pf-country { margin: 4px 0 0; font-size: 1rem; }
+/* Un pays non renseigne se distingue d'un pays choisi : c'est une invitation
+   a le remplir, pas une information. */
+.pf-country-unset { color: var(--muted); font-size: 0.9rem; }
+
+/* ── Choix de l'avatar ────────────────────────────────────────────────────
+   Une grille qui s'adapte a la largeur : quarante et quelques vignettes en
+   une ligne defilante seraient illisibles, et en colonne interminables. */
+.pf-avatars {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(56px, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+.pf-avatar {
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  background: none;
+  cursor: pointer;
+  line-height: 0;
+}
+.pf-avatar img { width: 100%; height: auto; border-radius: 10px; display: block; }
+.pf-avatar:hover { border-color: var(--border); }
+/* Le choix courant se voit sans avoir a chercher : bordure d'accent et
+   legere mise en avant. */
+.pf-avatar.is-chosen {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
+}
+
+/* L'avatar image reprend la taille du disque a initiales qu'il remplace. */
+img.avatar { object-fit: cover; }
+img.avatar-lg { width: 72px; height: 72px; border-radius: 16px; }
+
+.pf-avatar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0 0;
+}
+.pf-avatar-actions .btn[disabled] { opacity: .45; cursor: default; }
+.pf-avatar-note { font-size: 0.9rem; color: var(--muted); }
+.pf-avatar-note.is-ok  { color: var(--ok); }
+.pf-avatar-note.is-bad { color: var(--bad); }

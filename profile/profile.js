@@ -93,6 +93,87 @@
 
   var isSignedIn = false;
 
+  /* ── Avatar ──────────────────────────────────────────────────────────────
+     Le choix est enregistre dans le COMPTE, via l'API de compte de Keycloak,
+     avec le jeton du joueur : aucun droit d'administration, et l'avatar suit
+     le joueur partout, y compris dans le launcher plus tard.
+
+     Il n'est pas garde dans la base des scores : ce serait une seconde verite
+     a synchroniser, exactement le probleme qu'on a evite pour le nom. */
+  var ACCOUNT = 'https://auth.bootcade.duckdns.org/realms/bootcade/account/';
+  var avatars = null;          // la collection, chargee une fois
+  var chosen = null;           // l'avatar ENREGISTRE, celui du compte
+  var picked = null;           // celui SELECTIONNE, pas encore soumis
+
+  function loadAvatars() {
+    if (avatars) return Promise.resolve(avatars);
+    return fetch('/avatars/index.json')
+      .then(function (r) { return r.ok ? r.json() : []; })
+      .then(function (list) { avatars = list; return list; })
+      .catch(function () { avatars = []; return avatars; });
+  }
+
+  function saveAvatar(id) {
+    return window.BootcadeAuth.token().then(function (tok) {
+      if (!tok) return false;
+      // `Accept: application/json` n'est PAS decoratif : sans lui, Keycloak
+      // sert la page HTML de la console de compte au lieu de la
+      // representation, r.json() echoue, et l'avatar n'etait jamais
+      // enregistre. L'ecriture, elle, marchait deja.
+      var head = {
+        Authorization: 'Bearer ' + tok,
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      };
+      // On relit le compte avant d'ecrire : l'API remplace la representation
+      // entiere, donc envoyer seulement l'avatar effacerait email, prenom et
+      // nom au passage.
+      return fetch(ACCOUNT, { headers: head })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (acc) {
+          if (!acc) return false;
+          acc.attributes = acc.attributes || {};
+          acc.attributes.avatar = [id];
+          return fetch(ACCOUNT, {
+            method: 'POST', headers: head, body: JSON.stringify(acc)
+          }).then(function (r) { return r.ok; });
+        });
+    }).catch(function () { return false; });
+  }
+
+  function avatarMarkup(id, name) {
+    return id
+      ? '<img class="avatar avatar-lg" src="/avatars/' + esc(id) + '.svg" alt="">'
+      : '<span class="avatar avatar-lg" style="--avatar-hue:' + hue(name) + '">'
+        + esc(initials(name)) + '</span>';
+  }
+
+  function renderAvatarPicker() {
+    if (!avatars || !avatars.length) return '';
+    var dirty = picked && picked !== chosen;
+    return '<div class="pf-setting"><h3>' + esc(t('pf.avatar', 'Avatar')) + '</h3>'
+      + '<p class="lb-profile-hint">' + esc(t('pf.avatar.hint',
+          'Pick one, then save. It follows you everywhere, and you can change it whenever you like.'))
+      + '</p><div class="pf-avatars" id="pf-avatars">'
+      + avatars.map(function (a) {
+          // La selection en cours prime sur l'enregistre : c'est elle que le
+          // joueur vient de designer, et c'est ce qu'il s'attend a voir marque.
+          var cur = picked || chosen;
+          return '<button type="button" class="pf-avatar'
+               + (a.id === cur ? ' is-chosen' : '') + '" data-avatar="'
+               + esc(a.id) + '" title="' + esc(a.name) + '" aria-label="' + esc(a.name)
+               + '"><img src="/avatars/' + esc(a.id) + '.svg" alt=""></button>';
+        }).join('')
+      + '</div>'
+      // Le bouton n'apparait que s'il y a quelque chose a enregistrer : un
+      // bouton toujours actif laisse croire qu'on a oublie de cliquer.
+      + '<p class="pf-avatar-actions">'
+      + '<button type="button" class="btn btn-accent" id="pf-avatar-save"'
+      + (dirty ? '' : ' disabled') + '>' + esc(t('pf.avatar.save', 'Save avatar')) + '</button>'
+      + '<span class="pf-avatar-note" id="pf-avatar-note"></span></p>'
+      + '</div>';
+  }
+
   function renderSettings(signedIn) {
     isSignedIn = !!signedIn;
     var host = document.getElementById('pf-settings');
@@ -106,7 +187,8 @@
                   ['dark',   t('pf.theme.dark',   'Dark')]];
 
     host.innerHTML =
-      (signedIn
+      (signedIn ? renderAvatarPicker() : '')
+      + (signedIn
         ? '<div class="pf-setting"><h3>' + esc(t('pf.account', 'Account')) + '</h3>'
           + '<p class="lb-profile-hint">' + esc(t('pf.account.hint',
               'Your email, your name, your password and your sessions are managed '
@@ -152,19 +234,80 @@
       else document.documentElement.dataset.theme = mode;
       renderSettings(isSignedIn);   // redessine pour marquer le choix courant
     });
+
+    host.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-avatar]');
+      if (!b) return;
+      // Le clic SELECTIONNE seulement. L'enregistrement se fait au bouton :
+      // un choix qui part au reseau des le clic ne dit pas au joueur ce qui
+      // s'est passe, et ne lui laisse pas changer d'avis.
+      picked = b.getAttribute('data-avatar');
+      renderSettings(isSignedIn);
+    });
+
+    host.addEventListener('click', function (e) {
+      if (!e.target.closest('#pf-avatar-save')) return;
+      if (!picked || picked === chosen) return;
+      var id = picked;
+      var btn = document.getElementById('pf-avatar-save');
+      var note = document.getElementById('pf-avatar-note');
+      if (btn) { btn.disabled = true; }
+      if (note) { note.className = 'pf-avatar-note'; note.textContent = t('pf.avatar.saving', 'Saving...'); }
+      saveAvatar(id).then(function (ok) {
+        var n = document.getElementById('pf-avatar-note');
+        if (ok) {
+          chosen = id;
+          picked = null;
+          // Le jeton porte l'avatar : sans ce renouvellement la barre du haut
+          // garderait l'ancien plusieurs minutes.
+          window.BootcadeAuth.refresh();
+          var big = document.querySelector('.pf-identity .avatar');
+          if (big) big.outerHTML = avatarMarkup(id, '');
+          renderSettings(isSignedIn);
+          n = document.getElementById('pf-avatar-note');
+          if (n) { n.className = 'pf-avatar-note is-ok'; n.textContent = t('pf.avatar.saved', 'Saved'); }
+        } else if (n) {
+          n.className = 'pf-avatar-note is-bad';
+          n.textContent = t('pf.avatar.failed',
+            'Your avatar could not be saved. Try again in a moment.');
+          var b2 = document.getElementById('pf-avatar-save');
+          if (b2) b2.disabled = false;
+        }
+      });
+    });
+  }
+
+  /* Le drapeau est derive du code ISO, pas d'une image : deux points de code
+     Unicode suffisent, donc aucun fichier a servir, aucune liste d'icones a
+     tenir a jour, et ca suit la police du systeme. Meme methode que le
+     classement, pour que ce soit le meme drapeau des deux cotes. */
+  function countryFlag(code) {
+    if (!code || code.length !== 2) return '';
+    var base = 0x1F1E6;
+    return String.fromCodePoint(
+      base + code.toUpperCase().charCodeAt(0) - 65,
+      base + code.toUpperCase().charCodeAt(1) - 65);
   }
 
   function renderIdentity(user, account) {
     var name = (user && user.preferred_username) || '';
     document.getElementById('pf-identity').innerHTML =
       '<div class="pf-identity">'
-      + '<span class="avatar avatar-lg" style="--avatar-hue:' + hue(name) + '">'
-      + esc(initials(name)) + '</span>'
+      + avatarMarkup((user && user.avatar) || null, name)
       + '<div><h1>' + esc(name) + '</h1>'
       + (account && account.created_at
           ? '<p class="pf-since">' + esc(t('pf.since', 'Member since')) + ' '
             + esc(String(account.created_at).slice(0, 10)) + '</p>'
           : '')
+      // Le pays sous la date d'inscription. Absent tant que le joueur ne l'a
+      // pas choisi dans son compte : afficher celui devine depuis son adresse
+      // IP donnerait l'impression qu'il l'a declare, et il ne penserait pas a
+      // le corriger.
+      + (account && account.country
+          ? '<p class="pf-country">' + countryFlag(account.country) + ' '
+            + esc(account.country) + '</p>'
+          : '<p class="pf-country pf-country-unset">'
+            + esc(t('pf.noCountry', 'No country set')) + '</p>')
       + '</div></div>';
   }
 
@@ -205,7 +348,9 @@
             wireSettings();
             return;
           }
-          renderIdentity(window.BootcadeAuth.user(), profile.account);
+          var u = window.BootcadeAuth.user();
+          chosen = (u && u.avatar) || null;
+          renderIdentity(u, profile.account);
 
           var totals = profile.totals || {};
           var cells = [
@@ -226,8 +371,10 @@
             return '<span class="lb-main">' + gameLink(x) + '</span>'
                  + '<span class="lb-value">' + esc(formatTime(x.total_secs)) + '</span>';
           });
-          renderSettings(true);
-          wireSettings();
+          loadAvatars().then(function () {
+            renderSettings(true);
+            wireSettings();
+          });
         });
     });
   }

@@ -1,0 +1,174 @@
+[
+ {
+  "id": "joystick",
+  "name": "Joystick"
+ },
+ {
+  "id": "cabinet",
+  "name": "Arcade cabinet"
+ },
+ {
+  "id": "cartridge",
+  "name": "Cartridge"
+ },
+ {
+  "id": "coin",
+  "name": "Coin"
+ },
+ {
+  "id": "ship",
+  "name": "Starship"
+ },
+ {
+  "id": "alien",
+  "name": "Invader"
+ },
+ {
+  "id": "ghosty",
+  "name": "Spook"
+ },
+ {
+  "id": "robot",
+  "name": "Robot"
+ },
+ {
+  "id": "skull",
+  "name": "Skull"
+ },
+ {
+  "id": "heart",
+  "name": "Heart"
+ },
+ {
+  "id": "star",
+  "name": "Star"
+ },
+ {
+  "id": "sword",
+  "name": "Sword"
+ },
+ {
+  "id": "shield",
+  "name": "Shield"
+ },
+ {
+  "id": "potion",
+  "name": "Potion"
+ },
+ {
+  "id": "chest",
+  "name": "Treasure"
+ },
+ {
+  "id": "bomb",
+  "name": "Bomb"
+ },
+ {
+  "id": "rocket",
+  "name": "Rocket"
+ },
+ {
+  "id": "ufo",
+  "name": "Saucer"
+ },
+ {
+  "id": "planet",
+  "name": "Planet"
+ },
+ {
+  "id": "pad",
+  "name": "Gamepad"
+ },
+ {
+  "id": "crt",
+  "name": "CRT"
+ },
+ {
+  "id": "floppy",
+  "name": "Floppy"
+ },
+ {
+  "id": "cat",
+  "name": "Cat"
+ },
+ {
+  "id": "frog",
+  "name": "Frog"
+ },
+ {
+  "id": "owl",
+  "name": "Owl"
+ },
+ {
+  "id": "fish",
+  "name": "Fish"
+ },
+ {
+  "id": "dragon",
+  "name": "Dragon"
+ },
+ {
+  "id": "bat",
+  "name": "Bat"
+ },
+ {
+  "id": "knight",
+  "name": "Knight"
+ },
+ {
+  "id": "wizard",
+  "name": "Wizard"
+ },
+ {
+  "id": "ninja",
+  "name": "Ninja"
+ },
+ {
+  "id": "pirate",
+  "name": "Pirate"
+ },
+ {
+  "id": "astronaut",
+  "name": "Astronaut"
+ },
+ {
+  "id": "dice",
+  "name": "Dice"
+ },
+ {
+  "id": "trophy",
+  "name": "Trophy"
+ },
+ {
+  "id": "bolt",
+  "name": "Bolt"
+ },
+ {
+  "id": "flame",
+  "name": "Flame"
+ },
+ {
+  "id": "gem",
+  "name": "Gem"
+ },
+ {
+  "id": "key",
+  "name": "Key"
+ },
+ {
+  "id": "mushroom",
+  "name": "Mushroom"
+ },
+ {
+  "id": "barrel",
+  "name": "Barrel"
+ },
+ {
+  "id": "tank",
+  "name": "Tank"
+ },
+ {
+  "id": "crown",
+  "name": "Crown"
+ }
+]
