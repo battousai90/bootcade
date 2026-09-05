@@ -338,3 +338,21 @@ img.avatar-lg { width: 72px; height: 72px; border-radius: 16px; }
 .lb-act-text { white-space: normal; overflow: visible; text-overflow: clip; }
 .lb-act-text b { font-weight: 600; }
 .lb-act-text a { color: inherit; }
+
+/* Distinctions du profil.
+   Les verrouillees restent lisibles, seulement attenuees : elles portent
+   leur condition, donc un objectif. Les griser jusqu'a l'illisible aurait
+   supprime la seule raison de les montrer. */
+.pf-ach-wrap { margin-top: 1rem; }
+.pf-ach {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 0.7rem 1.1rem;
+}
+.pf-ach-item { display: grid; grid-template-columns: 1.9rem 1fr; align-items: start; gap: 0.6rem; }
+.pf-ach-ico { font-size: 1.35rem; line-height: 1.1; }
+.pf-ach-body { display: block; min-width: 0; }
+.pf-ach-body b { display: block; font-size: 0.95rem; }
+.pf-ach-body span { display: block; font-size: 0.8rem; color: var(--muted); }
+.pf-ach-item.is-locked .pf-ach-ico { filter: grayscale(1); opacity: 0.45; }
+.pf-ach-item.is-locked .pf-ach-body b { color: var(--muted); font-weight: 500; }

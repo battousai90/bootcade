@@ -55,6 +55,39 @@
    */
   var MEDALS = { 1: '\uD83E\uDD47', 2: '\uD83E\uDD48', 3: '\uD83E\uDD49' };
 
+  /* Les huit distinctions.
+   *
+   * L'API les rend en anglais, avec leur code : c'est le CODE qui sert de
+   * cle de traduction ici. Le service reste ainsi neutre en langue, et les
+   * huit langues du site vivent au meme endroit que tout le reste plutot
+   * que d'etre a maintenir en double dans CT 106.
+   */
+  var ACH_ICON = {
+    first_blood: '\uD83C\uDFC5', explorer: '\uD83C\uDFAE',
+    addict: '\uD83D\uDD79\uFE0F', top_world: '\uD83C\uDFC6',
+    record_holder: '\uD83D\uDC51', on_fire: '\uD83D\uDD25',
+    globe_trotter: '\uD83C\uDF0D', century: '\uD83D\uDCAF'
+  };
+
+  function renderAchievements(data) {
+    var wrap = document.getElementById('pf-ach-wrap');
+    var host = document.getElementById('pf-ach');
+    if (!wrap || !host || !data) return;
+    wrap.hidden = false;
+    document.getElementById('pf-ach-count').textContent =
+      data.earned + ' / ' + data.total;
+    host.innerHTML = data.items.map(function (a) {
+      var got = !!a.earned_at;
+      var name = t('ach.' + a.code, a.name);
+      var cond = t('ach.' + a.code + '.cond', a.condition);
+      return '<div class="pf-ach-item' + (got ? '' : ' is-locked') + '">'
+           + '<span class="pf-ach-ico" aria-hidden="true">'
+           + (ACH_ICON[a.code] || '') + '</span>'
+           + '<span class="pf-ach-body"><b>' + esc(name) + '</b>'
+           + '<span>' + esc(cond) + '</span></span></div>';
+    }).join('');
+  }
+
   function rankBadge(row) {
     var pos = row.pos;
     if (MEDALS[pos]) return '<span class="pf-medal" title="#' + pos + '">' + MEDALS[pos] + '</span>';
@@ -358,7 +391,8 @@
           .catch(function () { return null; });
       };
       Promise.all([get('/api/me'), get('/api/me/scores'),
-                   get('/api/me/playtime'), get('/api/me/records')])
+                   get('/api/me/playtime'), get('/api/me/records'),
+                   get('/api/me/achievements')])
         .then(function (r) {
           var profile = r[0];
           if (!profile) {
@@ -398,6 +432,8 @@
             return '<span class="lb-main">' + gameLink(x) + '</span>'
                  + '<span class="lb-value">' + esc(formatScore(x)) + '</span>';
           }, rankBadge);
+
+          renderAchievements(r[4]);
           fill('pf-games', r[2], function (x) {
             return '<span class="lb-main">' + gameLink(x) + '</span>'
                  + '<span class="lb-value">' + esc(formatTime(x.total_secs)) + '</span>';

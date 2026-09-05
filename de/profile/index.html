@@ -9,7 +9,7 @@
 <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="stylesheet" href="/style.css">
-<link rel="stylesheet" href="/leaderboard/leaderboard.css?v=27">
+<link rel="stylesheet" href="/leaderboard/leaderboard.css?v=28">
 <link rel="canonical" href="https://bootcade.netlify.app/de/profile/">
 <link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/profile/">
 <link rel="alternate" hreflang="fr" href="https://bootcade.netlify.app/fr/profile/">
@@ -76,6 +76,16 @@
     </div>
   </div>
 
+  <!-- Distinctions. Les huit sont toujours affichees : une distinction
+       verrouillee montre sa condition, donc un objectif. Cachee, elle ne
+       servirait a personne. -->
+  <div class="wrap pf-ach-wrap" id="pf-ach-wrap" hidden>
+    <div class="lb-profile-card">
+      <h2><span data-i18n="pf.ach.h2">Auszeichnungen</span> <b id="pf-ach-count"></b></h2>
+      <div class="pf-ach" id="pf-ach"></div>
+    </div>
+  </div>
+
   <!-- Reglages : c'est ici que vivent le theme et la langue une fois connecte,
        plutot que dans la barre du haut. -->
   <div class="wrap pf-settings-wrap">
@@ -91,6 +101,6 @@
 <script src="/app.js"></script>
 <script src="/auth.js"></script>
 <script src="/auth-ui.js"></script>
-<script src="/profile/profile.js?v=2"></script>
+<script src="/profile/profile.js?v=3"></script>
 </body>
 </html>
