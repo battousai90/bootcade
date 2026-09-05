@@ -81,6 +81,68 @@
     return esc(row.player) + (flag ? ' ' + flag : '');
   }
 
+  /* Interpolation nommee.
+   *
+   * Les phrases du feed sont traduites ENTIERES, avec des marqueurs, et non
+   * assemblees a partir de morceaux. En japonais, en chinois et en thai
+   * l'ordre des elements differe du francais : concatener « joueur » + « a
+   * pris la tete sur » + « jeu » produirait des phrases fausses dans trois
+   * langues sur huit, et invisibles pour qui ne les lit pas.
+   *
+   * Les valeurs arrivent DEJA echappees ou balisees : c'est le seul endroit
+   * ou du HTML entre dans une chaine traduite, donc le seul a surveiller.
+   */
+  function fmt(tpl, vars) {
+    return String(tpl).replace(/\{(\w+)\}/g, function (m, k) {
+      return vars[k] === undefined ? m : vars[k];
+    });
+  }
+
+  var ACT_ICON = {
+    took_lead: '\uD83C\uDFC6',      // trophee
+    improved: '\uD83D\uDD25',       // flamme
+    joined_board: '\uD83C\uDFAE',   // manette
+    first_score: '\u2728',           // etincelles
+    joined: '\uD83D\uDC4B'          // main qui salue
+  };
+
+  function activityLine(e) {
+    var vars = {
+      player: '<b>' + esc(e.player) + '</b>'
+            + (e.country ? ' ' + esc(countryFlag(e.country)) : ''),
+      game: e.title || e.game ? gameLink(e) : '',
+      delta: e.delta == null ? '' : '<b>' + esc(Number(e.delta).toLocaleString(LANG)) + '</b>'
+    };
+    var tpl = t('lb.act.' + e.kind, DEFAULT_ACT[e.kind]);
+    return '<span class="lb-act-ico" aria-hidden="true">'
+         + (ACT_ICON[e.kind] || '') + '</span>'
+         + '<span class="lb-main lb-act-text">' + fmt(tpl, vars) + '</span>'
+         + '<span class="lb-when">' + esc(relativeDate(e.at)) + '</span>';
+  }
+
+  // L'anglais est la langue source : il vit dans le code, pas dans un
+  // catalogue, exactement comme le reste du site.
+  var DEFAULT_ACT = {
+    took_lead: '{player} took the #1 spot on {game}',
+    improved: '{player} improved their {game} record by {delta}',
+    joined_board: '{player} entered the {game} leaderboard',
+    first_score: '{player} opened the {game} leaderboard',
+    joined: '{player} joined Bootcade'
+  };
+
+  function renderActivity(events) {
+    var host = document.getElementById('lb-activity');
+    if (!host) return;
+    if (!events || !events.length) {
+      host.innerHTML = '<p class="lb-empty">'
+        + esc(t('lb.empty', 'Nothing here yet. Be the first.')) + '</p>';
+      return;
+    }
+    host.innerHTML = '<ul class="lb-list lb-act-list">' + events.map(function (e) {
+      return '<li>' + activityLine(e) + '</li>';
+    }).join('') + '</ul>';
+  }
+
   function fill(id, rows, render) {
     var host = document.getElementById(id);
     if (!host) return;
@@ -154,5 +216,13 @@
     .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
     .then(render)
     .catch(failed);
+
+  // Requete separee, et son echec est silencieux : le feed est un agrement,
+  // les classements sont le propos de la page. Les lier ferait disparaitre
+  // les seconds si le premier tombait.
+  fetch(API + '/api/activity?limit=12')
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (e) { if (e) renderActivity(e); })
+    .catch(function () {});
 
 })();

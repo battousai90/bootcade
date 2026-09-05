@@ -44,7 +44,24 @@
     return '<a href="' + href + '">' + esc(row.title || row.game) + '</a>';
   }
 
-  function fill(id, rows, render) {
+  /* Le rang d'un joueur sur un jeu.
+   *
+   * Medaille pour le podium, numero au-dela : trois pictogrammes se
+   * reconnaissent sans lire, une 7e place a besoin de son chiffre. Tout
+   * numeroter aurait noye le podium, tout medailler l'aurait vide de sens.
+   *
+   * Ce rang est celui de la MEILLEURE ligne du joueur sur ce jeu, calcule
+   * par le serveur : un joueur qui occupe les places 2 et 4 est 2e, pas 4e.
+   */
+  var MEDALS = { 1: '\uD83E\uDD47', 2: '\uD83E\uDD48', 3: '\uD83E\uDD49' };
+
+  function rankBadge(row) {
+    var pos = row.pos;
+    if (MEDALS[pos]) return '<span class="pf-medal" title="#' + pos + '">' + MEDALS[pos] + '</span>';
+    return '#' + esc(pos);
+  }
+
+  function fill(id, rows, render, rankOf) {
     var host = document.getElementById(id);
     if (!host) return;
     if (!rows || !rows.length) {
@@ -53,7 +70,11 @@
       return;
     }
     host.innerHTML = '<ol class="lb-list">' + rows.map(function (r, i) {
-      return '<li><span class="lb-rank">' + (i + 1) + '</span>' + render(r) + '</li>';
+      // Le rang affiche n'est pas toujours la position dans la liste : sur
+      // « Your scores » c'est le rang MONDIAL du joueur sur ce jeu, ce qui
+      // est la seule chose qu'on cherche a y lire.
+      var rank = rankOf ? rankOf(r, i) : (i + 1);
+      return '<li><span class="lb-rank">' + rank + '</span>' + render(r) + '</li>';
     }).join('') + '</ol>';
   }
 
@@ -336,7 +357,8 @@
           .then(function (r) { return r.ok ? r.json() : null; })
           .catch(function () { return null; });
       };
-      Promise.all([get('/api/me'), get('/api/me/scores'), get('/api/me/playtime')])
+      Promise.all([get('/api/me'), get('/api/me/scores'),
+                   get('/api/me/playtime'), get('/api/me/records')])
         .then(function (r) {
           var profile = r[0];
           if (!profile) {
@@ -353,20 +375,29 @@
           renderIdentity(u, profile.account);
 
           var totals = profile.totals || {};
+          var recs = r[3] || { records: 0, ranks: [] };
+          // Quatre cartes, et la derniere est celle qui compte : le nombre de
+          // premieres places detenues dit ce que le joueur VAUT, la ou un
+          // total de scores envoyes ne dit que sa perseverance.
           var cells = [
             [totals.scores == null ? 0 : totals.scores, t('lb.me.scores', 'your scores')],
             [totals.games == null ? 0 : totals.games, t('lb.me.games', 'games played')],
-            [formatTime(totals.seconds), t('lb.me.time', 'time played')]
+            [formatTime(totals.seconds), t('lb.me.time', 'time played')],
+            ['\uD83C\uDFC6 ' + (recs.records || 0), t('lb.me.records', 'world records')]
           ];
           document.getElementById('pf-totals').innerHTML = cells.map(function (c) {
             return '<div class="lb-stat"><b>' + esc(c[0]) + '</b><span>'
                  + esc(c[1]) + '</span></div>';
           }).join('');
 
-          fill('pf-scores', r[1], function (x) {
+          // `ranks` et non `/api/me/scores` : une ligne par JEU, portant le
+          // meilleur score et son rang. La liste brute des envois repetait le
+          // meme jeu autant de fois qu'on y avait progresse, et ne disait
+          // jamais ou l'on se situe, qui est la seule question qu'on se pose.
+          fill('pf-scores', recs.ranks, function (x) {
             return '<span class="lb-main">' + gameLink(x) + '</span>'
                  + '<span class="lb-value">' + esc(formatScore(x)) + '</span>';
-          });
+          }, rankBadge);
           fill('pf-games', r[2], function (x) {
             return '<span class="lb-main">' + gameLink(x) + '</span>'
                  + '<span class="lb-value">' + esc(formatTime(x.total_secs)) + '</span>';
