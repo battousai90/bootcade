@@ -123,6 +123,10 @@
   // joueur qui revient de Keycloak verrait « Se connecter » une fraction de
   // seconde avant que son nom n'apparaisse.
   window.BootcadeAuth.complete().then(function () {
+    // Si ce navigateur s'est deja connecte une fois, on demande a Keycloak
+    // en silence s'il reconnait encore la session, plutot que d'afficher
+    // « Se connecter » a quelqu'un qui l'est deja ailleurs.
+    if (window.BootcadeAuth.trySilentSso()) return;   // la page va rediriger
     render(window.BootcadeAuth.user());
   });
 

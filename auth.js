@@ -87,7 +87,7 @@
      l'inscription n'est donc pas un parcours séparé à maintenir, c'est la
      même danse OAuth qui commence sur un autre écran. Un joueur qui s'inscrit
      est connecté dans la foulée, sans second aller-retour. */
-  function start(endpoint) {
+  function start(endpoint, prompt) {
     var verifier = random(64);
     var state = random(16);
     try {
@@ -105,16 +105,58 @@
         + '&response_type=code&scope=openid'
         + '&state=' + encodeURIComponent(state)
         + '&code_challenge=' + encodeURIComponent(c)
-        + '&code_challenge_method=S256';
+        + '&code_challenge_method=S256'
+        + (prompt ? '&prompt=' + encodeURIComponent(prompt) : '');
     });
   }
 
   function login() { start('auth'); }
+
+  /* Reconnaissance silencieuse.
+   *
+   * Un joueur qui s'est connecte au launcher, ou sur ce site il y a une heure,
+   * possede une session Keycloak valable dans son navigateur. Sans ce
+   * mecanisme il doit malgre tout cliquer « Se connecter », ce qui donne
+   * l'impression de devoir s'authentifier deux fois.
+   *
+   * `prompt=none` demande a Keycloak de repondre SANS jamais afficher d'ecran :
+   * soit il reconnait la session et renvoie un code, soit il repond
+   * `login_required` et on n'insiste pas.
+   *
+   * Deux garde-fous, parce qu'une redirection automatique mal bornee est pire
+   * que le probleme qu'elle resout :
+   *   - uniquement si ce navigateur s'est DEJA connecte une fois. Un visiteur
+   *     anonyme, qui est le cas le plus frequent, ne subit aucun aller-retour.
+   *   - une seule tentative par onglet, sinon un refus renverrait en boucle.
+   */
+  var SEEN = 'bootcade.hasAccount';
+  var TRIED = 'bootcade.ssoTried';
+
+  function trySilentSso() {
+    if (stored()) return false;
+    // ?sso=1 : le launcher ouvre le navigateur en sachant qu'il vient de
+    // connecter ce joueur. Le site, lui, ne peut pas le deviner : la page de
+    // validation etait sur le domaine de Keycloak, donc rien n'a ete garde
+    // ici. Sans cette indication, un joueur qui ne s'est connecte QUE dans le
+    // launcher verrait « Se connecter » alors qu'il l'est deja.
+    var hinted = new URLSearchParams(location.search).get('sso') === '1';
+    try {
+      if (!hinted && localStorage.getItem(SEEN) !== '1') return false;
+      if (sessionStorage.getItem(TRIED) === '1') return false;
+      sessionStorage.setItem(TRIED, '1');
+    } catch (e) { return false; }
+    start('auth', 'none');
+    return true;
+  }
   function register() { start('registrations'); }
 
   function logout() {
     var t = stored();
     clear();
+    // Se deconnecter est un geste volontaire : on oublie que ce navigateur a
+    // deja eu un compte, sinon la page suivante repartirait aussitot tenter
+    // une reconnexion silencieuse contre la volonte du joueur.
+    try { localStorage.removeItem(SEEN); sessionStorage.removeItem(TRIED); } catch (e) {}
     var url = ISSUER + '/protocol/openid-connect/logout'
       + '?post_logout_redirect_uri=' + encodeURIComponent(redirectUri())
       + '&client_id=' + encodeURIComponent(CLIENT_ID);
@@ -142,7 +184,12 @@
   function doComplete() {
     var q = new URLSearchParams(location.search);
     var code = q.get('code');
-    if (!code) return Promise.resolve(stored());
+    if (!code) {
+      // `login_required` est la reponse NORMALE a une tentative silencieuse
+      // quand personne n'est connecte : on efface la trace et on se tait.
+      if (q.get('error')) clean();
+      return Promise.resolve(stored());
+    }
 
     var pending = null;
     try { pending = JSON.parse(sessionStorage.getItem(PKCE) || 'null'); } catch (e) {}
@@ -166,7 +213,10 @@
     }).then(function (r) {
       return r.ok ? r.json() : null;
     }).then(function (tokens) {
-      if (tokens && tokens.access_token) save(tokens);
+      if (tokens && tokens.access_token) {
+        save(tokens);
+        try { localStorage.setItem(SEEN, '1'); } catch (e) {}
+      }
       try { sessionStorage.removeItem(PKCE); } catch (e) {}
       clean();
       return stored();
@@ -245,6 +295,7 @@
     login: login,
     register: register,
     logout: logout,
+    trySilentSso: trySilentSso,
     complete: complete,
     token: token,
     refresh: refresh,
