@@ -3,7 +3,7 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://bootcade.netlify.app/</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/"/>
@@ -17,7 +17,7 @@
   </url>
   <url>
     <loc>https://bootcade.netlify.app/fr/</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/"/>
@@ -31,7 +31,7 @@
   </url>
   <url>
     <loc>https://bootcade.netlify.app/es/</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/"/>
@@ -45,7 +45,7 @@
   </url>
   <url>
     <loc>https://bootcade.netlify.app/de/</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/"/>
@@ -59,7 +59,7 @@
   </url>
   <url>
     <loc>https://bootcade.netlify.app/pt/</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/"/>
@@ -73,7 +73,7 @@
   </url>
   <url>
     <loc>https://bootcade.netlify.app/ja/</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/"/>
@@ -87,7 +87,7 @@
   </url>
   <url>
     <loc>https://bootcade.netlify.app/zh/</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/"/>
@@ -101,7 +101,7 @@
   </url>
   <url>
     <loc>https://bootcade.netlify.app/th/</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/"/>
@@ -115,7 +115,7 @@
   </url>
   <url>
     <loc>https://bootcade.netlify.app/catalog/</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/catalog/"/>
@@ -129,7 +129,7 @@
   </url>
   <url>
     <loc>https://bootcade.netlify.app/fr/catalog/</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/catalog/"/>
@@ -143,7 +143,7 @@
   </url>
   <url>
     <loc>https://bootcade.netlify.app/es/catalog/</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/catalog/"/>
@@ -157,7 +157,7 @@
   </url>
   <url>
     <loc>https://bootcade.netlify.app/de/catalog/</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/catalog/"/>
@@ -171,7 +171,7 @@
   </url>
   <url>
     <loc>https://bootcade.netlify.app/pt/catalog/</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/catalog/"/>
@@ -185,7 +185,7 @@
   </url>
   <url>
     <loc>https://bootcade.netlify.app/ja/catalog/</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/catalog/"/>
@@ -199,7 +199,7 @@
   </url>
   <url>
     <loc>https://bootcade.netlify.app/zh/catalog/</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/catalog/"/>
@@ -213,7 +213,7 @@
   </url>
   <url>
     <loc>https://bootcade.netlify.app/th/catalog/</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/catalog/"/>
@@ -227,7 +227,7 @@
   </url>
   <url>
     <loc>https://bootcade.netlify.app/leaderboard/</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/leaderboard/"/>
@@ -241,7 +241,7 @@
   </url>
   <url>
     <loc>https://bootcade.netlify.app/fr/leaderboard/</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/leaderboard/"/>
@@ -255,7 +255,7 @@
   </url>
   <url>
     <loc>https://bootcade.netlify.app/es/leaderboard/</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/leaderboard/"/>
@@ -269,7 +269,7 @@
   </url>
   <url>
     <loc>https://bootcade.netlify.app/de/leaderboard/</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/leaderboard/"/>
@@ -283,7 +283,7 @@
   </url>
   <url>
     <loc>https://bootcade.netlify.app/pt/leaderboard/</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/leaderboard/"/>
@@ -297,7 +297,7 @@
   </url>
   <url>
     <loc>https://bootcade.netlify.app/ja/leaderboard/</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/leaderboard/"/>
@@ -311,7 +311,7 @@
   </url>
   <url>
     <loc>https://bootcade.netlify.app/zh/leaderboard/</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/leaderboard/"/>
@@ -325,7 +325,7 @@
   </url>
   <url>
     <loc>https://bootcade.netlify.app/th/leaderboard/</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/leaderboard/"/>
@@ -338,8 +338,120 @@
     <xhtml:link rel="alternate" hreflang="th" href="https://bootcade.netlify.app/th/leaderboard/"/>
   </url>
   <url>
+    <loc>https://bootcade.netlify.app/profile/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/profile/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bootcade.netlify.app/fr/profile/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bootcade.netlify.app/es/profile/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bootcade.netlify.app/de/profile/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://bootcade.netlify.app/pt/profile/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bootcade.netlify.app/ja/profile/"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://bootcade.netlify.app/zh/profile/"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://bootcade.netlify.app/th/profile/"/>
+  </url>
+  <url>
+    <loc>https://bootcade.netlify.app/fr/profile/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/profile/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bootcade.netlify.app/fr/profile/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bootcade.netlify.app/es/profile/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bootcade.netlify.app/de/profile/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://bootcade.netlify.app/pt/profile/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bootcade.netlify.app/ja/profile/"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://bootcade.netlify.app/zh/profile/"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://bootcade.netlify.app/th/profile/"/>
+  </url>
+  <url>
+    <loc>https://bootcade.netlify.app/es/profile/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/profile/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bootcade.netlify.app/fr/profile/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bootcade.netlify.app/es/profile/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bootcade.netlify.app/de/profile/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://bootcade.netlify.app/pt/profile/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bootcade.netlify.app/ja/profile/"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://bootcade.netlify.app/zh/profile/"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://bootcade.netlify.app/th/profile/"/>
+  </url>
+  <url>
+    <loc>https://bootcade.netlify.app/de/profile/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/profile/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bootcade.netlify.app/fr/profile/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bootcade.netlify.app/es/profile/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bootcade.netlify.app/de/profile/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://bootcade.netlify.app/pt/profile/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bootcade.netlify.app/ja/profile/"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://bootcade.netlify.app/zh/profile/"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://bootcade.netlify.app/th/profile/"/>
+  </url>
+  <url>
+    <loc>https://bootcade.netlify.app/pt/profile/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/profile/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bootcade.netlify.app/fr/profile/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bootcade.netlify.app/es/profile/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bootcade.netlify.app/de/profile/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://bootcade.netlify.app/pt/profile/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bootcade.netlify.app/ja/profile/"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://bootcade.netlify.app/zh/profile/"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://bootcade.netlify.app/th/profile/"/>
+  </url>
+  <url>
+    <loc>https://bootcade.netlify.app/ja/profile/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/profile/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bootcade.netlify.app/fr/profile/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bootcade.netlify.app/es/profile/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bootcade.netlify.app/de/profile/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://bootcade.netlify.app/pt/profile/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bootcade.netlify.app/ja/profile/"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://bootcade.netlify.app/zh/profile/"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://bootcade.netlify.app/th/profile/"/>
+  </url>
+  <url>
+    <loc>https://bootcade.netlify.app/zh/profile/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/profile/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bootcade.netlify.app/fr/profile/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bootcade.netlify.app/es/profile/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bootcade.netlify.app/de/profile/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://bootcade.netlify.app/pt/profile/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bootcade.netlify.app/ja/profile/"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://bootcade.netlify.app/zh/profile/"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://bootcade.netlify.app/th/profile/"/>
+  </url>
+  <url>
+    <loc>https://bootcade.netlify.app/th/profile/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/profile/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bootcade.netlify.app/fr/profile/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bootcade.netlify.app/es/profile/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bootcade.netlify.app/de/profile/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://bootcade.netlify.app/pt/profile/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bootcade.netlify.app/ja/profile/"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://bootcade.netlify.app/zh/profile/"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://bootcade.netlify.app/th/profile/"/>
+  </url>
+  <url>
     <loc>https://bootcade.netlify.app/catalog/changes/</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/catalog/changes/"/>
@@ -353,7 +465,7 @@
   </url>
   <url>
     <loc>https://bootcade.netlify.app/fr/catalog/changes/</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/catalog/changes/"/>
@@ -367,7 +479,7 @@
   </url>
   <url>
     <loc>https://bootcade.netlify.app/es/catalog/changes/</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/catalog/changes/"/>
@@ -381,7 +493,7 @@
   </url>
   <url>
     <loc>https://bootcade.netlify.app/de/catalog/changes/</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/catalog/changes/"/>
@@ -395,7 +507,7 @@
   </url>
   <url>
     <loc>https://bootcade.netlify.app/pt/catalog/changes/</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/catalog/changes/"/>
@@ -409,7 +521,7 @@
   </url>
   <url>
     <loc>https://bootcade.netlify.app/ja/catalog/changes/</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/catalog/changes/"/>
@@ -423,7 +535,7 @@
   </url>
   <url>
     <loc>https://bootcade.netlify.app/zh/catalog/changes/</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/catalog/changes/"/>
@@ -437,7 +549,7 @@
   </url>
   <url>
     <loc>https://bootcade.netlify.app/th/catalog/changes/</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/catalog/changes/"/>

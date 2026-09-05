@@ -46,6 +46,7 @@ const PAGES = [
   { file: 'index.html', dir: '', metaTitleKey: 'meta.title', metaDescKey: 'meta.desc' },
   { file: 'catalog/index.html', dir: 'catalog/', metaTitleKey: 'catalog.meta.title', metaDescKey: 'catalog.meta.desc' },
   { file: 'leaderboard/index.html', dir: 'leaderboard/', metaTitleKey: 'lb.meta.title', metaDescKey: 'lb.meta.desc' },
+  { file: 'profile/index.html', dir: 'profile/', metaTitleKey: 'pf.meta.title', metaDescKey: 'pf.meta.desc' },
   { file: 'catalog/changes/index.html', dir: 'catalog/changes/', metaTitleKey: 'catalog.changes.meta.title', metaDescKey: 'catalog.changes.meta.desc' },
 ];
 
@@ -124,6 +125,16 @@ function render(page, source, pageSlots, lang) {
     .replace(/<meta property="og:description" content="[^"]*">/, `<meta property="og:description" content="${desc}">`)
     .replace(/<link rel="canonical" href="[^"]*">/, `<link rel="canonical" href="${canonical}">\n${alternates(page, lang)}`)
     .replace(/<meta property="og:type"/, `<meta property="og:locale" content="${lang}">\n<meta property="og:type"`)
+    // Libelles du bouton de compte, rendus par auth-ui.js a l'execution : ils
+    // echappent donc au remplacement des data-i18n, qui se fait ici sur du
+    // HTML statique. Les injecter ainsi evite de charger les 140 Ko de
+    // i18n.js sur la landing page pour trois mots.
+    .replace(/<script>window\.AUTH_I18N=\{[^}]*\};<\/script>/,
+      `<script>window.AUTH_I18N=${JSON.stringify({
+        signin:  cat['auth.signin']  || 'Sign in',
+        signup:  cat['auth.signup']  || 'Create account',
+        signout: cat['auth.signout'] || 'Sign out'
+      })};</script>`)
     .replace(/data-href="home" href="[^"]*"/g, `data-href="home" href="${home}"`)
     .replace(/data-href="catalog" href="[^"]*"/g, `data-href="catalog" href="${catalogHref}"`)
     .replace(/data-href="leaderboard" href="[^"]*"/g, `data-href="leaderboard" href="${boardHref}"`);

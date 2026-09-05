@@ -496,3 +496,70 @@ footer { border-top: 1px solid var(--border); background: var(--bg2); padding: 4
   font-size: 12px; font-weight: 700; color: #0d1117;
   background: var(--ok);
 }
+
+/* ── Compte du joueur dans la barre du haut ────────────────────────────────
+   Présent sur la landing page, qui est la porte d'entrée où l'on se connecte,
+   et sur les autres pages pour montrer qui est connecté. Une seule session de
+   navigateur, un seul compte Keycloak, valable partout. */
+.nav-account { display: inline-flex; align-items: center; gap: 8px; }
+
+.nav-user {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px 4px 4px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+}
+.nav-user-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  /* Un nom peut faire 24 caractères : sans cette borne il repousserait le
+     sélecteur de thème hors de la barre sur un écran étroit. */
+  max-width: 12ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Avatar DESSINÉ, pas téléversé : initiales sur un disque dont la teinte
+   dérive du nom (--avatar-hue, posée par auth-ui.js). Aucun stockage, aucun
+   service tiers, et un avatar dès la première seconde plutôt qu'une
+   silhouette grise en attendant que le joueur en choisisse un. */
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #fff;
+  background: linear-gradient(135deg,
+      hsl(var(--avatar-hue, 220) 62% 48%),
+      hsl(calc(var(--avatar-hue, 220) + 40) 62% 38%));
+  /* Le texte reste lisible quelle que soit la teinte tirée. */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+  flex: 0 0 auto;
+}
+
+.nav-signout {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+.nav-signout:hover { color: var(--text); background: var(--surface2); }
+
+@media (max-width: 720px) {
+  /* Sur mobile l'avatar suffit à dire qui est connecté, et la barre est déjà
+     serrée. */
+  .nav-user-name { display: none; }
+}

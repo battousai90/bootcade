@@ -202,3 +202,75 @@
 }
 .lb-contribute-card p:first-of-type { margin-top: 0; }
 .lb-contribute-card .lb-cta { margin-top: 24px; }
+
+/* ── Profil du joueur connecté ─────────────────────────────────────────────
+   Masqué par défaut (attribut hidden sur le bloc), révélé par leaderboard.js
+   quand un jeton valide répond. Un visiteur non connecté ne voit donc jamais
+   un cadre vide qui lui demanderait ce qu'il a raté. */
+.lb-profile { margin-top: var(--lb-gap); }
+
+.lb-profile-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 36px;
+}
+.lb-profile-card h2 {
+  margin: 0 0 14px;
+  font-size: clamp(1.7rem, 3.6vw, 2.35rem);
+  letter-spacing: -0.022em;
+  font-weight: 750;
+}
+.lb-profile-hint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1.03rem;
+}
+
+/* Trois chiffres et non quatre comme le bandeau public : le nombre de
+   colonnes est donc fixé ici plutôt qu'hérité, sinon la dernière case
+   resterait vide. */
+.lb-profile-card .lb-totals {
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 24px;
+}
+
+/* Deux cartes seulement : sans cette contrainte, l'auto-fit du .lb-grid
+   général les étalerait en trois colonnes dont une vide. */
+.lb-profile-grid {
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  margin-top: 22px;
+}
+.lb-profile-grid .lb-card h3 {
+  margin: 0 0 14px;
+  font-size: 1.13rem;
+  letter-spacing: -0.012em;
+}
+
+/* ── Page profil ──────────────────────────────────────────────────────────
+   Partage la feuille du leaderboard : mêmes cartes, mêmes listes, mêmes
+   chiffres. Seule l'identité en tête et le bloc Réglages lui sont propres. */
+.pf-identity { display: flex; align-items: center; gap: 20px; }
+.pf-identity h1 { margin: 0; font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -0.03em; }
+.pf-since { margin: 6px 0 0; color: var(--muted); font-size: 0.95rem; }
+
+.avatar-lg {
+  width: 72px;
+  height: 72px;
+  font-size: 1.6rem;
+  border-radius: 50%;
+}
+
+/* Trois chiffres, pas quatre comme le bandeau public. */
+.profile-page .lb-totals { grid-template-columns: repeat(3, 1fr); }
+
+.pf-settings-wrap { margin-top: var(--lb-gap); }
+.pf-setting + .pf-setting { margin-top: 26px; }
+.pf-setting h3 {
+  margin: 0 0 12px;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+}
+/* Les choix s'enroulent : huit langues ne tiennent pas sur une ligne d'écran
+   étroit, et les tronquer cacherait justement celle que le visiteur cherche. */
+.pf-choices { display: flex; flex-wrap: wrap; gap: 10px; }

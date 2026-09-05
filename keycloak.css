@@ -1,0 +1,330 @@
+/* Bootcade : apparence des écrans Keycloak (connexion, inscription, mot de
+ * passe oublié).
+ *
+ * Ce fichier EST le thème. Il vit ici, avec le reste du design du site, et
+ * scripts/deploy-keycloak-theme.sh du dépôt homelab le pousse dans le
+ * conteneur Keycloak.
+ *
+ * Copié et non importé depuis le site : un @import obligeait le site à être
+ * publié ET joignable pour que l'écran de connexion soit correct. On ne
+ * pouvait donc rien voir avant un déploiement Netlify, et la page de connexion
+ * aurait perdu son apparence si Netlify tombait.
+ *
+ * Les gabarits ne sont PAS copiés : Keycloak garde les siens, avec sa logique,
+ * ses traductions et ses messages d'erreur. On ne fait que repeindre. Un
+ * gabarit copié fige la version du jour et casse en silence à la première mise
+ * à jour de Keycloak qui ajoute un champ.
+ *
+ * Keycloak 26 utilise PatternFly v5 (classes pf-v5-*), qui expose ses couleurs
+ * en variables CSS : on les redéfinit plutôt que de lutter à coups de
+ * sélecteurs plus spécifiques, ce qui casserait à la première mise à jour de
+ * PatternFly.
+ */
+
+:root {
+  /* Les mêmes valeurs que style.css, recopiées et non importées : cette page
+     est servie par Keycloak, elle ne charge pas la feuille du site. */
+  --bc-bg:      #0b0f14;
+  --bc-surface: #1b222e;
+  --bc-border:  #2e3849;
+  --bc-text:    #f8fafc;
+  --bc-muted:   #a1a7b3;
+  --bc-accent:  #2563eb;
+  --bc-accent2: #7c3aed;
+  --bc-bad:     #f85149;
+  --bc-sunken:  #070a0e;
+  --bc-surface2:#232b3a;
+
+  /* Variables PatternFly redéfinies : c'est ce qui repeint la majorité de la
+     page sans écrire un seul sélecteur. Les noms ci-dessous ont été relevés
+     dans patternfly.min.css et dans le styles.css de Keycloak, pas devinés :
+     une première version ne redéfinissait que BorderColor--100 et laissait
+     donc tous les champs cerclés de blanc. */
+  --pf-v5-global--BackgroundColor--100: var(--bc-surface);
+  --pf-v5-global--BackgroundColor--200: var(--bc-bg);
+  --pf-v5-global--Color--100:           var(--bc-text);
+  --pf-v5-global--Color--200:           var(--bc-muted);
+  --pf-v5-global--primary-color--100:   var(--bc-accent);
+  --pf-v5-global--link--Color:          var(--bc-accent);
+  --pf-v5-global--danger-color--100:    var(--bc-bad);
+
+  /* LES BORDURES BLANCHES venaient d'ici. PatternFly ne dessine pas ses
+     bordures de champ avec `border` mais avec des pseudo-éléments ::before et
+     ::after, qui tirent tous leur couleur de BorderColor--300. Poser un
+     `border:` sur .pf-v5-c-form-control ne pouvait donc rien changer. */
+  --pf-v5-global--BorderColor--100: var(--bc-border);
+  --pf-v5-global--BorderColor--200: var(--bc-border);
+  --pf-v5-global--BorderColor--300: var(--bc-border);
+
+  /* La palette SOMBRE de PatternFly, ramenee a celle du site. Le thème sombre
+     definit trois fonds (#1b1d21, #212427, #0f1214) : n'en reprendre que deux
+     laissait la console dans son gris d'origine, nettement plus clair que le
+     noir de Bootcade. Les TEXTES, eux, restent ceux du thème sombre : c'est
+     lui qui garantit le contraste, et les redefinir est ce qui les avait
+     rendus illisibles. */
+  --pf-v5-global--BackgroundColor--150: var(--bc-surface);
+  --pf-v5-global--BackgroundColor--300: var(--bc-bg);
+  --pf-v5-global--BackgroundColor--400: var(--bc-surface2);
+  --pf-v5-global--BorderColor--400:     var(--bc-border);
+
+  /* Les autres fonds et les textes ne sont PAS redefinis ici.
+     PatternFly embarque un thème sombre complet et cohérent, active par la
+     classe pf-v5-theme-dark que resources/js/dark.js pose sur la page. Une
+     version precedente redefinissait la famille `light-*` a la main : les
+     fonds devenaient sombres, mais les textes restaient noirs, donc
+     illisibles. Redefinir un theme entier variable par variable revient
+     toujours a en oublier la moitie. */
+
+  /* La carte, et le liseré de 4 px au-dessus d'elle, qui vient du styles.css
+     de Keycloak et non de PatternFly. */
+  --pf-v5-c-login__main--BackgroundColor: var(--bc-surface);
+  --keycloak-card-top-color:              var(--bc-accent);
+
+  /* Champs CLAIRS sur carte sombre, et non l'inverse.
+     Une premiere version les mettait sur le fond enfonce du site : le
+     resultat etait incoherent d'une page a l'autre, parce que la regle de
+     remplissage automatique ne s'applique qu'aux champs deja remplis, donc au
+     login et pas a l'inscription. Un champ clair se voit aussi mieux : il dit
+     ou l'on ecrit. */
+  /* Champs : clairs sur l'ecran de connexion, ou ils sont peu nombreux et
+     doivent sauter aux yeux ; c'est le choix retenu la-bas. */
+  --bc-field:      #f8fafc;
+  --bc-field-text: #0b0f14;
+  --pf-v5-c-form-control--BackgroundColor:      var(--bc-field);
+  --pf-v5-c-form-control--Color:                var(--bc-field-text);
+  --pf-v5-c-button--m-control--BackgroundColor: var(--bc-field);
+  --pf-v5-c-button--m-control--Color:           var(--bc-field-text);
+}
+
+/* ── La page ─────────────────────────────────────────────────────────────── */
+body,
+.login-pf,
+.login-pf body {
+  background: var(--bc-bg);
+  color: var(--bc-text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+/* La lueur du hero du site, reprise à l'identique pour que l'écran de
+   connexion appartienne visiblement au même produit. */
+body[data-page-id^="login"]::before {
+  content: "";
+  position: fixed;
+  /* Offset en PIXELS : un pourcentage se calcule sur la hauteur de la
+     fenetre, donc le halo descendait quand on ouvrait le volet de
+     debogage ou qu'on reduisait la fenetre. */
+  top: -300px;
+  left: 50%;
+  width: 1100px;
+  height: 700px;
+  transform: translateX(-50%);
+  background: radial-gradient(closest-side, rgba(124, 107, 255, 0.20), transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+.login-pf-page { position: relative; z-index: 1; }
+
+/* ── La carte ────────────────────────────────────────────────────────────── */
+.card-pf,
+.pf-v5-c-login__main {
+  background: var(--bc-surface);
+  border: 1px solid var(--bc-border);
+  border-radius: 16px;
+  box-shadow: 0 20px 50px -30px rgba(0, 0, 0, 0.9);
+}
+
+#kc-header-wrapper,
+.pf-v5-c-login__header {
+  color: var(--bc-text);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* ── Champs ──────────────────────────────────────────────────────────────── */
+/* Le fond et les bordures sont pilotes par les variables plus haut. Il reste
+   la couleur du texte saisi, que PatternFly herite du parent, et l'anneau de
+   focus, plus lisible qu'un simple changement de bordure. */
+.pf-v5-c-form-control,
+.pf-v5-c-form-control > input,
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+  color: var(--bc-field-text);
+  border-radius: 8px;
+}
+.pf-v5-c-form-control:focus-within {
+  outline: 2px solid rgba(37, 99, 235, 0.45);
+  outline-offset: 1px;
+}
+
+/* Le remplissage automatique du navigateur impose un fond jaune vif qui jure
+   avec tout le reste. Seul ce -webkit-autofill le neutralise : une simple
+   regle `background` est ignoree. */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--bc-field-text);
+  -webkit-box-shadow: 0 0 0 1000px var(--bc-field) inset;
+  caret-color: var(--bc-field-text);
+}
+
+.pf-v5-c-form__label,
+.pf-v5-c-form__label-text,
+label { color: var(--bc-muted); }
+
+/* ── Boutons ─────────────────────────────────────────────────────────────── */
+/* Le bouton principal reprend le dégradé des boutons d'action du site. */
+.pf-v5-c-button.pf-m-primary,
+input[type="submit"].pf-m-primary,
+#kc-login {
+  background: linear-gradient(135deg, var(--bc-accent), var(--bc-accent2));
+  border: 0;
+  border-radius: 10px;
+  color: #fff;
+  font-weight: 600;
+}
+.pf-v5-c-button.pf-m-primary:hover,
+#kc-login:hover { filter: brightness(1.08); }
+
+.pf-v5-c-button.pf-m-secondary,
+.pf-v5-c-button.pf-m-link {
+  color: var(--bc-accent);
+  background: transparent;
+}
+
+a, a:visited { color: var(--bc-accent); }
+a:hover { color: var(--bc-accent2); }
+
+/* ── Messages ────────────────────────────────────────────────────────────── */
+.pf-v5-c-alert,
+.alert {
+  background: var(--bc-surface);
+  border: 1px solid var(--bc-border);
+  border-radius: 10px;
+  color: var(--bc-text);
+}
+.pf-v5-c-alert.pf-m-danger,
+.alert-error { border-color: var(--bc-bad); }
+
+/* ── Pied de page ────────────────────────────────────────────────────────── */
+#kc-info,
+.pf-v5-c-login__main-footer,
+#kc-registration,
+#kc-registration-container { color: var(--bc-muted); }
+
+/* ── Console de compte : mode sombre impose ───────────────────────────────
+   L'interface React de la console suit la preference du systeme d'exploitation
+   (classe pf-v5-theme-dark posee ou non). Le site, lui, est sombre par defaut :
+   un joueur sous un systeme en clair passait donc d'une page sombre a une page
+   blanche en cliquant « Gerer mon compte », ce qui donne l'impression d'avoir
+   quitte le produit.
+   Les memes variables sont donc redeclarees sans condition, et pas seulement
+   sous .pf-v5-theme-dark. */
+/* Seule la barre du haut est ramenee au noir du site : le gris du theme
+   sombre de PatternFly se voit nettement a cote de l'en-tete de Bootcade. */
+.pf-v5-c-masthead { background-color: var(--bc-bg); }
+
+/* Le logo de la barre : cale sur une hauteur lisible, l'original du site est
+   dessine pour une pastille et non pour une barre de navigation. */
+.pf-v5-c-masthead__brand img,
+.pf-v5-c-brand { max-height: 32px; width: auto; }
+
+
+/* ── Console de compte : structure reelle ─────────────────────────────────
+   Relevee dans l'inspecteur du navigateur, pas deduite du bundle :
+
+     body
+       .pf-v5-c-page
+         header.pf-v5-c-masthead
+         #page-sidebar.pf-v5-c-page__sidebar
+         main.pf-v5-c-page__main
+           section.pf-v5-c-page__main-section.pf-m-light   <- peint par-dessus
+             form.pf-v5-c-form.pf-m-horizontal             <- LA carte
+
+   Le coupable etait `pf-m-light` : ce modificateur pose un fond clair sur les
+   sections, qui couvrent toute la zone de contenu et recouvrent le halo. Et
+   il n'existe aucun conteneur `__main-body` ici, contrairement a ce que la
+   lecture du bundle m'avait laisse croire. */
+
+body { background-color: var(--bc-bg) !important; }
+
+/* Tout ce qui recouvrait ce fond devient transparent, sections `pf-m-light`
+   comprises : c'est ce qui laisse enfin voir le halo. */
+.pf-v5-c-page,
+.pf-v5-c-page__main,
+.pf-v5-c-page__main-section,
+.pf-v5-c-page__main-section.pf-m-light,
+.pf-v5-c-page__sidebar,
+.pf-v5-c-page__sidebar-body {
+  background-color: transparent !important;
+  position: relative;
+  z-index: 1;
+}
+
+/* Seule la barre du haut garde un fond plein, comme celle du site.
+   Elle ne tire PAS sa couleur du fond global mais d'une palette dediee
+   (`--pf-v5-global--palette--black-1000`, relevee dans l'inspecteur) : c'est
+   la derniere difference de teinte qui subsistait avec le reste de la page. */
+.pf-v5-c-masthead { background-color: var(--bc-bg) !important; }
+:root,
+:where(.pf-v5-theme-dark):root {
+  --pf-v5-global--palette--black-1000:           var(--bc-bg);
+  --pf-v5-c-page__header--BackgroundColor:       var(--bc-bg);
+  --pf-v5-c-masthead--BackgroundColor:           var(--bc-bg);
+  --pf-v5-c-page__sidebar--BackgroundColor:      var(--bc-bg);
+  --pf-v5-c-page__main-section--BackgroundColor: transparent;
+}
+
+/* LA CARTE : le formulaire lui-meme. */
+form.pf-v5-c-form,
+.pf-v5-c-card,
+.pf-v5-c-panel,
+.pf-v5-c-data-list__item {
+  background-color: var(--bc-surface) !important;
+  border: 1px solid var(--bc-border);
+  border-radius: 14px;
+  padding: 28px;
+}
+
+/* Champs blancs, exactement comme sur l'ecran de connexion. */
+.pf-v5-c-form-control,
+.pf-v5-c-form-control > input,
+.pf-v5-c-page input[type="text"],
+.pf-v5-c-page input[type="email"],
+.pf-v5-c-page input[type="password"] {
+  background-color: var(--bc-field) !important;
+  color: var(--bc-field-text) !important;
+}
+
+/* ── Lignes de separation ─────────────────────────────────────────────────
+   Le menu de gauche et les listes portent des filets clairs herites de
+   PatternFly. Sur un fond noir ils ressortent comme des rayures et decoupent
+   la page au lieu de la structurer. */
+.pf-v5-c-nav__link::before,
+.pf-v5-c-nav__link::after,
+.pf-v5-c-nav__item::before,
+.pf-v5-c-nav__item::after,
+.pf-v5-c-jump-links__list::before,
+.pf-v5-c-jump-links__item::before,
+.pf-v5-c-jump-links__link::before { border: 0 !important; background: none !important; }
+
+/* Le trait vertical du sommaire « Jump to section ». */
+.pf-v5-c-jump-links.pf-m-vertical .pf-v5-c-jump-links__list {
+  border-inline-start: 0 !important;
+}
+
+/* Les filets des listes et des tableaux. */
+.pf-v5-c-data-list__item,
+.pf-v5-c-data-list,
+.pf-v5-c-table tbody tr,
+.pf-v5-c-table thead tr,
+.pf-v5-c-page__main-section { border: 0 !important; box-shadow: none !important; }
+
+/* Le filet vertical entre le menu de gauche et le contenu : meme raison que
+   les autres, il decoupe la page au lieu de la structurer. */
+.pf-v5-c-page__sidebar,
+.pf-v5-c-page__sidebar-body,
+.pf-v5-c-page__main {
+  border: 0 !important;
+  box-shadow: none !important;
+}

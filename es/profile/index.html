@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bootcade : Perfil</title>
+<meta name="description" content="Tus puntuaciones, tus juegos, tu tiempo de juego y tus preferencias de pantalla.">
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/leaderboard/leaderboard.css?v=25">
+<link rel="canonical" href="https://bootcade.netlify.app/es/profile/">
+<link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/profile/">
+<link rel="alternate" hreflang="fr" href="https://bootcade.netlify.app/fr/profile/">
+<link rel="alternate" hreflang="es" href="https://bootcade.netlify.app/es/profile/">
+<link rel="alternate" hreflang="de" href="https://bootcade.netlify.app/de/profile/">
+<link rel="alternate" hreflang="pt" href="https://bootcade.netlify.app/pt/profile/">
+<link rel="alternate" hreflang="ja" href="https://bootcade.netlify.app/ja/profile/">
+<link rel="alternate" hreflang="zh" href="https://bootcade.netlify.app/zh/profile/">
+<link rel="alternate" hreflang="th" href="https://bootcade.netlify.app/th/profile/">
+<link rel="alternate" hreflang="x-default" href="https://bootcade.netlify.app/profile/">
+
+<meta property="og:locale" content="es">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Bootcade : Perfil">
+<meta property="og:description" content="Tus puntuaciones, tus juegos, tu tiempo de juego y tus preferencias de pantalla.">
+<meta property="og:image" content="https://bootcade.netlify.app/og.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<script>
+(function () {
+  try {
+    var m = localStorage.getItem('fbneo-theme');
+    if (m === 'light' || m === 'dark') document.documentElement.dataset.theme = m;
+  } catch (e) {}
+})();
+</script>
+</head>
+<body class="lb-page profile-page">
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" data-href="home" href="/es/" style="color:inherit">
+      <img src="/logo.svg" alt="">
+      <span>Bootcade<small data-i18n="brand.sub">Biblioteca arcade para Linux</small></span>
+    </a>
+    <nav class="nav-links">
+      <a data-href="home" href="/es/" data-i18n="catalog.back">← Volver a Bootcade</a>
+        <a data-href="catalog" href="/es/catalog/" data-i18n="nav.catalog">Catálogo</a>
+      <a data-href="leaderboard" href="/es/leaderboard/" data-i18n="nav.leaderboard">Clasificación</a>
+      <span class="nav-account" id="nav-account"></span>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap lb-head">
+    <!-- Rempli par profile.js : avatar, nom et date d'inscription. Vide par
+         defaut, parce qu'on ne sait pas encore qui regarde. -->
+    <div id="pf-identity"></div>
+    <p class="lb-status" id="pf-status" hidden></p>
+    <div class="lb-totals" id="pf-totals"></div>
+  </div>
+
+  <div class="wrap lb-boards">
+    <div class="lb-grid">
+      <section class="lb-card">
+        <h2 data-i18n="lb.profile.scores">Tus puntuaciones</h2>
+        <div id="pf-scores"></div>
+      </section>
+      <section class="lb-card">
+        <h2 data-i18n="lb.profile.games">Tus juegos</h2>
+        <div id="pf-games"></div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Reglages : c'est ici que vivent le theme et la langue une fois connecte,
+       plutot que dans la barre du haut. -->
+  <div class="wrap pf-settings-wrap">
+    <div class="lb-profile-card">
+      <h2 data-i18n="pf.settings.h2">Ajustes</h2>
+      <p class="lb-profile-hint" data-i18n="pf.settings.hint">Se guardan en este navegador, no en tu cuenta: otra máquina conserva los suyos.</p>
+      <div class="pf-settings" id="pf-settings"></div>
+    </div>
+  </div>
+</main>
+
+<script src="/i18n.js"></script>
+<script src="/app.js"></script>
+<script src="/auth.js"></script>
+<script src="/auth-ui.js"></script>
+<script src="/profile/profile.js?v=1"></script>
+</body>
+</html>
