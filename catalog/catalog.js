@@ -1,7 +1,8 @@
 /* Bootcade : game catalog.
  *
- * Static page, dynamic data: catalog-data.json and manifest.json are built
- * from the published FBNeo DAT files and fetched cross-origin from here.
+ * Static page, dynamic data: catalog-data.json is built from the published
+ * FBNeo DAT files and fetched cross-origin from here; it carries everything
+ * this page shows, the DAT panel included.
  * This file never talks to any backend of its own : it only filters and
  * renders data already sitting in memory.
  *
@@ -25,7 +26,6 @@
   'use strict';
 
   var DATA_URL = 'https://files.bootcade.duckdns.org/dat/catalog-data.json';
-  var MANIFEST_URL = 'https://files.bootcade.duckdns.org/dat/manifest.json';
   var CHANGES_URL = 'https://files.bootcade.duckdns.org/dat/changes.json';
   var ART_BASE = 'https://files.bootcade.duckdns.org/artwork/';
   var DAT_BASE = 'https://files.bootcade.duckdns.org/dat/';
@@ -568,7 +568,11 @@
   bindFacetSearch();
 
   // ── DAT files panel ────────────────────────────────────────────────────────
-  function buildDatList(manifestByFile) {
+  // Fed by catalog-data.json's own `dats` section : the site reads nothing
+  // from the launcher's download manifest, which is another contract.
+  function buildDatList(dats) {
+    var manifestByFile = {};
+    (dats || []).forEach(function (m) { manifestByFile[m.name] = m; });
     var bySystem = {};
     GAMES.forEach(function (g) { if (!bySystem[g.s]) bySystem[g.s] = g.f; });
     var systems = Object.keys(bySystem).sort();
@@ -631,17 +635,9 @@
       buildFacet(els.orientations, function (g) { return g.or; }, activeOrientations, true);
       applyFilters();
 
-      // Separate failure domain on purpose: the DAT panel is a bonus, not
-      // the catalog itself : losing it must not blank the "N games" count
-      // and error out a page that otherwise loaded fine.
-      fetch(MANIFEST_URL)
-        .then(function (r) { return r.ok ? r.json() : []; })
-        .then(function (manifest) {
-          var byFile = {};
-          (manifest || []).forEach(function (m) { byFile[m.name] = m; });
-          buildDatList(byFile);
-        })
-        .catch(function () { /* DAT panel just stays empty */ });
+      // The DAT panel is a bonus, not the catalog itself : an older
+      // catalog-data.json without `dats` just leaves it empty.
+      try { buildDatList(d.dats); } catch (e) { /* DAT panel just stays empty */ }
 
       // And again for the score service, which lives on another host
       // entirely: unreachable, the catalog simply shows no leaderboards.
