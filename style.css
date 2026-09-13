@@ -453,7 +453,12 @@ footer { border-top: 1px solid var(--border); background: var(--bg2); padding: 4
 @media (max-width: 860px) {
   .mock-body { grid-template-columns: 1fr; }
   .mock-side { display: none; }
-  .nav-links a:not(.btn) { display: none; }
+  /* Seules les ANCRES s'effacent : leur section reste atteignable en faisant
+     defiler la page, rien n'est perdu. Catalog, Leaderboard et le profil sont
+     des PAGES distinctes, que le defilement ne remplace pas : les masquer les
+     rendait purement inaccessibles depuis un telephone, et le badge de compte
+     disparaissait avec eux puisqu'il s'injecte comme un lien. */
+  .nav-links a[href^="#"] { display: none; }
   .hero { padding: 60px 0 52px; }
   section { padding: 58px 0; }
 }
@@ -466,6 +471,25 @@ footer { border-top: 1px solid var(--border); background: var(--bg2); padding: 4
 @media (max-width: 470px) {
   #lang-name { display: none; }          /* flag alone still identifies the language */
   .lang-btn { padding: 6px 8px; gap: 5px; }
+  /* Le nom du compte tombe deja a 720 px : ici on resserre ce qui reste, pour
+     que Catalog, Leaderboard et le bouton de compte tiennent ensemble.
+     Le mot « Bootcade » s'efface au profit du logo, qui suffit a identifier
+     le site : le garder poussait le bouton de connexion hors de l'ecran. */
+  .brand span { display: none; }
+  .nav-links { gap: 0; }
+  .nav-links a { padding-left: 7px; padding-right: 7px; font-size: 0.92em; }
+  /* La barre debordait de quelques pixels et rognait le bouton de compte,
+     tout a droite : on rend au conteneur la marge qu'il prenait. */
+  .wrap { padding: 0 12px; }
+  .nav-links .btn { padding: 9px 10px; font-size: 13.5px; }
+}
+
+/* Sous 380 px il faut trancher : Catalog, Leaderboard et le compte passent
+   avant le choix de la langue. Le site detecte deja la langue du navigateur,
+   et chaque traduction garde son adresse propre, /fr/ par exemple : rien
+   n'est perdu, seul le raccourci disparait. */
+@media (max-width: 380px) {
+  .lang-picker { display: none; }
 }
 
 @media (max-width: 520px) {
@@ -563,3 +587,6 @@ footer { border-top: 1px solid var(--border); background: var(--bg2); padding: 4
      serrée. */
   .nav-user-name { display: none; }
 }
+
+/* Appel a l'action en fin de section : centre, detache du dernier bloc. */
+.section-cta { margin: 28px 0 0; text-align: center; }

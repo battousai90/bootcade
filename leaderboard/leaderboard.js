@@ -69,10 +69,13 @@
   }
 
   function gameLink(row) {
-    // Le catalogue sait déjà présenter un jeu : la page renvoie vers lui plutôt
-    // que de redire ce qu'il dit mieux.
-    var href = (LANG === 'en' ? '/catalog/' : '/' + LANG + '/catalog/')
-             + '?q=' + encodeURIComponent(row.game);
+    // Chaque jeu classé a maintenant sa page : classement complet, record,
+    // et sa propre place pour qui est connecté. Le lien y va plutôt que vers
+    // une recherche dans le catalogue, qui répondait à côté de la question
+    // posée par un nom de jeu dans un classement : « qui d'autre y joue ».
+    var base = LANG === 'en' ? '/leaderboard/game/' : '/' + LANG + '/leaderboard/game/';
+    var href = base + '?s=' + encodeURIComponent(row.system || '')
+             + '&n=' + encodeURIComponent(row.game);
     return '<a href="' + href + '">' + esc(row.title || row.game) + '</a>';
   }
 

@@ -1,0 +1,569 @@
+/* Bootcade : page d'un jeu.
+ *
+ * Ne redefinit ni couleurs ni typographie : tout vient des variables de
+ * style.css, et les cartes sont celles du classement (.lb-card). Ce fichier
+ * ne decrit QUE ce qui n'existe nulle part ailleurs : l'entete du jeu, les
+ * onglets, et la grille du tableau.
+ */
+
+/* Un ecran de 1440 px de haut doit porter la page entiere quand le
+   classement est court : entete du site, fil d'Ariane, fiche du jeu,
+   onglets, scores publies et toute la colonne de droite. Ce qui se regle
+   ici est l'espacement, jamais la taille du texte. */
+.gp-page main { padding: 18px 0 40px; }
+
+/* `hidden` doit gagner. Une declaration `display` dans une classe l'emporte
+   sur la regle `[hidden] { display: none }` du navigateur, qui n'a aucune
+   specificite : l'entete et la pagination restaient donc visibles, vides,
+   avant meme que le service ait repondu. */
+.gp-page [hidden] { display: none !important; }
+
+/* ── Fil d'Ariane ────────────────────────────────────────────────────── */
+
+.gp-crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 12px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+.gp-crumbs a { color: var(--muted); text-decoration: none; }
+.gp-crumbs a:hover { color: var(--text); text-decoration: underline; }
+.gp-crumbs i { font-style: normal; opacity: 0.55; }
+.gp-crumbs span { color: var(--text); font-weight: 600; }
+
+/* Un message d'etat porte sa gravite : « le service n'a pas repondu » et
+   « seul le classement manque » ne se lisent pas de la meme facon. */
+.gp-page .lb-status-bad {
+  border-color: color-mix(in srgb, var(--bad) 45%, var(--border));
+  color: var(--bad);
+}
+.gp-page .lb-status-warn {
+  border-color: color-mix(in srgb, var(--warn) 45%, var(--border));
+  color: var(--warn);
+}
+
+/* ── Entete ──────────────────────────────────────────────────────────── */
+
+/* Zone haute : le jeu a gauche, sa fiche de service a droite. Deux cartes
+   cote a cote plutot qu'une colonne de plus dans la premiere : la fiche a
+   son propre etat (« pris en charge »), et l'empiler sous l'image faisait
+   descendre tout le reste hors de l'ecran. */
+/* Les deux rangees (fiche du jeu + fiche de service, puis classement +
+   colonne de droite) partagent la meme colonne de droite et le meme
+   ecart : ce qui est a droite en haut est aligne avec ce qui est a droite
+   en bas, quelle que soit la fenetre. Une seule paire de variables a
+   changer, jamais deux grilles a garder d'accord a la main. */
+.gp-dash { --gp-side: 360px; --gp-gap: 16px; }
+.gp-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--gp-side);
+  gap: var(--gp-gap);
+  margin: 0 0 16px;
+  /* style.css:270 pose `section { padding: 88px 0 }` sur TOUT element
+     section : ces 176 px invisibles etaient le vide entre le fil d'Ariane et
+     la fiche du jeu, puis entre la fiche et les onglets. */
+  padding: 0;
+}
+.gp-hero {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 22px;
+  align-items: start;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+}
+
+/* L'illustration est une capture d'ecran d'arcade : ratio libre, fond sombre
+   pour que les bords noirs des jeux verticaux ne flottent pas dans le vide. */
+.gp-art {
+  background: var(--sunken);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Une capture d'arcade est verticale aussi souvent qu'horizontale. La
+     hauteur minimale tient les deux sans que la grille saute d'un jeu a
+     l'autre, et la carte de droite garde son alignement. */
+  min-height: 150px;
+  max-height: 186px;
+  box-shadow: 0 10px 30px -18px var(--shadow);
+}
+/* `contain` et non une hauteur libre : une capture verticale ne doit pas
+   pousser toute la grille vers le bas pour rester entiere. */
+.gp-art img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-height: 186px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+/* Pas d'artwork : la case garde sa place plutot que de faire sauter la
+   grille, mais dit qu'elle est vide au lieu de rester noire. */
+.gp-art-empty::after {
+  content: '';
+  width: 46px; height: 46px;
+  border-radius: 8px;
+  border: 2px dashed var(--border);
+}
+
+.gp-ident h1 {
+  margin: 0 0 4px;
+  font-size: clamp(1.6rem, 2.2vw, 1.95rem);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+}
+.gp-rom {
+  margin: 0 0 12px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+/* Les pastilles du mockup : la valeur seule, sans etiquette. Le systeme
+   porte l'accent du site et le genre le vert du service ; les trois autres
+   restent neutres. Le detail etiquete vit dans la fiche, a droite. */
+.gp-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 12px; }
+.gp-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 13px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface2);
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+.gp-chip-sys {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+.gp-chip-genre {
+  color: var(--ok);
+  border-color: color-mix(in srgb, var(--ok) 45%, var(--border));
+  background: color-mix(in srgb, var(--ok) 12%, transparent);
+}
+.gp-desc {
+  margin: 0 0 16px;
+  color: var(--muted);
+  font-size: 1.01rem;
+  line-height: 1.6;
+  max-width: 62ch;
+}
+.gp-actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 0; }
+
+/* La carte « classe / pas classe ». La couleur porte l'information, le texte
+   la repete : un daltonien lit la meme chose. */
+.gp-support {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  background: var(--surface);
+}
+/* Entete de la carte : l'icone a gauche, le nom et l'etat a droite. */
+.gp-sup-head { display: flex; align-items: flex-start; gap: 12px; }
+.gp-sup-ico {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px; height: 34px;
+  flex: none;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  color: var(--accent);
+}
+.gp-sup-ico svg { width: 18px; height: 18px; }
+.gp-support h2 {
+  margin: 0;
+  font-size: 1.02rem;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+.gp-sup-state { margin: 2px 0 0; font-size: 0.92rem; font-weight: 600; }
+
+/* La fiche technique, en tableau borde comme au mockup. */
+.gp-meta {
+  width: 100%;
+  margin: 10px 0 0;
+  border-collapse: collapse;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 0.88rem;
+}
+.gp-meta th,
+.gp-meta td {
+  padding: 3px 12px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+.gp-meta tr:last-child th,
+.gp-meta tr:last-child td { border-bottom: none; }
+.gp-meta th {
+  width: 45%;
+  font-weight: 500;
+  color: var(--muted);
+  background: var(--surface2);
+  border-right: 1px solid var(--border);
+}
+.gp-meta td { font-weight: 600; }
+.gp-support-yes .gp-sup-state { color: var(--ok); }
+.gp-support-no  .gp-sup-state { color: var(--muted); }
+.gp-support-paused .gp-sup-state { color: var(--warn); }
+.gp-sup-note { margin: 0; font-size: 0.86rem; line-height: 1.45; color: var(--muted); }
+.gp-sup-warn { margin: 10px 0 0; font-size: 0.84rem; line-height: 1.5; color: var(--warn); }
+
+/* ── Deux colonnes ───────────────────────────────────────────────────── */
+
+.gp-cols {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--gp-side);
+  gap: var(--gp-gap);
+  align-items: start;
+}
+/* Colonne de droite dense : trois cartes doivent tenir dans la meme
+   hauteur que le classement, sans reduire un seul corps de texte. Tout ce
+   qui est repris ici l'est sur les marges et les paddings. */
+.gp-side { display: grid; gap: 12px; }
+.gp-side .lb-card { padding: 14px 16px; }
+.gp-side .lb-card h2 { margin-bottom: 8px; }
+  .gp-side .lb-card h2,
+  .gp-panel h2 { display: flex; align-items: center; gap: 9px; }
+
+/* ── Onglets ─────────────────────────────────────────────────────────── */
+
+.gp-tabs {
+  display: flex;
+  gap: 6px;
+  margin: 0 0 10px;
+  overflow-x: auto;
+}
+.gp-tab {
+  appearance: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 9px 16px;
+  font: inherit;
+  font-size: 0.94rem;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.gp-tab { display: inline-flex; align-items: center; gap: 8px; }
+.gp-tab-ico { display: inline-flex; }
+.gp-tab-ico svg { width: 15px; height: 15px; }
+/* Icone de titre de carte : meme role que celle de la fiche, en plus petit.
+   Sans taille explicite, un SVG en ligne prend 300x150 par defaut. */
+.gp-card-ico { display: inline-flex; color: var(--accent); }
+.gp-card-ico svg { width: 15px; height: 15px; }
+.gp-tab:hover { color: var(--text); background: var(--tint); }
+/* Meme dégradé que .btn-accent : c'est LA couleur d'un element actif sur ce
+   site. Un onglet gris sur fond gris ne se distinguait pas des deux autres. */
+.gp-tab-on {
+  color: #fff;
+  background-image: linear-gradient(to bottom, var(--accent2), var(--accent));
+  border-color: transparent;
+  box-shadow: 0 8px 22px -12px rgba(124, 107, 255, 0.75);
+}
+.gp-tab-on:hover { color: #fff; background-image: linear-gradient(to bottom, var(--accent2), var(--accent2)); }
+.gp-panel { padding: 16px 22px; }
+
+/* ── Tableau ─────────────────────────────────────────────────────────── */
+
+.gp-board { list-style: none; margin: 0; padding: 0; }
+/* Hauteur de ligne confortable : une borne se lit de loin. Dix lignes de
+   56 px donnent au bloc la presence qu'il doit avoir des le premier score,
+   et la meme exactement quand ils seront cinquante. */
+.gp-row {
+  display: grid;
+  grid-template-columns: 4rem minmax(0, 1fr) 8.5rem 7rem 6rem;
+  align-items: center;
+  gap: 12px;
+  min-height: 46px;
+  padding: 4px 10px;
+  border-radius: 10px;
+  border-bottom: 1px solid var(--tint-line);
+}
+.gp-row:last-child { border-bottom: none; }
+.gp-row:not(.gp-head):not(.gp-free):hover { background: var(--tint); }
+.gp-head {
+  min-height: 0;
+  padding-bottom: 8px;
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+}
+/* Sa propre ligne, reperable sans la chercher : c'est la seule question que
+   se pose un joueur devant un classement. */
+.gp-row-me {
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  outline: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+}
+
+.gp-rank { display: flex; align-items: center; gap: 8px; }
+.gp-medal { font-size: 1.25rem; line-height: 1; }
+.gp-rank-n { color: var(--muted); font-variant-numeric: tabular-nums; }
+.gp-row:not(.gp-head) .gp-rank-n { font-weight: 700; color: var(--text); }
+
+.gp-who { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.gp-avatar { width: 34px; height: 34px; font-size: 0.8rem; flex: none; }
+img.gp-avatar { border-radius: 10px; }
+.gp-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+.gp-flag { flex: none; font-size: 1.05rem; }
+.gp-score {
+  font-weight: 700;
+  font-size: 1.05rem;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.gp-head .gp-score { font-weight: inherit; font-size: inherit; }
+.gp-date { color: var(--muted); font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+.gp-val  { color: var(--muted); font-size: 0.84rem; }
+
+/* Places libres. Elles ne portent AUCUNE donnee : ni score, ni date, ni
+   pays. Elles montrent la borne telle qu'elle sera, et rien de plus. */
+.gp-free { color: var(--muted); }
+.gp-free .gp-rank-n { font-weight: 400; opacity: 0.7; }
+.gp-free .gp-name { font-weight: 500; letter-spacing: 0.12em; opacity: 0.55; }
+.gp-avatar-free {
+  background: none;
+  border: 1px dashed var(--border);
+  opacity: 0.75;
+}
+
+/* Sans colonne « validation », les quatre autres se repartissent la largeur :
+   un en-tete seul au-dessus de cellules vides se lit comme une panne. */
+.gp-noval .gp-val { display: none; }
+.gp-noval .gp-row { grid-template-columns: 4rem minmax(0, 1fr) 8.5rem 7rem; }
+
+.gp-board-note {
+  margin: 18px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.gp-pager {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex: none;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+.gp-pager-count { color: var(--muted); font-size: 0.86rem; }
+.gp-pages { display: flex; align-items: center; gap: 4px; }
+/* NOM DISTINCT DE `.gp-page`, qui est la classe du <body> de cette page.
+   Nommer le bouton de pagination `.gp-page` appliquait au body entier le
+   `font: inherit` du bouton (d'ou une typographie Times a la place de celle
+   du site) et son `background: var(--surface)` (d'ou des cartes qui ne se
+   detachaient plus du fond). */
+.gp-pagebtn {
+  appearance: none;
+  min-width: 30px;
+  padding: 5px 9px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.gp-pagebtn:hover { border-color: var(--accent); }
+.gp-pagebtn-on {
+  background-image: linear-gradient(to bottom, var(--accent2), var(--accent));
+  border-color: transparent;
+  color: #fff;
+}
+.gp-pagebtn[disabled] { opacity: 0.45; pointer-events: none; }
+.gp-pagebtn-gap { color: var(--muted); padding: 0 2px; }
+
+/* ── Colonne de droite ───────────────────────────────────────────────── */
+
+/* Le joueur d'abord, ses chiffres ensuite : sur un tableau de cinquante
+   noms, cette carte repond a « ou suis-je », ce qui commence par « qui ». */
+.gp-you-id { display: flex; align-items: center; gap: 12px; margin: 0 0 10px; }
+.gp-you-avatar { width: 42px; height: 42px; font-size: 1rem; flex: none; }
+img.gp-you-avatar { border-radius: 12px; }
+.gp-you-who { min-width: 0; }
+.gp-you-who b { display: block; font-size: 1.05rem; overflow: hidden; text-overflow: ellipsis; }
+.gp-you-country { color: var(--muted); font-size: 0.88rem; }
+
+.gp-you-figures { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+.gp-you-score {
+  font-size: 1.7rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--warn);          /* l'or du mockup, pris dans les jetons du site */
+}
+.gp-you-badge {
+  flex: none;
+  padding: 4px 11px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--ok) 18%, transparent);
+  color: var(--ok);
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+.gp-you-when {
+  margin: 10px 0 0;
+  padding-top: 8px;
+  border-top: 1px solid var(--tint-line);
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+.gp-you-cta { margin: 12px 0 0; }
+
+.gp-stats { list-style: none; margin: 0; padding: 0; }
+.gp-stats li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--tint-line);
+}
+.gp-stats li:last-child { border-bottom: none; }
+.gp-stat-k { color: var(--muted); font-size: 0.9rem; }
+.gp-stat-v { font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
+.gp-info-note { margin: 16px 0 0; color: var(--muted); font-size: 0.86rem; line-height: 1.5; }
+
+/* Contenu secondaire : ni bordures de separation, ni hauteur de carte
+   principale. Il rend service sans reclamer l'attention. */
+.gp-side-links { padding: 12px 16px; }
+.gp-links { list-style: none; margin: 0; padding: 0; }
+.gp-links li { padding: 2px 0; }
+.gp-links a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.9rem;
+}
+.gp-links a svg { width: 13px; height: 13px; flex: none; opacity: 0.55; }
+.gp-links a:hover svg { opacity: 1; }
+
+/* ── Tableau de bord ─────────────────────────────────────────────────────
+   Au-dessus d'une certaine fenetre, la page cesse d'etre une suite de
+   sections empilees et devient un ecran : la hauteur disponible est LA
+   contrainte, et c'est la zone du classement qui absorbe ce qui reste. Le
+   nombre de lignes par page est calcule sur cette hauteur (voir fitRows
+   dans game.js), donc l'arrivee de nouveaux scores rallonge la pagination,
+   jamais la page.
+
+   En dessous du seuil, le flux normal reprend et la page defile comme
+   n'importe quelle page. Ce seuil est mesure, pas choisi : sous 1000 px de
+   hauteur de fenetre, la colonne de droite ne tient plus meme repliee sur
+   deux colonnes, et un tableau de bord dont une carte est coupee est pire
+   qu'une page qui defile. */
+@media (min-width: 1024px) and (min-height: 1000px) {
+  html { height: 100%; }
+  body.gp-page {
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .gp-page > header { flex: none; }
+  .gp-page main {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    padding: 14px 0 16px;
+  }
+  .gp-page main > .wrap { display: flex; flex: 1; min-height: 0; }
+
+  .gp-dash { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+  .gp-crumbs, .gp-top, .gp-page .lb-status { flex: none; }
+  .gp-crumbs { margin: 0 0 10px; }
+  .gp-top { margin: 0 0 14px; }
+
+  .gp-cols { flex: 1 1 auto; min-height: 0; align-items: stretch; }
+  .gp-main { display: flex; flex-direction: column; min-height: 0; }
+  /* La carte suit son contenu et ne depasse jamais la place disponible :
+     un score donne une carte d'une ligne, et le nombre de lignes par page
+     est calcule sur cette place (fitRows), pas sur la carte. */
+  .gp-panel { flex: 0 1 auto; min-height: 0; max-height: 100%; display: flex; flex-direction: column; }
+  /* Le tableau ne defile pas : ce qui ne tient pas part a la page suivante.
+     C'est la difference entre un tableau de bord et une page web. */
+  #gp-board { min-height: 0; overflow: hidden; }
+  #gp-panel-mine, #gp-panel-info { overflow: auto; }
+
+  /* Soupape : si la fenetre est vraiment courte, la colonne de droite
+     defile SEULE plutot que d'emmener la page entiere avec elle. */
+  .gp-side { min-height: 0; overflow: auto; align-content: start; }
+}
+
+/* ── Fenetre basse, ecran large ────────────────────────────────────────
+   Mesure a l'appui : sur une fenetre de 1080 px de haut, la colonne de
+   droite reclame 755 px pour 638 disponibles. Elle ne tient plus en une
+   seule file. La place manquante n'est pas verticale : elle est horizontale, et
+   elle est libre. La colonne s'elargit donc, et ses listes passent sur
+   deux colonnes plutot que de rapetisser le texte. */
+@media (min-width: 1180px) and (max-height: 1200px) {
+  .gp-dash { --gp-side: clamp(400px, 34vw, 460px); }
+  .gp-stats { display: grid; grid-template-columns: 1fr 1fr; column-gap: 20px; }
+  .gp-art { max-height: 150px; }
+  .gp-art img { max-height: 150px; }
+  .gp-side { gap: 8px; }
+  .gp-side .lb-card { padding: 10px 13px; }
+  .gp-side-links { padding: 9px 13px; }
+}
+
+/* ── Fenetre vraiment basse ────────────────────────────────────────────
+   Sous 900 px de haut, empiler trois cartes ne passe plus. Elles se
+   repartissent alors sur deux colonnes : le meilleur score et les liens
+   cote a cote, les chiffres du jeu en dessous sur toute la largeur. Le
+   texte garde exactement sa taille ; c'est l'agencement qui change. */
+@media (min-width: 1180px) and (max-height: 900px) {
+  .gp-side { grid-template-columns: 1fr 1fr; align-content: start; }
+  .gp-side > .lb-card:nth-child(3) { order: 2; }              /* les liens remontent */
+  .gp-side > .lb-card:nth-child(2) { order: 3; grid-column: 1 / -1; }  /* les chiffres dessous */
+}
+
+/* ── Etroit ──────────────────────────────────────────────────────────── */
+
+@media (max-width: 1080px) {
+  .gp-hero { grid-template-columns: 260px minmax(0, 1fr); gap: 26px; padding: 26px; }
+  .gp-top, .gp-cols { grid-template-columns: minmax(0, 1fr); }
+  .gp-support { grid-column: 1 / -1; }
+  .gp-panel { padding: 22px; }
+}
+@media (max-width: 760px) {
+  .gp-hero { grid-template-columns: minmax(0, 1fr); padding: 20px; gap: 22px; }
+  .gp-art { max-width: 320px; min-height: 0; }
+  /* La colonne « validation » part la premiere : c'est la seule dont
+     l'absence ne change pas la lecture du classement. */
+  .gp-row { grid-template-columns: 3rem minmax(0, 1fr) 7rem 6rem; gap: 10px; }
+  .gp-val { display: none; }
+}
+@media (max-width: 520px) {
+  /* Trois onglets tiennent sur 390 px a condition de les serrer. La bande
+     reste defilante, mais un libelle coupe en deux se lit comme une page
+     cassee, pas comme une invitation a faire glisser. */
+  .gp-tab { padding: 10px 12px; font-size: 0.86rem; }
+  .gp-row { grid-template-columns: 2.6rem minmax(0, 1fr) 6.4rem; gap: 9px; padding: 6px 8px; }
+  .gp-avatar { width: 30px; height: 30px; }
+  .gp-date { display: none; }
+  .gp-pager { flex-direction: column; }
+  .gp-pager .btn { width: 100%; }
+  .gp-actions .btn { width: 100%; text-align: center; justify-content: center; }
+  .gp-you-figures { grid-template-columns: 1fr; gap: 12px; }
+}

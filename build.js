@@ -47,6 +47,11 @@ const PAGES = [
   { file: 'catalog/index.html', dir: 'catalog/', metaTitleKey: 'catalog.meta.title', metaDescKey: 'catalog.meta.desc' },
   { file: 'leaderboard/index.html', dir: 'leaderboard/', metaTitleKey: 'lb.meta.title', metaDescKey: 'lb.meta.desc' },
   { file: 'profile/index.html', dir: 'profile/', metaTitleKey: 'pf.meta.title', metaDescKey: 'pf.meta.desc' },
+  // `noindex` : la page d'un jeu n'existe qu'avec son jeu en parametre.
+  // Nue, elle serait la meme URL pour 489 jeux, donc 489 doublons pour un
+  // moteur. Elle est construite et traduite comme les autres, mais elle
+  // n'entre pas dans le plan du site.
+  { file: 'leaderboard/game/index.html', dir: 'leaderboard/game/', metaTitleKey: 'gp.meta.title', metaDescKey: 'gp.meta.desc', noindex: true },
   { file: 'catalog/changes/index.html', dir: 'catalog/changes/', metaTitleKey: 'catalog.changes.meta.title', metaDescKey: 'catalog.changes.meta.desc' },
 ];
 
@@ -166,6 +171,7 @@ for (const page of PAGES) {
 const today = new Date().toISOString().slice(0, 10);
 const urls = [];
 for (const page of PAGES) {
+  if (page.noindex) continue;
   for (const l of LANGS) {
     const loc = l === 'en' ? `${SITE}/${page.dir}` : `${SITE}/${l}/${page.dir}`;
     const alts = LANGS.map(a => {
