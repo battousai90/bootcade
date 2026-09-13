@@ -124,6 +124,33 @@
       <div class="cat-filter-section">
         <button type="button" class="cat-filter-row cat-filter-hiscore" id="cat-hiscore-filter" hidden>◆ Highscore</button>
       </div>
+      <!-- Genre, serie et nombre de joueurs viennent de la source de FBNeo,
+           fusionnee dans le catalogue par generate-catalog-data.py : aucun
+           DAT ne porte ces informations. -->
+      <div class="cat-filter-section">
+        <button type="button" class="cat-filter-head" aria-expanded="false" data-target="cat-genres-wrap">
+          <span data-i18n="catalog.genres">Genres</span><i>▾</i>
+        </button>
+        <div class="cat-filter-body is-collapsed" id="cat-genres-wrap">
+          <input type="search" class="cat-filter-search" data-filter="cat-genres" autocomplete="off" placeholder="Search…">
+          <div class="cat-filter-list" id="cat-genres"></div>
+        </div>
+      </div>
+      <div class="cat-filter-section">
+        <button type="button" class="cat-filter-head" aria-expanded="false" data-target="cat-families-wrap">
+          <span data-i18n="catalog.families">Reihen</span><i>▾</i>
+        </button>
+        <div class="cat-filter-body is-collapsed" id="cat-families-wrap">
+          <input type="search" class="cat-filter-search" data-filter="cat-families" autocomplete="off" placeholder="Search…">
+          <div class="cat-filter-list" id="cat-families"></div>
+        </div>
+      </div>
+      <div class="cat-filter-section">
+        <button type="button" class="cat-filter-head" aria-expanded="false" data-target="cat-players">
+          <span data-i18n="catalog.players">Spieler</span><i>▾</i>
+        </button>
+        <div class="cat-filter-list is-collapsed" id="cat-players"></div>
+      </div>
       <div class="cat-filter-section">
         <button type="button" class="cat-filter-head" aria-expanded="true" data-target="cat-types">
           <span data-i18n="catalog.types">Typ</span><i>▾</i>

@@ -103,6 +103,9 @@
     modalBackdrop: document.getElementById('cat-modal-backdrop'),
     modalClose: document.getElementById('cat-modal-close'),
     modalMedia: document.getElementById('cat-modal-media'),
+    genres: document.getElementById('cat-genres'),
+    families: document.getElementById('cat-families'),
+    players: document.getElementById('cat-players'),
     modalTitle: document.getElementById('cat-modal-title'),
     modalMeta: document.getElementById('cat-modal-meta'),
     modalBadges: document.getElementById('cat-modal-badges'),
@@ -120,6 +123,11 @@
   var GAMES = [];
   var GAMES_BY_NAME = {};
   var activeSystems = new Set();
+  // Genre, serie et nombre de joueurs : trois facettes que les DAT ne
+  // permettaient pas, faute de porter l'information.
+  var activeGenres = new Set();
+  var activeFamilies = new Set();
+  var activePlayers = new Set();
   var activeTypes = new Set();
   var activeManufacturers = new Set();
   var activeYears = new Set();
@@ -144,6 +152,9 @@
 
   function matches(g, query) {
     if (activeSystems.size && !activeSystems.has(g.s)) return false;
+    if (activeGenres.size && !anyOf(g.ge, activeGenres)) return false;
+    if (activeFamilies.size && !anyOf(g.fa, activeFamilies)) return false;
+    if (activePlayers.size && !activePlayers.has(String(g.pl || ''))) return false;
     if (activeManufacturers.size && !activeManufacturers.has(g.mf)) return false;
     if (activeYears.size && !activeYears.has(g.y)) return false;
     if (activeAspects.size && !activeAspects.has(g._aspect)) return false;
@@ -167,9 +178,26 @@
     return anyFilterActive_();
   }
 
+  /* Un champ multiple (« Platformer / Fighting / Beat 'em Up ») est teste
+     valeur par valeur : filtrer sur « Platformer » doit sortir ce jeu,
+     alors que comparer la chaine entiere ne sortirait que les jeux portant
+     exactement la meme combinaison. */
+  function split(value) {
+    // Separateur : la virgule. Les libelles de FBNeo contiennent des « / »
+    // (« Shooter / Horizontal / Sh'mup ») mais jamais de virgule.
+    return value ? String(value).split(', ') : [];
+  }
+
+  function anyOf(value, set) {
+    var parts = split(value);
+    for (var i = 0; i < parts.length; i++) if (set.has(parts[i])) return true;
+    return false;
+  }
+
   function anyFilterActive_() {
     return activeSystems.size || activeTypes.size || activeManufacturers.size ||
-           activeYears.size || activeAspects.size || activeOrientations.size;
+           activeYears.size || activeAspects.size || activeOrientations.size ||
+           activeGenres.size || activeFamilies.size || activePlayers.size;
   }
 
   // `fs` (first seen) n'existe que pour les jeux apparus depuis que le
@@ -259,11 +287,17 @@
     el.innerHTML =
       '<div class="cat-row-art"><img loading="lazy" alt="" src="' + previewUrl(g) + '" onerror="this.parentNode.textContent=\'🕹️\'"></div>' +
       '<div class="cat-row-title"><b>' + escapeHtml(g.d) + '</b><span>' + escapeHtml(g.n) + '</span></div>' +
-      (isRanked(g) ? '<span class="cat-row-hi" title="' +
-          escapeHtml(t('catalog.hiscore.hint', 'Scores for this game are ranked online.')) + '">◆</span>' : '') +
+      (isRanked(g) ? '<a class="cat-row-hi" href="' + boardHref(g) + '" title="' +
+          escapeHtml(t('catalog.hiscore.open', 'Open this game\u2019s leaderboard')) + '">◆</a>' : '') +
       '<span class="cat-row-sys">' + escapeHtml(g.s) + '</span>' +
       '<span class="cat-row-year">' + escapeHtml(g.y) + '</span>';
-    el.addEventListener('click', function () { openModal(g, el); });
+    el.addEventListener('click', function (e) {
+      // Le losange est un lien : il emmene au classement du jeu. Sans cette
+      // garde, le clic remonterait jusqu'a la ligne et ouvrirait la fiche
+      // par-dessus la navigation.
+      if (e.target.closest('.cat-row-hi')) return;
+      openModal(g, el);
+    });
     el._game = g;
     return el;
   }
@@ -341,6 +375,12 @@
     els.modalSpecs.innerHTML =
       specRow(t('catalog.spec.system', 'System'), g.s) +
       specRow(t('catalog.spec.manufacturer', 'Manufacturer'), g.mf) +
+      // Genre, serie et nombre de joueurs viennent de la source de FBNeo,
+      // fusionnes dans le catalogue par generate-catalog-data.py : les DAT
+      // ne les portent pas.
+      specRow(t('catalog.spec.genre', 'Genre'), g.ge) +
+      specRow(t('catalog.spec.family', 'Series'), g.fa) +
+      specRow(t('catalog.spec.players', 'Players'), g.pl) +
       specRow(t('catalog.spec.rom', 'ROM name'), g.n) +
       specRow(t('catalog.spec.resolution', 'Resolution'), resolution) +
       specRow(t('catalog.spec.orientation', 'Orientation'), g.or ? t('catalog.orientation.' + g.or, g.or) : '') +
@@ -371,14 +411,16 @@
 
     box.hidden = false;
     box.innerHTML = '<h3>' + escapeHtml(t('catalog.hiscore', 'Highscore')) + '</h3>' +
-                    '<p class="cat-hi-note">' + escapeHtml(t('catalog.hiscore.loading', 'Loading the leaderboard…')) + '</p>';
+                    '<p class="cat-hi-note">' + escapeHtml(t('catalog.hiscore.loading', 'Loading the leaderboard…')) + '</p>' +
+                    boardLink(g);
 
     var seq = ++scoreSeq;
     fetch(SCORES_BASE + '/api/scores/' + encodeURIComponent(g.s) + '/' + encodeURIComponent(g.n) + '/top?limit=50')
       .then(function (r) { return r.ok ? r.json() : []; })
       .then(function (rows) {
         if (seq !== scoreSeq) return;      // visitor has moved on
-        box.innerHTML = '<h3>' + escapeHtml(t('catalog.hiscore', 'Highscore')) + '</h3>' + scoresHtml(rows || []);
+        box.innerHTML = '<h3>' + escapeHtml(t('catalog.hiscore', 'Highscore')) + '</h3>' +
+                        scoresHtml(rows || []) + boardLink(g);
       })
       .catch(function () {
         if (seq !== scoreSeq) return;
@@ -386,7 +428,8 @@
         // "we could not ask" are different things, and a visitor deserves to
         // know which one they are looking at.
         box.innerHTML = '<h3>' + escapeHtml(t('catalog.hiscore', 'Highscore')) + '</h3>' +
-          '<p class="cat-hi-note">' + escapeHtml(t('catalog.hiscore.error', 'The leaderboard is unavailable right now.')) + '</p>';
+          '<p class="cat-hi-note">' + escapeHtml(t('catalog.hiscore.error', 'The leaderboard is unavailable right now.')) + '</p>' +
+          boardLink(g);
       });
   }
 
@@ -449,6 +492,19 @@
     return '<table class="cat-hi-table">' + body + '</table>';
   }
 
+  function boardHref(g) {
+    var base = LANG === 'en' ? '/leaderboard/game/' : '/' + LANG + '/leaderboard/game/';
+    return base + '?s=' + encodeURIComponent(g.s) + '&n=' + encodeURIComponent(g.n);
+  }
+
+  // La fiche montre les dix premieres places : c'est ce qu'affiche une borne.
+  // Au-dela, la page du jeu porte le classement entier, la place du joueur
+  // connecte et l'historique de ses parties.
+  function boardLink(g) {
+    return '<p class="cat-hi-more"><a href="' + boardHref(g) + '">' +
+           escapeHtml(t('catalog.hiscore.full', 'Full leaderboard for this game')) + '</a></p>';
+  }
+
   function closeModal() {
     els.modal.hidden = true;
     if (selectedRow) selectedRow.classList.remove('active');
@@ -492,6 +548,7 @@
     var b = document.createElement('button');
     b.type = 'button';
     b.className = 'cat-filter-row';
+    b.dataset.key = key;
     b.innerHTML = '<span>' + escapeHtml(label) + '</span><span class="n">' + count.toLocaleString(LANG) + '</span>';
     b.addEventListener('click', function () {
       b.classList.toggle('active');
@@ -506,7 +563,11 @@
     GAMES.forEach(function (g) {
       var k = keyFn(g);
       if (!k) return;
-      counts[k] = (counts[k] || 0) + 1;
+      // Une cle peut valoir plusieurs valeurs : chacune compte pour elle.
+      (Array.isArray(k) ? k : [k]).forEach(function (one) {
+        if (one === '' || one === undefined || one === null) return;
+        counts[one] = (counts[one] || 0) + 1;
+      });
     });
     var keys = Object.keys(counts);
     keys.sort(sortByCount ? function (a, b) { return counts[b] - counts[a]; } : undefined);
@@ -558,6 +619,11 @@
     activeYears.clear();
     activeAspects.clear();
     activeOrientations.clear();
+    activeGenres.clear();
+    activeFamilies.clear();
+    activePlayers.clear();
+    onlyRanked = false;
+    if (els.hiscoreFilter) els.hiscoreFilter.classList.remove('on');
     els.search.value = '';
     [].slice.call(document.querySelectorAll('.cat-filter-row.active')).forEach(function (b) { b.classList.remove('active'); });
     applyFilters();
@@ -614,6 +680,76 @@
     btn.hidden = false;
   }
 
+  /* ── Le catalogue se laisse piloter par son adresse ──────────────────────
+     Un lien peut arriver avec une recherche, un systeme, le filtre des jeux
+     classes, ou directement sur la fiche d'un jeu. Sans cela, « Voir la
+     fiche du jeu » depuis la page d'un jeu deposait le visiteur en haut des
+     29 496 lignes, exactement comme s'il n'avait rien demande.
+
+     On CLIQUE les commandes plutot que de recopier leur effet : le filtre,
+     sa marque visuelle et le rafraichissement de la liste passent alors par
+     le meme chemin que lorsque le visiteur les actionne lui-meme. */
+  function facetButton(container, key) {
+    if (!container) return null;
+    var rows = container.querySelectorAll('.cat-filter-row');
+    for (var i = 0; i < rows.length; i++) {
+      if (rows[i].dataset.key === key) return rows[i];
+    }
+    return null;
+  }
+
+  var urlApplied = false;
+  var urlGame = null;
+
+  function applyUrl(phase) {
+    var p = new URLSearchParams(location.search);
+
+    // Le filtre « classes » n'existe qu'une fois la liste du service arrivee :
+    // c'est pourquoi cette passe repasse apres elle.
+    if (p.get('hiscore') === '1' && els.hiscoreFilter && !els.hiscoreFilter.hidden
+        && !onlyRanked) {
+      els.hiscoreFilter.click();
+    }
+    if (phase === 'ranked') {
+      /* La liste des jeux classes arrive apres coup et declenche un nouvel
+         applyFilters, qui rouvre la PREMIERE ligne du resultat. Sur une
+         recherche par nom de ROM, cette premiere ligne est un hack du jeu
+         demande, pas le jeu demande. On repose donc la fiche voulue, et on
+         en profite pour qu'elle porte enfin son classement. */
+      if (urlGame) openModal(urlGame);
+      return;
+    }
+    if (urlApplied) return;
+    urlApplied = true;
+
+    var q = p.get('q');
+    if (q && els.search) { els.search.value = q; applyFilters(); }
+
+    var system = p.get('system');
+    if (system) {
+      var b = facetButton(els.systems, system);
+      if (b && !b.classList.contains('active')) b.click();
+    }
+
+    // `game` ouvre directement la fiche. Le systeme leve l'ambiguite quand
+    // un meme nom de ROM existe sur deux systemes (mslugx est dans le DAT
+    // arcade ET dans le DAT Neo Geo).
+    var name = p.get('game');
+    if (!name) return;
+    var g = (system && GAMES_BY_NAME[system + '|' + name]) || null;
+    if (!g) {
+      for (var i = 0; i < GAMES.length; i++) {
+        if (GAMES[i].n === name) { g = GAMES[i]; break; }
+      }
+    }
+    if (!g) return;
+    // La recherche est posee sur le nom de ROM pour que la ligne du jeu soit
+    // reellement dans la liste derriere la fiche, et pas perdue page 800.
+    if (els.search && !q) { els.search.value = g.n; applyFilters(); }
+    urlGame = g;
+    openModal(g);
+  }
+
   // ── Boot ─────────────────────────────────────────────────────────────────
   fetch(DATA_URL)
     .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
@@ -633,7 +769,14 @@
       buildFacet(els.years, function (g) { return g.y; }, activeYears, false);
       buildFacet(els.aspects, function (g) { return g._aspect; }, activeAspects, true);
       buildFacet(els.orientations, function (g) { return g.or; }, activeOrientations, true);
+      buildFacet(els.genres, function (g) { return split(g.ge); }, activeGenres, true);
+      buildFacet(els.families, function (g) { return split(g.fa); }, activeFamilies, true);
+      // Trie par nombre de joueurs et non par population : « 1, 2, 3, 4 »
+      // se lit, « 2, 1, 4, 3 » demande un effort pour rien.
+      buildFacet(els.players, function (g) { return g.pl ? String(g.pl) : ''; },
+                 activePlayers, false);
       applyFilters();
+      applyUrl('boot');
 
       // The DAT panel is a bonus, not the catalog itself : an older
       // catalog-data.json without `dats` just leaves it empty.
@@ -654,6 +797,7 @@
           // The list lands after the first rows are already on screen, so
           // what is displayed has to be rebuilt to carry the badges.
           applyFilters();
+          applyUrl('ranked');
         })
         .catch(function () { /* no leaderboards, everything else stands */ });
 

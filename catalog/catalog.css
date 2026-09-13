@@ -384,10 +384,21 @@ button.cat-dat-toggle.cat-filter-head {
   border-color: rgba(122, 162, 255, .45);
   background: rgba(122, 162, 255, .12);
 }
+/* Le losange est un LIEN vers le classement du jeu, pas une decoration :
+   il s'agrandit un peu au survol pour que ca se voie, et il ne porte pas de
+   soulignement, qui alourdirait chaque ligne de la liste. */
 .cat-row-hi {
   color: #7aa2ff;
   font-size: .85em;
   margin-right: 2px;
+  text-decoration: none;
+  padding: 2px 4px;
+  border-radius: 6px;
+  line-height: 1;
+}
+.cat-row-hi:hover {
+  text-decoration: none;
+  background: rgba(122, 162, 255, .18);
 }
 .cat-filter-hiscore.on {
   color: #7aa2ff;
@@ -418,3 +429,6 @@ button.cat-dat-toggle.cat-filter-head {
 .cat-hi-date { color: var(--muted); text-align: right; white-space: nowrap; font-size: .82rem; }
 /* Places libres : présentes et numérotées, mais visiblement à prendre. */
 .cat-hi-table .cat-hi-free td { color: var(--muted); opacity: .5; }
+
+/* Renvoi vers la page du jeu, sous les dix lignes de la borne. */
+.cat-hi-more { margin: 12px 0 0; font-size: 0.9rem; }
