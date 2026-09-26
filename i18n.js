@@ -15,6 +15,8 @@
 window.I18N = {
 
 fr: {
+  "roms.romfix.note":"Les Fixed ROMs (ROMs corrigées) ont leur propre quota : {q} par 24 heures pour tous les comptes, à part des paliers ci-dessus.",
+  "pf.roms.romfix":"Fixed ROMs : {u} sur {q} utilisées sur les dernières 24 heures (quota à part)",
   "ach.top_world.cond":"Être 1er mondial sur un classement disputé",
   "ach.record_holder.cond":"Détenir 5 records mondiaux disputés à la fois",
   "ach.top_ten":"Dans le mille",
@@ -475,6 +477,8 @@ fr: {
 },
 
 es: {
+  "roms.romfix.note":"Las Fixed ROMs (ROMs corregidas) tienen su propia cuota: {q} cada 24 horas para todas las cuentas, aparte de los niveles de arriba.",
+  "pf.roms.romfix":"Fixed ROMs: {u} de {q} usadas en las últimas 24 horas (cuota aparte)",
   "ach.top_world.cond":"Ser n.º 1 mundial en una clasificación disputada",
   "ach.record_holder.cond":"Tener 5 récords mundiales disputados a la vez",
   "ach.top_ten":"En el blanco",
@@ -935,6 +939,8 @@ es: {
 },
 
 de: {
+  "roms.romfix.note":"Fixed ROMs (korrigierte ROMs) haben ein eigenes Kontingent: {q} pro 24 Stunden für jedes Konto, unabhängig von den Stufen oben.",
+  "pf.roms.romfix":"Fixed ROMs: {u} von {q} in den letzten 24 Stunden genutzt (eigenes Kontingent)",
   "ach.top_world.cond":"Weltweit Platz 1 auf einer umkämpften Bestenliste",
   "ach.record_holder.cond":"5 umkämpfte Weltrekorde gleichzeitig halten",
   "ach.top_ten":"Volltreffer",
@@ -1395,6 +1401,8 @@ de: {
 },
 
 pt: {
+  "roms.romfix.note":"As Fixed ROMs (ROMs corrigidas) têm a sua própria quota: {q} por 24 horas para todas as contas, à parte dos níveis acima.",
+  "pf.roms.romfix":"Fixed ROMs: {u} de {q} usadas nas últimas 24 horas (quota à parte)",
   "ach.top_world.cond":"Ser n.º 1 mundial numa classificação disputada",
   "ach.record_holder.cond":"Deter 5 recordes mundiais disputados ao mesmo tempo",
   "ach.top_ten":"Na mouche",
@@ -1855,6 +1863,8 @@ pt: {
 },
 
 ja: {
+  "roms.romfix.note":"Fixed ROMs（修正済み ROM）は別枠です：すべてのアカウントで 24 時間あたり {q}、上のランクとは別に数えます。",
+  "pf.roms.romfix":"Fixed ROMs：直近 24 時間で {u} / {q} 使用（別枠）",
   "ach.top_world.cond":"競争のあるランキングで世界 1 位になる",
   "ach.record_holder.cond":"競争のある世界記録を同時に 5 つ保持する",
   "ach.top_ten":"ど真ん中",
@@ -2315,6 +2325,8 @@ ja: {
 },
 
 zh: {
+  "roms.romfix.note":"Fixed ROMs（修正版 ROM）有单独的配额：所有账号每 24 小时 {q} 个，与上面的等级分开计算。",
+  "pf.roms.romfix":"Fixed ROMs：过去 24 小时已用 {u} / {q}（单独配额）",
   "ach.top_world.cond":"在有竞争的排行榜上成为世界第一",
   "ach.record_holder.cond":"同时保持 5 项有竞争的世界纪录",
   "ach.top_ten":"正中靶心",
@@ -2776,6 +2788,8 @@ zh: {
 ,
 
 th: {
+  "roms.romfix.note":"Fixed ROMs (ROM ที่แก้ไขแล้ว) มีโควตาแยกต่างหาก: {q} รายการต่อ 24 ชั่วโมงสำหรับทุกบัญชี ไม่ขึ้นกับระดับด้านบน",
+  "pf.roms.romfix":"Fixed ROMs: ใช้ไป {u} จาก {q} ใน 24 ชั่วโมงล่าสุด (โควตาแยก)",
   "ach.top_world.cond":"ขึ้นอันดับ 1 ของโลกบนตารางอันดับที่มีการแข่งขัน",
   "ach.record_holder.cond":"ครองสถิติโลกที่มีการแข่งขัน 5 รายการพร้อมกัน",
   "ach.top_ten":"เข้าเป้า",

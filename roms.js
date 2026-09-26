@@ -147,7 +147,13 @@
          + '<th>' + esc(t('roms.col.tier', 'Tier')) + '</th>'
          + '<th>' + esc(t('roms.col.quota', 'ROMs per 24 h')) + '</th>'
          + '<th>' + esc(t('roms.col.how', 'How to reach it (any one)')) + '</th>'
-         + '</tr></thead><tbody>' + rows + '</tbody></table>';
+         + '</tr></thead><tbody>' + rows + '</tbody></table>'
+         // Fixed ROMs : quota a part, le meme pour tous, hors paliers.
+         + (p.romfix_quota != null
+            ? '<p class="roms-romfix">' + esc(fmt(t('roms.romfix.note',
+                'Fixed ROMs have their own quota: {q} per 24 hours for every account, separate from the tiers above.'),
+                { q: p.romfix_quota })) + '</p>'
+            : '');
   }
 
   window.BootcadeRoms = {

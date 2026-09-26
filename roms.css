@@ -28,6 +28,8 @@
   .roms-tiers tr { display: grid; grid-template-columns: 1fr auto; }
 }
 
+.roms-romfix { margin: 14px 0 0; color: var(--muted); font-size: 0.93rem; }
+
 /* ── Suggestions (profil, catalogue) ────────────────────────────────────── */
 .roms-sgs { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 10px; }
 .roms-sg {

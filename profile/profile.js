@@ -131,6 +131,11 @@
       html += '<div class="roms-row"><span>' + esc(fmt(t('pf.roms.slot', 'Next free slot: {time}'),
         { time: R.when(state.next_slot_at) })) + '</span></div>';
     }
+    if (state.romfix) {
+      html += '<div class="roms-row"><span>' + esc(fmt(t('pf.roms.romfix',
+        'Fixed ROMs: {u} of {q} used over the last 24 hours (separate quota)'),
+        { u: state.romfix.used, q: state.romfix.quota })) + '</span></div>';
+    }
     if (state.override && state.override.mode === 'bonus') {
       html += '<p class="lb-profile-hint">' + esc(fmt(t('pf.roms.bonus',
         'Includes a bonus of {n} granted by the administrator.'), { n: state.override.value })) + '</p>';
