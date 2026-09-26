@@ -126,3 +126,22 @@
     })
     .catch(function () { /* no release yet, offline or rate-limited: keep defaults */ });
 })();
+
+/* Bandeau d'annonce des telechargements de ROMs (accueil et catalogue).
+ *
+ * Cache par defaut dans le HTML, montre ici : un visiteur qui l'a deja ferme
+ * ne le voit pas clignoter au chargement. Ferme une fois, il ne revient plus
+ * sur ce navigateur. A retirer du HTML quand l'annonce aura fait son temps. */
+(function () {
+  'use strict';
+  var KEY = 'bootcade.romsNotice';
+  var box = document.getElementById('roms-notice');
+  if (!box) return;
+  try { if (localStorage.getItem(KEY) === 'closed') return; } catch (e) {}
+  box.hidden = false;
+  var close = document.getElementById('roms-notice-close');
+  if (close) close.addEventListener('click', function () {
+    box.hidden = true;
+    try { localStorage.setItem(KEY, 'closed'); } catch (e) {}
+  });
+})();

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bootcade : ดาวน์โหลด ROM</title>
+<meta name="description" content="การดาวน์โหลด ROM บน Bootcade ทำงานอย่างไร: บัญชีฟรี โควตาที่นับตลอด 24 ชั่วโมง และระดับที่สูงขึ้นเมื่อคุณเล่นและโพสต์คะแนน">
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/leaderboard/leaderboard.css?v=29">
+<link rel="stylesheet" href="/roms.css?v=1">
+<link rel="canonical" href="https://bootcade.netlify.app/th/roms/">
+<link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/roms/">
+<link rel="alternate" hreflang="fr" href="https://bootcade.netlify.app/fr/roms/">
+<link rel="alternate" hreflang="es" href="https://bootcade.netlify.app/es/roms/">
+<link rel="alternate" hreflang="de" href="https://bootcade.netlify.app/de/roms/">
+<link rel="alternate" hreflang="pt" href="https://bootcade.netlify.app/pt/roms/">
+<link rel="alternate" hreflang="ja" href="https://bootcade.netlify.app/ja/roms/">
+<link rel="alternate" hreflang="zh" href="https://bootcade.netlify.app/zh/roms/">
+<link rel="alternate" hreflang="th" href="https://bootcade.netlify.app/th/roms/">
+<link rel="alternate" hreflang="x-default" href="https://bootcade.netlify.app/roms/">
+
+<meta property="og:locale" content="th">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Bootcade : ดาวน์โหลด ROM">
+<meta property="og:description" content="การดาวน์โหลด ROM บน Bootcade ทำงานอย่างไร: บัญชีฟรี โควตาที่นับตลอด 24 ชั่วโมง และระดับที่สูงขึ้นเมื่อคุณเล่นและโพสต์คะแนน">
+<meta property="og:image" content="https://bootcade.netlify.app/og.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<script>
+(function () {
+  try {
+    var m = localStorage.getItem('fbneo-theme');
+    if (m === 'light' || m === 'dark') document.documentElement.dataset.theme = m;
+  } catch (e) {}
+})();
+</script>
+</head>
+<body class="lb-page roms-page">
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" data-href="home" href="/th/" style="color:inherit">
+      <img src="/logo.svg" alt="">
+      <span>Bootcade<small data-i18n="brand.sub">คลังเกมอาร์เคดสำหรับ Linux</small></span>
+    </a>
+    <nav class="nav-links">
+      <a data-href="home" href="/th/" data-i18n="catalog.back">← กลับไปที่ Bootcade</a>
+      <a data-href="catalog" href="/th/catalog/" data-i18n="nav.catalog">แคตตาล็อก</a>
+      <a data-href="leaderboard" href="/th/leaderboard/" data-i18n="nav.leaderboard">ตารางคะแนน</a>
+      <span class="nav-account" id="nav-account"></span>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap lb-head">
+    <h1 data-i18n="rp.h1">ดาวน์โหลด ROM</h1>
+    <p class="lead" data-i18n="rp.lead">ปุ่ม ROM ในแคตตาล็อกสงวนไว้สำหรับสมาชิก Bootcade ใช้ฟรี: สร้างบัญชี ยืนยันอีเมล แล้วดาวน์โหลดได้เลย</p>
+    <p class="lb-status" id="rp-status" hidden></p>
+    <!-- Rempli par roms/page.js selon que le visiteur est connecte ou non. -->
+    <div class="lb-cta" id="rp-cta">
+      <a class="btn btn-accent" data-href="catalog" href="/th/catalog/" data-i18n="rp.cta.catalog">เปิดแคตตาล็อก</a>
+    </div>
+  </div>
+
+  <div class="wrap lb-boards">
+    <div class="lb-grid roms-grid">
+      <section class="lb-card">
+        <h2 data-i18n="rp.why.h2">ทำไมต้องมีบัญชี?</h2>
+        <p data-i18n="rp.why.p">คอลเลกชันนี้ให้บริการจากเซิร์ฟเวอร์ที่บ้านซึ่งมีแบนด์วิดท์จำกัด บัญชีช่วยให้แบ่งปันได้อย่างยุติธรรม: ผู้เล่นแต่ละคนมีโควตา และไม่มีใครเอาไปทั้งหมดในครั้งเดียวได้</p>
+      </section>
+      <section class="lb-card">
+        <h2 data-i18n="rp.count.h2">การนับ</h2>
+        <ul class="roms-list" data-i18n="rp.count.list"><li>ROM แต่ละตัวที่ต่างกันนับหนึ่งครั้ง ในช่วง 24 ชั่วโมงล่าสุด</li><li>ดาวน์โหลด ROM เดิมซ้ำภายใน 24 ชั่วโมงนั้นฟรี: การดาวน์โหลดต่อหรือลองใหม่ไม่นับ</li><li>ช่องว่างจะคืนมา 24 ชั่วโมงหลังการดาวน์โหลดแต่ละครั้ง</li></ul>
+      </section>
+    </div>
+  </div>
+
+  <div class="wrap roms-block">
+    <div class="lb-profile-card">
+      <h2 data-i18n="rp.tiers.h2">ระดับโควตา</h2>
+      <p class="lb-profile-hint" data-i18n="rp.tiers.p">ยิ่งเล่นมาก ยิ่งดาวน์โหลดได้มาก ใช้ระดับสูงสุดที่คุณไปถึง</p>
+      <div id="rp-tiers"><p class="lb-empty" data-i18n="rp.loading">กำลังโหลดโควตาปัจจุบัน…</p></div>
+    </div>
+  </div>
+
+  <div class="wrap roms-block">
+    <div class="lb-profile-card">
+      <h2 data-i18n="rp.climb.h2">วิธีเลื่อนระดับ</h2>
+      <ul class="roms-list" data-i18n="rp.climb.list"><li><b>เล่นด้วยตัวเปิดเกม Bootcade</b> ในเกมที่มีป้าย Highscore คะแนนจะถูกอ่านจากตัวเกมโดยตรงและเผยแพร่ในชื่อบัญชีของคุณ ไม่ต้องพิมพ์อะไร</li><li><b>คว้าสถิติโลก</b> อันดับหนึ่งจะนับเมื่อมีผู้เล่นคนอื่นแข่งขันในตารางอันดับนั้นอยู่หลายคน</li><li><b>สะสมความสำเร็จ</b> ทั้ง 24 รายการแสดงอยู่ในโปรไฟล์ของคุณพร้อมเงื่อนไข ความสำเร็จเพรสทีจ 6 รายการอาศัยตารางอันดับที่มีการแข่งขัน และ 3 รายการจะปลดล็อกแชมป์</li></ul>
+      <p class="lb-profile-hint" data-i18n="rp.climb.note">เวลาเล่นรายงานโดยตัวเปิดเกม จึงพาคุณขึ้นได้สูงสุดแค่ขาประจำ ไม่ถึงแชมป์ ระดับนั้นอาศัยคะแนนที่ตัวเกมยืนยันเท่านั้น</p>
+    </div>
+  </div>
+</main>
+
+<script src="/i18n.js"></script>
+<script src="/app.js"></script>
+<script src="/auth.js"></script>
+<script src="/auth-ui.js"></script>
+<script src="/roms.js?v=1"></script>
+<script src="/roms/page.js?v=1"></script>
+</body>
+</html>

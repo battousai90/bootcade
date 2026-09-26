@@ -1,0 +1,98 @@
+/* Bootcade : acces aux ROMs (page d'explication, profil, catalogue, bandeau).
+   Uniquement des variables de style.css : les themes clair et sombre suivent
+   sans regle supplementaire. */
+
+/* ── Page d'explication ─────────────────────────────────────────────────── */
+.roms-page .lb-head .lead { max-width: 720px; color: var(--muted); }
+.roms-block { margin-top: 1rem; }
+.roms-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.roms-list { margin: 0; padding-left: 1.2rem; color: var(--muted); }
+.roms-list li { margin: 0.45rem 0; }
+.roms-list b { color: var(--text); }
+
+.roms-tiers { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.97rem; }
+.roms-tiers th {
+  text-align: left; color: var(--muted); font-size: 0.78rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.04em;
+  padding: 0 12px 10px 0; border-bottom: 1px solid var(--border);
+}
+.roms-tiers td { padding: 12px 12px 12px 0; border-bottom: 1px solid var(--border); vertical-align: top; }
+.roms-tiers tr:last-child td { border-bottom: none; }
+.roms-tiers td.roms-q { font-size: 1.35rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.roms-tiers em { color: var(--muted); font-style: normal; }
+.roms-tiers tr.is-mine td { background: var(--tint); }
+.roms-tiers tr.is-mine td:first-child { box-shadow: inset 3px 0 0 var(--accent); padding-left: 10px; }
+@media (max-width: 640px) {
+  .roms-tiers th:nth-child(3) { display: none; }
+  .roms-tiers td:nth-child(3) { display: block; padding-top: 0; }
+  .roms-tiers tr { display: grid; grid-template-columns: 1fr auto; }
+}
+
+/* ── Suggestions (profil, catalogue) ────────────────────────────────────── */
+.roms-sgs { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 10px; }
+.roms-sg {
+  background: var(--surface2); border: 1px solid var(--border); border-radius: 10px;
+  padding: 12px 14px;
+}
+.roms-sg b { font-weight: 650; }
+.roms-sg > span { display: block; color: var(--muted); font-size: 0.88rem; margin-top: 2px; }
+.roms-unlock {
+  display: inline-block; margin-left: 8px; padding: 1px 8px; border-radius: 999px;
+  font-size: 0.72rem; font-weight: 700; vertical-align: 1px;
+  color: var(--ok); border: 1px solid var(--ok);
+}
+
+/* ── Jauge ──────────────────────────────────────────────────────────────── */
+.roms-gauge { height: 10px; border-radius: 5px; background: var(--surface2); overflow: hidden; margin: 14px 0 8px; }
+.roms-gauge span { display: block; height: 100%; background: linear-gradient(to right, var(--accent), var(--accent2)); }
+.roms-gauge span.is-full { background: var(--bad); }
+.roms-row { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; color: var(--muted); font-size: 0.95rem; }
+.roms-row b { color: var(--text); }
+
+/* ── Profil ─────────────────────────────────────────────────────────────── */
+.pf-roms-wrap { margin-top: 1rem; }
+.pf-roms-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 18px; }
+@media (max-width: 820px) { .pf-roms-cols { grid-template-columns: 1fr; } }
+.pf-roms-cols h3 { margin: 0 0 6px; font-size: 1.05rem; }
+.pf-roms-items { margin: 8px 0 0; padding: 0; list-style: none; font-size: 0.92rem; }
+.pf-roms-items li { display: flex; justify-content: space-between; gap: 10px; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.pf-roms-items li:last-child { border-bottom: none; }
+.pf-roms-items span { color: var(--muted); }
+.pf-roms-conds { margin: 8px 0 0; padding: 0; list-style: none; }
+.pf-roms-conds li { margin: 8px 0; }
+.pf-roms-conds .roms-gauge { height: 6px; margin: 4px 0 0; }
+.pf-roms-alert {
+  margin-top: 14px; padding: 10px 14px; border-radius: 10px;
+  border: 1px solid var(--warn); color: var(--warn);
+}
+
+/* ── Catalogue : bouton ROM et fenetre d'explication ───────────────────── */
+.cat-actions a.is-locked { color: var(--muted); }
+.cat-actions a.is-spent { color: var(--muted); border-style: dashed; }
+.roms-gate {
+  margin-top: 10px; padding: 14px; border-radius: 10px;
+  background: var(--surface2); border: 1px solid var(--border); font-size: 0.9rem;
+}
+.roms-gate b { display: block; margin-bottom: 4px; }
+.roms-gate p { margin: 0 0 10px; color: var(--muted); }
+.roms-gate .roms-gate-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.roms-gate .roms-gate-actions a { flex: 0 0 auto; padding: 6px 12px; }
+.roms-gate .roms-sgs { margin-top: 8px; }
+.cat-rom-quota { color: var(--muted); font-size: 0.85rem; text-decoration: none; margin-left: 10px; }
+.cat-rom-quota:hover { color: var(--text); }
+.cat-rom-quota.is-full { color: var(--bad); }
+
+/* ── Bandeau d'annonce (accueil, catalogue) ────────────────────────────── */
+.roms-notice {
+  background: linear-gradient(to right, rgba(37, 99, 235, 0.16), rgba(124, 58, 237, 0.16));
+  border-bottom: 1px solid var(--border);
+  font-size: 0.92rem;
+}
+.roms-notice .wrap { display: flex; align-items: center; gap: 12px; padding-top: 10px; padding-bottom: 10px; }
+.roms-notice p { margin: 0; flex: 1; }
+.roms-notice a { color: var(--text); font-weight: 600; }
+.roms-notice button {
+  background: none; border: none; color: var(--muted); font-size: 1.3rem; line-height: 1;
+  cursor: pointer; padding: 0 4px;
+}
+.roms-notice button:hover { color: var(--text); }

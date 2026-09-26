@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bootcade : ROM 下载</title>
+<meta name="description" content="Bootcade 的 ROM 下载规则：免费账号、按 24 小时计算的配额，以及随游玩和发布分数而提升的等级。">
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/leaderboard/leaderboard.css?v=29">
+<link rel="stylesheet" href="/roms.css?v=1">
+<link rel="canonical" href="https://bootcade.netlify.app/zh/roms/">
+<link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/roms/">
+<link rel="alternate" hreflang="fr" href="https://bootcade.netlify.app/fr/roms/">
+<link rel="alternate" hreflang="es" href="https://bootcade.netlify.app/es/roms/">
+<link rel="alternate" hreflang="de" href="https://bootcade.netlify.app/de/roms/">
+<link rel="alternate" hreflang="pt" href="https://bootcade.netlify.app/pt/roms/">
+<link rel="alternate" hreflang="ja" href="https://bootcade.netlify.app/ja/roms/">
+<link rel="alternate" hreflang="zh" href="https://bootcade.netlify.app/zh/roms/">
+<link rel="alternate" hreflang="th" href="https://bootcade.netlify.app/th/roms/">
+<link rel="alternate" hreflang="x-default" href="https://bootcade.netlify.app/roms/">
+
+<meta property="og:locale" content="zh">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Bootcade : ROM 下载">
+<meta property="og:description" content="Bootcade 的 ROM 下载规则：免费账号、按 24 小时计算的配额，以及随游玩和发布分数而提升的等级。">
+<meta property="og:image" content="https://bootcade.netlify.app/og.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<script>
+(function () {
+  try {
+    var m = localStorage.getItem('fbneo-theme');
+    if (m === 'light' || m === 'dark') document.documentElement.dataset.theme = m;
+  } catch (e) {}
+})();
+</script>
+</head>
+<body class="lb-page roms-page">
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" data-href="home" href="/zh/" style="color:inherit">
+      <img src="/logo.svg" alt="">
+      <span>Bootcade<small data-i18n="brand.sub">Linux 街机游戏库</small></span>
+    </a>
+    <nav class="nav-links">
+      <a data-href="home" href="/zh/" data-i18n="catalog.back">← 返回 Bootcade</a>
+      <a data-href="catalog" href="/zh/catalog/" data-i18n="nav.catalog">游戏目录</a>
+      <a data-href="leaderboard" href="/zh/leaderboard/" data-i18n="nav.leaderboard">排行榜</a>
+      <span class="nav-account" id="nav-account"></span>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap lb-head">
+    <h1 data-i18n="rp.h1">ROM 下载</h1>
+    <p class="lead" data-i18n="rp.lead">目录中的 ROM 按钮仅限 Bootcade 会员使用。完全免费：创建账号、验证邮箱，即可下载。</p>
+    <p class="lb-status" id="rp-status" hidden></p>
+    <!-- Rempli par roms/page.js selon que le visiteur est connecte ou non. -->
+    <div class="lb-cta" id="rp-cta">
+      <a class="btn btn-accent" data-href="catalog" href="/zh/catalog/" data-i18n="rp.cta.catalog">打开目录</a>
+    </div>
+  </div>
+
+  <div class="wrap lb-boards">
+    <div class="lb-grid roms-grid">
+      <section class="lb-card">
+        <h2 data-i18n="rp.why.h2">为什么需要账号？</h2>
+        <p data-i18n="rp.why.p">这些收藏由带宽有限的家用服务器提供。有了账号才能公平分享：每位玩家都有配额，没有人能一次拿走全部。</p>
+      </section>
+      <section class="lb-card">
+        <h2 data-i18n="rp.count.h2">计算方式</h2>
+        <ul class="roms-list" data-i18n="rp.count.list"><li>每个不同的 ROM 在滚动 24 小时内计一次。</li><li>在这 24 小时内重新下载同一个 ROM 是免费的：续传或重试不计次数。</li><li>每次下载 24 小时后释放一个名额。</li></ul>
+      </section>
+    </div>
+  </div>
+
+  <div class="wrap roms-block">
+    <div class="lb-profile-card">
+      <h2 data-i18n="rp.tiers.h2">配额等级</h2>
+      <p class="lb-profile-hint" data-i18n="rp.tiers.p">玩得越多，能下载的越多。以你达到的最高等级为准。</p>
+      <div id="rp-tiers"><p class="lb-empty" data-i18n="rp.loading">正在加载当前配额…</p></div>
+    </div>
+  </div>
+
+  <div class="wrap roms-block">
+    <div class="lb-profile-card">
+      <h2 data-i18n="rp.climb.h2">如何升级</h2>
+      <ul class="roms-list" data-i18n="rp.climb.list"><li><b>使用 Bootcade 启动器游玩。</b>在带有 Highscore 标志的游戏中，分数直接从游戏本身读取，并以你的账号发布，无需手动输入。</li><li><b>夺取世界纪录。</b>只要有几位其他玩家在该排行榜上竞争，第一名就会被计入。</li><li><b>获得成就。</b>全部 24 项都列在你的个人资料中，并注明各自的条件。其中 6 项荣耀成就基于有竞争的排行榜，获得 3 项即可解锁冠军。</li></ul>
+      <p class="lb-profile-hint" data-i18n="rp.climb.note">游玩时间由启动器上报，因此最多只能让你升到常客，永远不能升到冠军。冠军等级只依据游戏本身确认的分数。</p>
+    </div>
+  </div>
+</main>
+
+<script src="/i18n.js"></script>
+<script src="/app.js"></script>
+<script src="/auth.js"></script>
+<script src="/auth-ui.js"></script>
+<script src="/roms.js?v=1"></script>
+<script src="/roms/page.js?v=1"></script>
+</body>
+</html>

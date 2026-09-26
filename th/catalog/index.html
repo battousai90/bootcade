@@ -10,6 +10,7 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="stylesheet" href="/style.css">
 <link rel="stylesheet" href="/catalog/catalog.css">
+<link rel="stylesheet" href="/roms.css?v=1">
 <link rel="canonical" href="https://bootcade.netlify.app/th/catalog/">
 <link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/catalog/">
 <link rel="alternate" hreflang="fr" href="https://bootcade.netlify.app/fr/catalog/">
@@ -58,6 +59,14 @@
   </div>
 </header>
 
+<div class="roms-notice" id="roms-notice" hidden>
+  <div class="wrap">
+    <p data-i18n="notice.roms"><strong>ใหม่:</strong> เปิดให้สมาชิก Bootcade ดาวน์โหลด ROM แล้ว บัญชีฟรี และโควตารายวันจะเพิ่มขึ้นเมื่อคุณเล่นมากขึ้น</p>
+    <a data-href="roms" href="/th/roms/" data-i18n="notice.roms.link">ดูวิธีการทำงาน</a>
+    <button type="button" id="roms-notice-close" aria-label="Close">&times;</button>
+  </div>
+</div>
+
 <div class="cat-dat-panel">
   <div class="wrap">
     <button type="button" class="cat-dat-toggle cat-filter-head" aria-expanded="false" data-target="cat-dat-body">
@@ -89,6 +98,7 @@
     <div class="cat-toolbar-head">
       <span class="cat-section-title" data-i18n="catalog.eyebrow">แคตตาล็อกเกม</span>
       <span class="cat-count" id="cat-count" data-i18n="catalog.loading">กำลังโหลดแคตตาล็อก…</span>
+      <a class="cat-rom-quota" id="cat-rom-quota" hidden></a>
     </div>
     <div class="cat-toolbar-row">
       <input type="search" id="cat-search" class="cat-search" autocomplete="off"
@@ -234,6 +244,7 @@
 <script src="/app.js"></script>
 <script src="/auth.js"></script>
 <script src="/auth-ui.js"></script>
-<script src="/catalog/catalog.js"></script>
+<script src="/roms.js?v=1"></script>
+<script src="/catalog/catalog.js?v=2"></script>
 </body>
 </html>

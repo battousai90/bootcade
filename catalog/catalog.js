@@ -39,10 +39,9 @@
   function previewUrl(g) { return ART_BASE + 'previews/' + encodeURIComponent(g.n) + '.png'; }
   function titleUrl(g)   { return ART_BASE + 'titles/'   + encodeURIComponent(g.n) + '.png'; }
   function datFileUrl(f) { return DAT_BASE + encodeURIComponent(f); }
-  // Roms/<rf>/<n>.zip on the NAS, mirrored verbatim as the URL path : auth
-  // (HTTP Basic, single shared account) is enforced server-side by nginx,
-  // not here; this link is only reachable/openable by someone who already
-  // has those credentials.
+  // Roms/<rf>/<n>.zip on the NAS, mirrored verbatim as the URL path. Access
+  // is decided server-side (nginx on CT 105 asks CT 106: account, verified
+  // email, quota). The page only PREPARES the player: see romState below.
   function romUrl(g) { return ROMS_BASE + encodeURIComponent(g.rf) + '/' + encodeURIComponent(g.n) + '.zip'; }
 
   function humanSize(bytes) {
@@ -272,13 +271,129 @@
       : '');
   }
 
+  /* ROM access, as far as this page can tell.
+
+     undefined : not known yet (still loading)
+     null      : unknown for good (score service silent). The button stays a
+                 plain link: the ROM server decides anyway, exactly as before.
+     {anon}    : nobody signed in
+     otherwise : /api/me/roms, with can_download and reason
+
+     Nothing here grants or refuses anything. It only avoids sending a player
+     to the Keycloak screen without telling them why, or to a refusal page
+     they could have been warned about. */
+  var romState;
+  var currentGame = null;
+
   function actionsHtml(g) {
-    // Artwork already shows full-size above (click it for the lightbox) // a redundant download link here just duplicated that.
-    return (
-      '<a href="' + romUrl(g) + '" rel="noopener" title="' + escapeHtml(t('catalog.rom.protected', 'Private : requires the access credentials')) + '">' +
-        escapeHtml(t('catalog.dl.rom', 'ROM')) +
-      '</a>'
-    );
+    var label = escapeHtml(t('catalog.dl.rom', 'ROM'));
+    var s = romState;
+    if (!s) {
+      return '<a href="' + romUrl(g) + '" rel="noopener">' + label + '</a>';
+    }
+    if (s.anon) {
+      return '<a href="' + romUrl(g) + '" class="is-locked" data-gate="anon" title="' +
+        escapeHtml(t('roms.rom.locked', 'Sign in to download')) + '">\uD83D\uDD12 ' + label + '</a>';
+    }
+    if (s.can_download) {
+      var left = window.BootcadeRoms.fmt(t('roms.left', '{r} of {q} ROMs left over 24 hours'),
+                                         { r: s.remaining, q: s.quota });
+      return '<a href="' + romUrl(g) + '" rel="noopener" data-rom="1" title="' + escapeHtml(left) + '">' + label + '</a>';
+    }
+    var cls = s.reason === 'quota' ? 'is-spent' : 'is-locked';
+    return '<a href="' + romUrl(g) + '" class="' + cls + '" data-gate="' + escapeHtml(s.reason || 'unavailable') + '">' +
+      (s.reason === 'quota' ? '' : '\uD83D\uDD12 ') + label + '</a>';
+  }
+
+  /* The explanation shown under the buttons instead of following the link. */
+  function gateEl() {
+    var el = document.getElementById('cat-rom-gate');
+    if (!el && els.modalActions) {
+      el = document.createElement('div');
+      el.id = 'cat-rom-gate';
+      el.className = 'roms-gate';
+      el.hidden = true;
+      els.modalActions.parentNode.insertBefore(el, els.modalActions.nextSibling);
+    }
+    return el;
+  }
+
+  function showGate(reason) {
+    var R = window.BootcadeRoms, el = gateEl();
+    if (!R || !el) return;
+    var s = romState || {};
+    var link = function (href, key, fallback, id) {
+      return '<a class="btn" href="' + escapeHtml(href) + '"' + (id ? ' id="' + id + '"' : '') + '>' +
+             escapeHtml(t(key, fallback)) + '</a>';
+    };
+    var how = link(R.explainHref, 'roms.gate.how', 'How it works');
+    var title, text, actions;
+    if (reason === 'anon') {
+      title = t('roms.gate.anon.title', 'Downloads are for Bootcade members');
+      text = t('roms.gate.anon.text', 'The account is free. Each account can download a number of ROMs every 24 hours, and playing raises that number.');
+      actions = link('#', 'roms.gate.signup', 'Create a free account', 'cat-gate-signup') +
+                link('#', 'roms.gate.signin', 'Sign in', 'cat-gate-signin') + how;
+    } else if (reason === 'unverified') {
+      title = t('roms.gate.unverified.title', 'Verify your email address first');
+      text = t('roms.gate.unverified.text', 'Open the link we emailed you when you signed up, then come back. You can send it again from your account page.');
+      actions = link(R.ACCOUNT, 'roms.gate.account', 'My account') + how;
+    } else if (reason === 'quota') {
+      title = t('roms.gate.quota.title', 'Quota reached for now');
+      text = R.fmt(t('roms.gate.quota.text', 'You have used your {q} ROMs over the last 24 hours. The next one frees up at {time}.'),
+                   { q: s.quota, time: R.when(s.next_slot_at) });
+      actions = link(R.profileHref, 'roms.gate.profile', 'See my quota') + how;
+    } else if (reason === 'closed') {
+      title = t('roms.gate.closed.title', 'Downloads are closed for now');
+      text = t('roms.gate.closed.text', 'Please come back later.');
+      actions = how;
+    } else {
+      title = t('roms.gate.blocked.title', 'Downloads unavailable for this account');
+      text = t('roms.gate.blocked.text', 'ROM downloads are not available for this account. If you think this is a mistake, contact the administrator.');
+      actions = how;
+    }
+    el.innerHTML = '<b>' + escapeHtml(title) + '</b><p>' + escapeHtml(text) + '</p>' +
+                   '<div class="roms-gate-actions cat-actions">' + actions + '</div>' +
+                   (reason === 'quota' ? '<ul class="roms-sgs" id="cat-gate-sg"></ul>' : '');
+    el.hidden = false;
+    var up = document.getElementById('cat-gate-signup');
+    if (up) up.addEventListener('click', function (e) { e.preventDefault(); window.BootcadeAuth.register(); });
+    var inn = document.getElementById('cat-gate-signin');
+    if (inn) inn.addEventListener('click', function (e) { e.preventDefault(); window.BootcadeAuth.login(); });
+    if (reason === 'quota') {
+      R.suggestions().then(function (sg) {
+        var list = document.getElementById('cat-gate-sg');
+        if (list && sg && sg.items) list.innerHTML = sg.items.slice(0, 2).map(R.suggestionHtml).join('');
+      });
+    }
+  }
+
+  function renderQuotaCounter() {
+    var el = document.getElementById('cat-rom-quota');
+    var R = window.BootcadeRoms;
+    if (!el || !R) return;
+    var s = romState;
+    if (!s || s.anon || s.reason === 'unverified') { el.hidden = true; return; }
+    el.textContent = R.fmt(t('roms.counter', 'ROMs: {u} / {q}'), { u: s.used, q: s.quota });
+    el.title = t('roms.gate.profile', 'See my quota');
+    el.href = R.profileHref;
+    el.classList.toggle('is-full', !s.can_download);
+    el.hidden = false;
+  }
+
+  function refreshRomState() {
+    var R = window.BootcadeRoms, A = window.BootcadeAuth;
+    if (!R || !A) { romState = null; return; }
+    A.complete().then(function () { return A.token(); }).then(function (tok) {
+      if (!tok) return { anon: true };
+      return R.me();
+    }).then(function (s) {
+      romState = s || null;
+      renderQuotaCounter();
+      // The modal may already be open on a game: redraw its button.
+      if (currentGame && !els.modal.hidden) {
+        els.modalActions.innerHTML = actionsHtml(currentGame);
+      }
+    }).catch(function () { romState = null; });
   }
 
   function row(g) {
@@ -389,7 +504,10 @@
       specRow(t('catalog.spec.driver', 'Driver'), driverLabel) +
       romsHtml(g);
 
+    currentGame = g;
     els.modalActions.innerHTML = actionsHtml(g);
+    var gate = document.getElementById('cat-rom-gate');
+    if (gate) gate.hidden = true;
     renderScores(g);
 
     els.modal.hidden = false;
@@ -520,6 +638,20 @@
   }
 
   els.modalClose.addEventListener('click', closeModal);
+  // ROM button: a gated button explains instead of navigating; an allowed
+  // one navigates, and the quota is re-read shortly after so the counter
+  // follows (a ROM already counted in the window costs nothing, and only the
+  // server knows which).
+  els.modalActions.addEventListener('click', function (e) {
+    var a = e.target.closest('a');
+    if (!a) return;
+    if (a.dataset.gate) {
+      e.preventDefault();
+      showGate(a.dataset.gate);
+    } else if (a.dataset.rom) {
+      setTimeout(refreshRomState, 2500);
+    }
+  });
   els.modalBackdrop.addEventListener('click', closeModal);
   document.addEventListener('keydown', function (e) {
     if (e.key !== 'Escape') return;
@@ -800,6 +932,10 @@
           applyUrl('ranked');
         })
         .catch(function () { /* no leaderboards, everything else stands */ });
+
+      // ROM access state: signed in or not, quota left. Silent on failure,
+      // the button then stays a plain link.
+      refreshRomState();
 
       // Same reasoning again, one failure domain further: no changes.json,
       // no "Fixed ROMs" button, everything else still renders.

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bootcade : ROM のダウンロード</title>
+<meta name="description" content="Bootcade での ROM ダウンロードの仕組み：無料アカウント、24 時間単位で数える上限、プレイやスコア投稿で上がるランク。">
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/leaderboard/leaderboard.css?v=29">
+<link rel="stylesheet" href="/roms.css?v=1">
+<link rel="canonical" href="https://bootcade.netlify.app/ja/roms/">
+<link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/roms/">
+<link rel="alternate" hreflang="fr" href="https://bootcade.netlify.app/fr/roms/">
+<link rel="alternate" hreflang="es" href="https://bootcade.netlify.app/es/roms/">
+<link rel="alternate" hreflang="de" href="https://bootcade.netlify.app/de/roms/">
+<link rel="alternate" hreflang="pt" href="https://bootcade.netlify.app/pt/roms/">
+<link rel="alternate" hreflang="ja" href="https://bootcade.netlify.app/ja/roms/">
+<link rel="alternate" hreflang="zh" href="https://bootcade.netlify.app/zh/roms/">
+<link rel="alternate" hreflang="th" href="https://bootcade.netlify.app/th/roms/">
+<link rel="alternate" hreflang="x-default" href="https://bootcade.netlify.app/roms/">
+
+<meta property="og:locale" content="ja">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Bootcade : ROM のダウンロード">
+<meta property="og:description" content="Bootcade での ROM ダウンロードの仕組み：無料アカウント、24 時間単位で数える上限、プレイやスコア投稿で上がるランク。">
+<meta property="og:image" content="https://bootcade.netlify.app/og.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<script>
+(function () {
+  try {
+    var m = localStorage.getItem('fbneo-theme');
+    if (m === 'light' || m === 'dark') document.documentElement.dataset.theme = m;
+  } catch (e) {}
+})();
+</script>
+</head>
+<body class="lb-page roms-page">
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" data-href="home" href="/ja/" style="color:inherit">
+      <img src="/logo.svg" alt="">
+      <span>Bootcade<small data-i18n="brand.sub">Linux 向けアーケードライブラリ</small></span>
+    </a>
+    <nav class="nav-links">
+      <a data-href="home" href="/ja/" data-i18n="catalog.back">← Bootcade に戻る</a>
+      <a data-href="catalog" href="/ja/catalog/" data-i18n="nav.catalog">カタログ</a>
+      <a data-href="leaderboard" href="/ja/leaderboard/" data-i18n="nav.leaderboard">リーダーボード</a>
+      <span class="nav-account" id="nav-account"></span>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap lb-head">
+    <h1 data-i18n="rp.h1">ROM のダウンロード</h1>
+    <p class="lead" data-i18n="rp.lead">カタログの ROM ボタンは Bootcade メンバー専用です。無料です：アカウントを作成し、メールアドレスを確認すればダウンロードできます。</p>
+    <p class="lb-status" id="rp-status" hidden></p>
+    <!-- Rempli par roms/page.js selon que le visiteur est connecte ou non. -->
+    <div class="lb-cta" id="rp-cta">
+      <a class="btn btn-accent" data-href="catalog" href="/ja/catalog/" data-i18n="rp.cta.catalog">カタログを開く</a>
+    </div>
+  </div>
+
+  <div class="wrap lb-boards">
+    <div class="lb-grid roms-grid">
+      <section class="lb-card">
+        <h2 data-i18n="rp.why.h2">なぜアカウントが必要？</h2>
+        <p data-i18n="rp.why.p">コレクションは帯域の限られた自宅サーバーから配信しています。アカウントがあれば公平に分け合えます：プレイヤーごとに上限があり、誰かが一度にすべてを持っていくことはできません。</p>
+      </section>
+      <section class="lb-card">
+        <h2 data-i18n="rp.count.h2">数え方</h2>
+        <ul class="roms-list" data-i18n="rp.count.list"><li>異なる ROM はそれぞれ 1 回として、直近 24 時間で数えます。</li><li>同じ ROM をその 24 時間内に再ダウンロードしても無料です：再開や再試行は数えません。</li><li>各ダウンロードの 24 時間後に枠が 1 つ空きます。</li></ul>
+      </section>
+    </div>
+  </div>
+
+  <div class="wrap roms-block">
+    <div class="lb-profile-card">
+      <h2 data-i18n="rp.tiers.h2">上限のランク</h2>
+      <p class="lb-profile-hint" data-i18n="rp.tiers.p">遊ぶほど多くダウンロードできます。到達した最も高いランクが適用されます。</p>
+      <div id="rp-tiers"><p class="lb-empty" data-i18n="rp.loading">現在の上限を読み込み中…</p></div>
+    </div>
+  </div>
+
+  <div class="wrap roms-block">
+    <div class="lb-profile-card">
+      <h2 data-i18n="rp.climb.h2">ランクの上げ方</h2>
+      <ul class="roms-list" data-i18n="rp.climb.list"><li><b>Bootcade ランチャーで遊ぶ。</b>Highscore バッジのあるゲームでは、スコアがゲーム自体から読み取られ、あなたのアカウントで公開されます。入力は不要です。</li><li><b>世界記録を取る。</b>そのランキングで何人かのプレイヤーが競っていれば、1 位がカウントされます。</li><li><b>実績を集める。</b>24 個すべてがプロフィールに条件とともに表示されます。6 つのプレステージ実績は競争のあるランキングに基づき、3 つでチャンピオンが解放されます。</li></ul>
+      <p class="lb-profile-hint" data-i18n="rp.climb.note">プレイ時間はランチャーの申告なので、上げられるのは常連までで、チャンピオンにはなれません。そのランクはゲーム自体が裏付けるスコアに基づきます。</p>
+    </div>
+  </div>
+</main>
+
+<script src="/i18n.js"></script>
+<script src="/app.js"></script>
+<script src="/auth.js"></script>
+<script src="/auth-ui.js"></script>
+<script src="/roms.js?v=1"></script>
+<script src="/roms/page.js?v=1"></script>
+</body>
+</html>

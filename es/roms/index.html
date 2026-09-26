@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bootcade : descarga de ROMs</title>
+<meta name="description" content="Cómo funciona la descarga de ROMs en Bootcade: una cuenta gratuita, una cuota contada sobre 24 horas y niveles que suben cuando juegas y publicas puntuaciones.">
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/leaderboard/leaderboard.css?v=29">
+<link rel="stylesheet" href="/roms.css?v=1">
+<link rel="canonical" href="https://bootcade.netlify.app/es/roms/">
+<link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/roms/">
+<link rel="alternate" hreflang="fr" href="https://bootcade.netlify.app/fr/roms/">
+<link rel="alternate" hreflang="es" href="https://bootcade.netlify.app/es/roms/">
+<link rel="alternate" hreflang="de" href="https://bootcade.netlify.app/de/roms/">
+<link rel="alternate" hreflang="pt" href="https://bootcade.netlify.app/pt/roms/">
+<link rel="alternate" hreflang="ja" href="https://bootcade.netlify.app/ja/roms/">
+<link rel="alternate" hreflang="zh" href="https://bootcade.netlify.app/zh/roms/">
+<link rel="alternate" hreflang="th" href="https://bootcade.netlify.app/th/roms/">
+<link rel="alternate" hreflang="x-default" href="https://bootcade.netlify.app/roms/">
+
+<meta property="og:locale" content="es">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Bootcade : descarga de ROMs">
+<meta property="og:description" content="Cómo funciona la descarga de ROMs en Bootcade: una cuenta gratuita, una cuota contada sobre 24 horas y niveles que suben cuando juegas y publicas puntuaciones.">
+<meta property="og:image" content="https://bootcade.netlify.app/og.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<script>
+(function () {
+  try {
+    var m = localStorage.getItem('fbneo-theme');
+    if (m === 'light' || m === 'dark') document.documentElement.dataset.theme = m;
+  } catch (e) {}
+})();
+</script>
+</head>
+<body class="lb-page roms-page">
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" data-href="home" href="/es/" style="color:inherit">
+      <img src="/logo.svg" alt="">
+      <span>Bootcade<small data-i18n="brand.sub">Biblioteca arcade para Linux</small></span>
+    </a>
+    <nav class="nav-links">
+      <a data-href="home" href="/es/" data-i18n="catalog.back">← Volver a Bootcade</a>
+      <a data-href="catalog" href="/es/catalog/" data-i18n="nav.catalog">Catálogo</a>
+      <a data-href="leaderboard" href="/es/leaderboard/" data-i18n="nav.leaderboard">Clasificación</a>
+      <span class="nav-account" id="nav-account"></span>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap lb-head">
+    <h1 data-i18n="rp.h1">Descarga de ROMs</h1>
+    <p class="lead" data-i18n="rp.lead">El botón ROM del catálogo está reservado a los miembros de Bootcade. Es gratis: crea una cuenta, verifica tu correo electrónico y descarga.</p>
+    <p class="lb-status" id="rp-status" hidden></p>
+    <!-- Rempli par roms/page.js selon que le visiteur est connecte ou non. -->
+    <div class="lb-cta" id="rp-cta">
+      <a class="btn btn-accent" data-href="catalog" href="/es/catalog/" data-i18n="rp.cta.catalog">Abrir el catálogo</a>
+    </div>
+  </div>
+
+  <div class="wrap lb-boards">
+    <div class="lb-grid roms-grid">
+      <section class="lb-card">
+        <h2 data-i18n="rp.why.h2">¿Por qué una cuenta?</h2>
+        <p data-i18n="rp.why.p">La colección se sirve desde un servidor doméstico con ancho de banda limitado. Una cuenta permite repartirla de forma justa: cada jugador tiene una cuota y nadie puede llevárselo todo de golpe.</p>
+      </section>
+      <section class="lb-card">
+        <h2 data-i18n="rp.count.h2">Qué cuenta</h2>
+        <ul class="roms-list" data-i18n="rp.count.list"><li>Cada ROM distinta cuenta una vez, en 24 horas móviles.</li><li>Volver a descargar la misma ROM en esas 24 horas es gratis: una descarga reanudada o repetida no cuesta nada.</li><li>Una plaza se libera 24 horas después de cada descarga.</li></ul>
+      </section>
+    </div>
+  </div>
+
+  <div class="wrap roms-block">
+    <div class="lb-profile-card">
+      <h2 data-i18n="rp.tiers.h2">Niveles de cuota</h2>
+      <p class="lb-profile-hint" data-i18n="rp.tiers.p">Cuanto más juegas, más puedes descargar. Se aplica el nivel más alto que alcances.</p>
+      <div id="rp-tiers"><p class="lb-empty" data-i18n="rp.loading">Cargando las cuotas vigentes…</p></div>
+    </div>
+  </div>
+
+  <div class="wrap roms-block">
+    <div class="lb-profile-card">
+      <h2 data-i18n="rp.climb.h2">Cómo subir</h2>
+      <ul class="roms-list" data-i18n="rp.climb.list"><li><b>Juega con el lanzador Bootcade.</b> En los juegos con la insignia Highscore, tu puntuación se lee del propio juego y se publica con tu cuenta, sin escribir nada.</li><li><b>Consigue un récord mundial.</b> Un primer puesto cuenta en cuanto varios jugadores compiten en esa clasificación.</li><li><b>Gana logros.</b> Los 24 aparecen en tu perfil con lo que pide cada uno. Los 6 de Prestigio se basan en clasificaciones disputadas: 3 de ellos desbloquean Campeón.</li></ul>
+      <p class="lb-profile-hint" data-i18n="rp.climb.note">El tiempo de juego lo declara el lanzador: puede subirte hasta Asiduo, nunca hasta Campeón. Ese nivel se basa en puntuaciones que el propio juego confirma.</p>
+    </div>
+  </div>
+</main>
+
+<script src="/i18n.js"></script>
+<script src="/app.js"></script>
+<script src="/auth.js"></script>
+<script src="/auth-ui.js"></script>
+<script src="/roms.js?v=1"></script>
+<script src="/roms/page.js?v=1"></script>
+</body>
+</html>

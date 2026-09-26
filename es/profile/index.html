@@ -9,7 +9,8 @@
 <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="stylesheet" href="/style.css">
-<link rel="stylesheet" href="/leaderboard/leaderboard.css?v=29">
+<link rel="stylesheet" href="/leaderboard/leaderboard.css?v=30">
+<link rel="stylesheet" href="/roms.css?v=1">
 <link rel="canonical" href="https://bootcade.netlify.app/es/profile/">
 <link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/profile/">
 <link rel="alternate" hreflang="fr" href="https://bootcade.netlify.app/fr/profile/">
@@ -63,6 +64,15 @@
     <div class="lb-totals" id="pf-totals"></div>
   </div>
 
+  <!-- Telechargements de ROMs : palier, jauge, ce qui compte en ce moment,
+       comment monter. Cache tant que le service n'a pas repondu. -->
+  <div class="wrap pf-roms-wrap" id="pf-roms-wrap" hidden>
+    <div class="lb-profile-card">
+      <h2 data-i18n="pf.roms.h2">Descargas de ROMs</h2>
+      <div id="pf-roms"></div>
+    </div>
+  </div>
+
   <div class="wrap lb-boards">
     <div class="lb-grid">
       <section class="lb-card">
@@ -82,7 +92,7 @@
   <div class="wrap pf-ach-wrap" id="pf-ach-wrap" hidden>
     <div class="lb-profile-card">
       <h2><span data-i18n="pf.ach.h2">Logros</span> <b id="pf-ach-count"></b></h2>
-      <div class="pf-ach" id="pf-ach"></div>
+      <div id="pf-ach"></div>
     </div>
   </div>
 
@@ -101,6 +111,7 @@
 <script src="/app.js"></script>
 <script src="/auth.js"></script>
 <script src="/auth-ui.js"></script>
-<script src="/profile/profile.js?v=3"></script>
+<script src="/roms.js?v=1"></script>
+<script src="/profile/profile.js?v=5"></script>
 </body>
 </html>

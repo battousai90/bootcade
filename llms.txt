@@ -72,6 +72,9 @@ FinalBurn Neo loads.
 
 - [Website](https://bootcade.netlify.app): landing page with the full feature list
   (also in French, Spanish, German, Portuguese, Japanese, Chinese and Thai at /fr/, /es/, /de/, /pt/, /ja/, /zh/, /th/)
+- [ROM downloads](https://bootcade.netlify.app/roms/): how ROM downloads from the
+  game catalog work: a free account with a verified email, a quota counted over a
+  rolling 24 hours, and tiers that grow with published scores and achievements
 - [Source code](https://github.com/battousai90/fbneo-launcher): GitHub repository
 - [Downloads](https://github.com/battousai90/fbneo-launcher/releases/latest): AppImage, .deb, .flatpak and .tar.gz packages, with SHA256SUMS
 - [Issue tracker](https://github.com/battousai90/fbneo-launcher/issues): bug reports and feature requests

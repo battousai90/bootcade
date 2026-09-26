@@ -53,6 +53,8 @@ const PAGES = [
   // n'entre pas dans le plan du site.
   { file: 'leaderboard/game/index.html', dir: 'leaderboard/game/', metaTitleKey: 'gp.meta.title', metaDescKey: 'gp.meta.desc', noindex: true },
   { file: 'catalog/changes/index.html', dir: 'catalog/changes/', metaTitleKey: 'catalog.changes.meta.title', metaDescKey: 'catalog.changes.meta.desc' },
+  // Telechargement des ROMs : pourquoi un compte, ce qui compte, les paliers.
+  { file: 'roms/index.html', dir: 'roms/', metaTitleKey: 'rp.meta.title', metaDescKey: 'rp.meta.desc' },
 ];
 
 // Locate every data-i18n element and capture its inner HTML, honouring nesting.
@@ -117,6 +119,7 @@ function render(page, source, pageSlots, lang) {
   const home = lang === 'en' ? '/' : `/${lang}/`;
   const catalogHref = lang === 'en' ? '/catalog/' : `/${lang}/catalog/`;
   const boardHref   = lang === 'en' ? '/leaderboard/' : `/${lang}/leaderboard/`;
+  const romsHref    = lang === 'en' ? '/roms/' : `/${lang}/roms/`;
 
   html = html
     // Strip anything a previous run injected, so building twice is a no-op rather
@@ -142,7 +145,8 @@ function render(page, source, pageSlots, lang) {
       })};</script>`)
     .replace(/data-href="home" href="[^"]*"/g, `data-href="home" href="${home}"`)
     .replace(/data-href="catalog" href="[^"]*"/g, `data-href="catalog" href="${catalogHref}"`)
-    .replace(/data-href="leaderboard" href="[^"]*"/g, `data-href="leaderboard" href="${boardHref}"`);
+    .replace(/data-href="leaderboard" href="[^"]*"/g, `data-href="leaderboard" href="${boardHref}"`)
+    .replace(/data-href="roms" href="[^"]*"/g, `data-href="roms" href="${romsHref}"`);
 
   return html;
 }

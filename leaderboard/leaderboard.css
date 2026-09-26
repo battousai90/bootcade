@@ -356,3 +356,19 @@ img.avatar-lg { width: 72px; height: 72px; border-radius: 16px; }
 .pf-ach-body span { display: block; font-size: 0.8rem; color: var(--muted); }
 .pf-ach-item.is-locked .pf-ach-ico { filter: grayscale(1); opacity: 0.45; }
 .pf-ach-item.is-locked .pf-ach-body b { color: var(--muted); font-weight: 500; }
+
+/* Prestige : les six qui ouvrent le palier Champion. Cartes dorees, et un
+   titre de groupe de la meme couleur : ils doivent se distinguer au premier
+   coup d'oeil, verrouilles compris. */
+.pf-ach-h3 { margin: 1.4rem 0 0.7rem; font-size: 1.05rem; }
+.pf-ach-h3:first-child { margin-top: 0.4rem; }
+.pf-ach-h3 b { color: var(--muted); font-weight: 600; margin-left: 0.3rem; }
+.pf-ach-h3.is-prestige { color: var(--warn); }
+.pf-ach-note { margin: -0.3rem 0 0.8rem; font-size: 0.9rem; }
+.pf-ach-item.is-prestige {
+  border: 1px solid rgba(240, 181, 74, 0.55);
+  background: rgba(240, 181, 74, 0.08);
+  border-radius: 10px;
+  padding: 0.6rem 0.7rem;
+}
+.pf-ach-item.is-prestige.is-locked { border-style: dashed; background: none; }

@@ -62,12 +62,25 @@
    * huit langues du site vivent au meme endroit que tout le reste plutot
    * que d'etre a maintenir en double dans CT 106.
    */
-  var ACH_ICON = {
-    first_blood: '\uD83C\uDFC5', explorer: '\uD83C\uDFAE',
-    addict: '\uD83D\uDD79\uFE0F', top_world: '\uD83C\uDFC6',
-    record_holder: '\uD83D\uDC51', on_fire: '\uD83D\uDD25',
-    globe_trotter: '\uD83C\uDF0D', century: '\uD83D\uDCAF'
-  };
+  /* Vingt-quatre distinctions depuis le 2026-09-26 : dix-huit normales et
+   * six Prestige. L'icone et le niveau viennent de l'API (le catalogue vit
+   * sur CT 106, un seul endroit) ; le nom et la condition sont traduits ici
+   * par le code, l'anglais de l'API servant de repli.
+   *
+   * Les Prestige passent en premier, dans des cartes a part : ce sont elles
+   * qui ouvrent le palier Champion des telechargements, et la page doit le
+   * faire voir.
+   */
+  function achItem(a) {
+    var got = !!a.earned_at;
+    var name = t('ach.' + a.code, a.name);
+    var cond = t('ach.' + a.code + '.cond', a.condition);
+    return '<div class="pf-ach-item' + (got ? '' : ' is-locked')
+         + (a.level === 'prestige' ? ' is-prestige' : '') + '">'
+         + '<span class="pf-ach-ico" aria-hidden="true">' + esc(a.icon || '') + '</span>'
+         + '<span class="pf-ach-body"><b>' + esc(name) + '</b>'
+         + '<span>' + esc(cond) + '</span></span></div>';
+  }
 
   function renderAchievements(data) {
     var wrap = document.getElementById('pf-ach-wrap');
@@ -76,16 +89,97 @@
     wrap.hidden = false;
     document.getElementById('pf-ach-count').textContent =
       data.earned + ' / ' + data.total;
-    host.innerHTML = data.items.map(function (a) {
-      var got = !!a.earned_at;
-      var name = t('ach.' + a.code, a.name);
-      var cond = t('ach.' + a.code + '.cond', a.condition);
-      return '<div class="pf-ach-item' + (got ? '' : ' is-locked') + '">'
-           + '<span class="pf-ach-ico" aria-hidden="true">'
-           + (ACH_ICON[a.code] || '') + '</span>'
-           + '<span class="pf-ach-body"><b>' + esc(name) + '</b>'
-           + '<span>' + esc(cond) + '</span></span></div>';
-    }).join('');
+    var group = function (level, title, fallback) {
+      var items = data.items.filter(function (a) { return (a.level || 'normal') === level; });
+      if (!items.length) return '';
+      var n = items.filter(function (a) { return a.earned_at; }).length;
+      return '<h3 class="pf-ach-h3' + (level === 'prestige' ? ' is-prestige' : '') + '">'
+           + esc(t(title, fallback)) + ' <b>' + n + ' / ' + items.length + '</b></h3>'
+           + (level === 'prestige'
+              ? '<p class="lb-profile-hint pf-ach-note">' + esc(t('pf.ach.prestige.note',
+                  'Prestige achievements rest on leaderboards contested by several players. Three of them unlock the Champion download tier.')) + '</p>'
+              : '')
+           + '<div class="pf-ach">' + items.map(achItem).join('') + '</div>';
+    };
+    host.innerHTML = group('prestige', 'pf.ach.prestige', 'Prestige')
+                   + group('normal', 'pf.ach.normal', 'Normal');
+  }
+
+  /* Telechargements de ROMs.
+   *
+   * Ce que le joueur doit pouvoir lire ici sans chercher : ou il en est
+   * (palier, jauge, prochaine place libre), ce qui compte en ce moment (une
+   * ROM reprise dans les 24 h ne recompte pas, encore faut-il savoir
+   * lesquelles), et ce qui le ferait monter, chiffre. Les suggestions
+   * viennent du serveur ; ce module ne fait que les presenter.
+   */
+  function renderRoms(state, sg) {
+    var wrap = document.getElementById('pf-roms-wrap');
+    var host = document.getElementById('pf-roms');
+    var R = window.BootcadeRoms;
+    if (!wrap || !host || !state || !R) return;
+    wrap.hidden = false;
+    var fmt = R.fmt;
+    var pctUsed = state.quota ? Math.min(100, Math.round(100 * state.used / state.quota)) : 100;
+    var html = '<div class="roms-row"><span>' + esc(t('pf.roms.tier', 'Tier')) + ' <b>'
+      + esc(R.tierName(state.tier)) + '</b></span><span>'
+      + esc(fmt(t('pf.roms.used', '{u} of {q} used over the last 24 hours'),
+                { u: state.used, q: state.quota })) + '</span></div>'
+      + '<div class="roms-gauge"><span class="' + (state.remaining ? '' : 'is-full')
+      + '" style="width:' + pctUsed + '%"></span></div>';
+    if (state.next_slot_at) {
+      html += '<div class="roms-row"><span>' + esc(fmt(t('pf.roms.slot', 'Next free slot: {time}'),
+        { time: R.when(state.next_slot_at) })) + '</span></div>';
+    }
+    if (state.override && state.override.mode === 'bonus') {
+      html += '<p class="lb-profile-hint">' + esc(fmt(t('pf.roms.bonus',
+        'Includes a bonus of {n} granted by the administrator.'), { n: state.override.value })) + '</p>';
+    } else if (state.override && state.override.mode === 'fixed') {
+      html += '<p class="lb-profile-hint">' + esc(t('pf.roms.fixed',
+        'Your quota was set by the administrator.')) + '</p>';
+    }
+    if (state.reason === 'unverified') {
+      html += '<p class="pf-roms-alert">' + esc(t('pf.roms.unverified',
+        'Verify your email address to download ROMs.')) + ' <a href="' + esc(R.ACCOUNT) + '">'
+        + esc(t('roms.gate.account', 'My account')) + '</a></p>';
+    } else if (state.reason === 'blocked' || state.reason === 'closed' || state.reason === 'no_role') {
+      html += '<p class="pf-roms-alert">' + esc(t('roms.gate.' + state.reason + '.title',
+        state.reason === 'closed' ? 'Downloads are closed for now' : 'Downloads unavailable for this account'))
+        + '</p>';
+    }
+
+    var items = (state.items || []).slice().reverse();
+    html += '<div class="pf-roms-cols"><div><h3>' + esc(t('pf.roms.window', 'Counted right now')) + '</h3>'
+      + (items.length
+        ? '<ul class="pf-roms-items">' + items.map(function (i) {
+            return '<li><b>' + esc(i.rom) + '</b><span>' + esc(R.when(i.at)) + '</span></li>';
+          }).join('') + '</ul>'
+        : '<p class="lb-empty">' + esc(t('pf.roms.window.empty', 'Nothing downloaded in the last 24 hours.')) + '</p>')
+      + '</div><div>';
+    if (state.next) {
+      html += '<h3>' + esc(fmt(t('pf.roms.next', 'Next tier: {tier}, {q} ROMs per 24 h'),
+        { tier: R.tierName(state.next.key), q: state.next.quota })) + '</h3>'
+        + '<p class="lb-profile-hint">' + esc(t('pf.roms.next.any', 'Any one of these is enough:')) + '</p>'
+        + '<ul class="pf-roms-conds">' + state.next.conditions.map(function (c) {
+            var p = c.target ? Math.min(100, Math.round(100 * c.current / c.target)) : 100;
+            return '<li><b>' + esc(c.current) + ' / ' + esc(c.target) + '</b> '
+              + esc(R.criterionShort(c.criterion))
+              + '<div class="roms-gauge"><span style="width:' + p + '%"></span></div></li>';
+          }).join('') + '</ul>';
+    } else {
+      html += '<h3>' + esc(t('pf.roms.top', 'You have reached the top tier.')) + '</h3>';
+    }
+    html += '</div></div>';
+
+    var list = (sg && sg.items) || [];
+    html += '<h3 style="margin-top:26px">' + esc(t('pf.roms.sg.h3', 'Ideas to climb faster')) + '</h3>'
+      + (list.length
+        ? '<ul class="roms-sgs">' + list.map(R.suggestionHtml).join('') + '</ul>'
+        : '<p class="lb-profile-hint">' + esc(t('pf.roms.sg.empty',
+            'Play a game with the Highscore badge in the Bootcade launcher: every published score counts.')) + '</p>')
+      + '<p class="lb-profile-hint" style="margin-top:16px"><a href="' + esc(R.explainHref) + '">'
+      + esc(t('roms.gate.how', 'How quotas work')) + '</a></p>';
+    host.innerHTML = html;
   }
 
   function rankBadge(row) {
@@ -392,7 +486,8 @@
       };
       Promise.all([get('/api/me'), get('/api/me/scores'),
                    get('/api/me/playtime'), get('/api/me/records'),
-                   get('/api/me/achievements')])
+                   get('/api/me/achievements'), get('/api/me/roms'),
+                   get('/api/me/roms/suggestions')])
         .then(function (r) {
           var profile = r[0];
           if (!profile) {
@@ -434,6 +529,7 @@
           }, rankBadge);
 
           renderAchievements(r[4]);
+          renderRoms(r[5], r[6]);
           fill('pf-games', r[2], function (x) {
             return '<span class="lb-main">' + gameLink(x) + '</span>'
                  + '<span class="lb-value">' + esc(formatTime(x.total_secs)) + '</span>';
