@@ -484,12 +484,48 @@ footer { border-top: 1px solid var(--border); background: var(--bg2); padding: 4
   .nav-links .btn { padding: 9px 10px; font-size: 13.5px; }
 }
 
+/* Pages secondaires (catalogue, classement, profil, ROMs) : le lien
+   « Retour a Bootcade » double le logo, qui ramene deja a l'accueil. Sur un
+   telephone c'est lui qui poussait le bouton de connexion hors de l'ecran
+   (en-tete a 513 px pour 390 px d'ecran, mesure le 2026-09-26). */
+@media (max-width: 620px) {
+  .nav-links a[data-i18n="catalog.back"] { display: none; }
+  /* Page des changements du catalogue : « Retour au catalogue » y est le
+     lien utile ; le classement reste atteignable depuis le catalogue. */
+  .nav-links a[data-i18n="catalog.changes.back"] ~ a[data-href="leaderboard"] { display: none; }
+}
+/* Sous 470 px, le bouton de theme cede sa place au compte : le theme du
+   systeme s'applique par defaut, et le choix reste dans les reglages du
+   profil. Mesure le 2026-09-26 : sans cela, l'accueil en francais, la page
+   d'un jeu et les changements du catalogue debordaient de 20 a 70 px. */
+@media (max-width: 470px) {
+  #theme-btn { display: none; }
+}
+
 /* Sous 380 px il faut trancher : Catalog, Leaderboard et le compte passent
    avant le choix de la langue. Le site detecte deja la langue du navigateur,
    et chaque traduction garde son adresse propre, /fr/ par exemple : rien
    n'est perdu, seul le raccourci disparait. */
-@media (max-width: 380px) {
+@media (max-width: 430px) {
+  /* Seuil releve de 380 a 430 px le 2026-09-26 : en francais et en
+     espagnol, le bouton de connexion depassait encore de 8 a 19 px a
+     390 px. La langue est detectee, chaque traduction a son adresse, et le
+     choix reste dans les reglages du profil. */
   .lang-picker { display: none; }
+}
+@media (max-width: 380px) {
+  .nav-links a { padding-left: 5px; padding-right: 5px; }
+}
+/* Un appel a l'action traduit peut etre long (allemand) : sur telephone il
+   passe a la ligne plutot que d'elargir toute la page. .btn impose nowrap. */
+@media (max-width: 620px) {
+  .lb-cta .btn { white-space: normal; max-width: 100%; text-align: center; }
+  /* Chiffres du classement et du profil : quatre (ou trois) colonnes fixes
+     ne tiennent pas sur un telephone, et la derniere carte sortait de
+     l'ecran sans qu'on puisse l'atteindre. Deux colonnes. Le selecteur
+     « body.lb-page » l'emporte sur les regles de leaderboard.css, chargee
+     apres ce fichier avec une specificite de (0,2,0). */
+  body.lb-page .lb-totals { grid-template-columns: repeat(2, 1fr); gap: 12px; }
 }
 
 @media (max-width: 520px) {

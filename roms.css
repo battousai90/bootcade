@@ -96,3 +96,11 @@
   cursor: pointer; padding: 0 4px;
 }
 .roms-notice button:hover { color: var(--text); }
+/* Sur telephone, le texte prend toute la largeur (a cote de la croix) et le
+   lien passe dessous, au lieu de serrer le texte dans une colonne etroite. */
+@media (max-width: 620px) {
+  .roms-notice .wrap { flex-wrap: wrap; row-gap: 4px; }
+  .roms-notice p { flex: 1 1 calc(100% - 40px); }
+  .roms-notice button { order: 2; }
+  .roms-notice a { order: 3; flex-basis: 100%; }
+}
