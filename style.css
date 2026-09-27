@@ -285,8 +285,10 @@ section { padding: 88px 0; }
 /* ── Feature cards ───────────────────────────────────────────────────────── */
 .grid { display: grid; gap: 22px; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
 /* Quatre cartes : deux par ligne plutot que trois et une seule en dessous. */
-.grid.two { grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); }
-@media (max-width: 520px) { .grid.two { grid-template-columns: 1fr; } }
+.grid.four { grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.grid.four .card { padding: 20px; }
+@media (max-width: 1000px) { .grid.four { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .grid.four { grid-template-columns: 1fr; } }
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
