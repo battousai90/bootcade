@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Bootcade : Linux 向けネイティブ アーケードランチャー兼 ROM マネージャー・SteamOS 対応</title>
-<meta name="description" content="Linux 上の FinalBurn Neo と MAME のためのネイティブ GTK ランチャー兼 RomVault 風 ROM マネージャー。25,000 本のゲームを瞬時に一覧し、DAT ファイルで全セットを検証し、壊れたセットを自動で再構築します。 Linux ゲーミング PC とリビングの Steam Box 向け。Flatpak・AppImage・.deb を用意。">
+<meta name="description" content="Linux 上の FinalBurn Neo と MAME のためのネイティブ GTK ランチャー兼 RomVault 風 ROM マネージャー。55,000 本以上のゲームを瞬時に一覧し、DAT ファイルで全セットを検証し、壊れたセットを自動で再構築します。 Linux ゲーミング PC とリビングの Steam Box 向け。Flatpak・AppImage・.deb を用意。">
 <link rel="icon" href="/logo.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -26,7 +26,7 @@
 <meta property="og:locale" content="ja">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Bootcade : Linux 向けネイティブ アーケードランチャー兼 ROM マネージャー・SteamOS 対応">
-<meta property="og:description" content="Linux 上の FinalBurn Neo と MAME のためのネイティブ GTK ランチャー兼 RomVault 風 ROM マネージャー。25,000 本のゲームを瞬時に一覧し、DAT ファイルで全セットを検証し、壊れたセットを自動で再構築します。 Linux ゲーミング PC とリビングの Steam Box 向け。Flatpak・AppImage・.deb を用意。">
+<meta property="og:description" content="Linux 上の FinalBurn Neo と MAME のためのネイティブ GTK ランチャー兼 RomVault 風 ROM マネージャー。55,000 本以上のゲームを瞬時に一覧し、DAT ファイルで全セットを検証し、壊れたセットを自動で再構築します。 Linux ゲーミング PC とリビングの Steam Box 向け。Flatpak・AppImage・.deb を用意。">
 <meta property="og:image" content="https://bootcade.netlify.app/og.png">
 <meta name="twitter:card" content="summary_large_image">
 
@@ -40,16 +40,16 @@
   "applicationCategory": "GameApplication",
   "applicationSubCategory": "Emulator front-end",
   "operatingSystem": "Linux, SteamOS",
-  "description": "A native GTK launcher and RomVault-style ROM manager for FinalBurn Neo and MAME on Linux gaming PCs and SteamOS. Browses a 25,000-game collection, verifies every ROM set against the official DAT files by recomputing CRC32, and rebuilds broken sets automatically.",
+  "description": "A native GTK launcher and RomVault-style ROM manager for FinalBurn Neo and MAME on Linux gaming PCs and SteamOS. Browses a 55,000-game FinalBurn Neo and MAME collection, verifies every ROM set against the official DAT files by recomputing CRC32, and rebuilds broken sets automatically.",
   "url": "https://bootcade.netlify.app/",
-  "downloadUrl": "https://github.com/battousai90/fbneo-launcher/releases/latest",
-  "installUrl": "https://github.com/battousai90/fbneo-launcher/releases/latest",
+  "downloadUrl": "https://github.com/battousai90/bootcade-launcher/releases/latest",
+  "installUrl": "https://github.com/battousai90/bootcade-launcher/releases/latest",
   "softwareVersion": "1.0.1",
   "license": "https://opensource.org/licenses/MIT",
   "isAccessibleForFree": true,
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
   "author": { "@type": "Person", "name": "battousai90" },
-  "codeRepository": "https://github.com/battousai90/fbneo-launcher",
+  "codeRepository": "https://github.com/battousai90/bootcade-launcher",
   "programmingLanguage": "C++",
   "screenshot": "https://bootcade.netlify.app/og.png",
   "featureList": [
@@ -138,13 +138,13 @@
     <span class="badge" data-i18n="hero.badge">🐧 完全ネイティブ</span>
     <span class="badge" id="rel-badge" hidden></span>
     <h1 data-i18n="hero.h1">あなたのアーケードコレクションを、<br><span class="grad">ついに掌握する。</span></h1>
-    <p class="lead" data-i18n="hero.lead"><strong>FinalBurn&nbsp;Neo</strong> と、1.5 から <strong>MAME</strong> にも対応した、高速なネイティブ GTK ランチャー兼 ROM マネージャー。25,000 本のゲームを瞬時に一覧し、公式 DAT ファイルで各セットを検証し、壊れたセットを自動で再構築します。ターミナルは不要です。</p>
+    <p class="lead" data-i18n="hero.lead"><strong>FinalBurn&nbsp;Neo</strong> と、1.5 から <strong>MAME</strong> にも対応した、高速なネイティブ GTK ランチャー兼 ROM マネージャー。55,000 本以上のゲームを瞬時に一覧し、公式 DAT ファイルで各セットを検証し、壊れたセットを自動で再構築します。ターミナルは不要です。</p>
     <div class="hero-actions">
       <a class="btn btn-accent" href="#download">
         <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M7.25 1.5v8.19L4.53 6.97a.75.75 0 10-1.06 1.06l4 4a.75.75 0 001.06 0l4-4a.75.75 0 10-1.06-1.06L8.75 9.69V1.5a.75.75 0 00-1.5 0zM2.5 13a.75.75 0 000 1.5h11a.75.75 0 000-1.5h-11z"/></svg>
         <span data-i18n="hero.cta">Linux 版をダウンロード</span>
       </a>
-      <a class="btn" href="https://github.com/battousai90/fbneo-launcher" data-i18n="hero.src">ソースコードを見る</a>
+      <a class="btn" href="https://github.com/battousai90/bootcade-launcher" data-i18n="hero.src">ソースコードを見る</a>
       <a class="btn" data-href="catalog" href="/ja/catalog/" data-i18n="hero.catalog">ゲームカタログ</a>
       <a class="btn" data-href="leaderboard" href="/ja/leaderboard/" data-i18n="nav.leaderboard">リーダーボード</a>
     </div>
@@ -163,7 +163,7 @@
       </div>
       <div class="mock-body">
         <aside class="mock-side">
-          <div class="on">▤ All Games (25 949)</div>
+          <div class="on">▤ All Games (56 897)</div>
           <div>▸ 🖥 Systems</div>
           <div>▸ ★ Favorites</div>
           <div>▸ ◈ Type</div>
@@ -201,17 +201,17 @@
           </div>
           <div class="mock-row">
             <span class="mock-art"></span>
-            <span class="mock-name">Sonic The Hedgehog<small>sonic</small></span>
-            <span class="mock-sys">Megadrive · 1991</span>
+            <span class="mock-name">Galaga<small>galaga · MAME</small></span>
+            <span class="mock-sys">Arcade · 1981</span>
             <span class="pill pill-ok">Available</span>
           </div>
         </div>
       </div>
       <div class="mock-status">
-        <span style="color:var(--ok)">● Available 25 817</span>
+        <span style="color:var(--ok)">● Available 56 765</span>
         <span style="color:var(--warn)">● Incorrect 23</span>
         <span style="color:var(--bad)">● Missing 109</span>
-        <span style="margin-left:auto">Total 25 949</span>
+        <span style="margin-left:auto">Total 56 897</span>
       </div>
     </div>
   </div>
@@ -237,7 +237,8 @@
 
 <!-- ── New in 1.5 : MAME ─────────────────────────────────────────────────── -->
 <section id="mame" style="padding:34px 0">
-  <div class="wrap fbneo mame">
+  <div class="wrap fbneo">
+    <img src="/mame-logo.svg" width="96" height="23" alt="MAME">
     <div class="fbneo-txt">
       <h3 data-i18n="mame.t">1.5 の新機能：2 つ目のエミュレーターとして MAME に対応</h3>
       <p data-i18n="mame.p">Bootcade は <strong>MAME</strong> も起動できるようになりました。MAME のマシンは FinalBurn Neo のゲームと同じ 1 つのライブラリに並び、それぞれにエミュレーターが表示されます。同じコントローラープロファイル（最大 16 ボタン）と catver.ini のジャンルも使えます。ROM マネージャーは RomVault と同じように MAME を扱います。各 DAT は独自のマージモード（split、non-merged、merged）を保ち、CHD はインポート・検証・整理され、生の <code>-listxml</code> も直接読み込めます。</p>
@@ -290,7 +291,7 @@
       <div class="card">
         <div class="ico">🎮</div>
         <h3 data-i18n="card6.t">起動とコントローラー</h3>
-        <p data-i18n="card6.p1">ジョイスティック対応を有効にしたまま FinalBurn Neo を直接起動。<code>-fullscreen</code> と <code>-integerscale</code> のオプション、再利用可能なコントローラープロファイルにも対応します。</p>
+        <p data-i18n="card6.p1">FinalBurn Neo または MAME をジョイスティック対応を有効にして直接起動します。<code>-fullscreen</code> と <code>-integerscale</code> のオプション、再利用できるコントローラープロファイルにも対応。</p>
       </div>
     </div>
   </div>
@@ -301,8 +302,8 @@
   <div class="wrap">
     <div class="section-head">
       <p class="eyebrow" data-i18n="s6.eyebrow">オンラインで閲覧</p>
-      <h2 data-i18n="s6.h2">29,000本以上のゲームをブラウザで検索</h2>
-      <p data-i18n="s6.intro">ランチャーが対応する全システムを、公式のFBNeo DATファイルから直接インデックス化。検索やシステム・リリースタイプでの絞り込みができ、どのセットのDATやアートワークもダウンロードできます。インストール不要ですぐに見られます。</p>
+      <h2 data-i18n="s6.h2">29,000 本以上の FinalBurn Neo のゲームをブラウザで</h2>
+      <p data-i18n="s6.intro">FinalBurn Neo のすべてのシステムを、公式 FBNeo DAT ファイルから直接インデックス化。名前で検索し、システムやリリース種別で絞り込み、セットの DAT やアートワークをダウンロードできます。見るだけならインストール不要です。MAME はまだオンラインカタログにありません。</p>
     </div>
     <a class="btn btn-accent" data-href="catalog" href="/ja/catalog/" data-i18n="s6.cta">カタログを見る</a>
   </div>
@@ -317,7 +318,7 @@
       <p data-i18n="s7.intro">プレイを終えると、ランチャーがゲームの実際にメモリへ書き込んだ内容を読み取ります。数字を打ち込む必要も、スクリーンショットを送る必要もありません。ランチャーからでも Web カタログからでも、みんなと競えます。</p>
     </div>
 
-    <div class="grid">
+    <div class="grid two">
       <div class="card">
         <div class="ico">🏆</div>
         <h3 data-i18n="hi1.t">何もしなくていい</h3>
@@ -327,6 +328,11 @@
         <div class="ico">⏱️</div>
         <h3 data-i18n="hi2.t">ゲームごとのプレイ時間</h3>
         <p data-i18n="hi2.p1">前回のプレイ、最長のプレイ、そして累計を、ゲームごとに記録します。再構築されたカタログではほとんどが失われるなか、DAT の更新をまたいでも残ります。</p>
+      </div>
+      <div class="card">
+        <div class="ico">🥇</div>
+        <h3 data-i18n="hi4.t">解除できる 24 の実績</h3>
+        <p data-i18n="hi4.p1">スコアとプレイ時間で実績が解除され、プロフィールに表示されます。最初のスコアから 100 本の異なるゲームまで、遊びながら集める 18 の実績と、複数のプレイヤーが競うランキングで獲得する 6 つのプレステージ実績です。プレステージ実績を 3 つ獲得すると、ROM ダウンロードのチャンピオン枠が開放されます。</p>
       </div>
       <div class="card">
         <div class="ico">🔒</div>
@@ -350,7 +356,7 @@
     <div class="section-head">
       <p class="eyebrow" data-i18n="s2.eyebrow">ROM 管理</p>
       <h2 data-i18n="s2.h2">RomVault 風のワークフローを内蔵</h2>
-      <p data-i18n="s2.intro">すべての ROM は CRC32 を再計算し、FinalBurn Neo の公式 DAT ファイルと照合して検証します。ファイル名や書庫に記録された値を信用することはありません。</p>
+      <p data-i18n="s2.intro">すべての ROM は、FinalBurn Neo と MAME の公式 DAT ファイルに対して CRC32 を再計算して検証されます。ファイル名やアーカイブに保存された値を信用することはありません。</p>
       <ul class="checklist" data-i18n="s2.checklist">
         <li>DAT の CRC 照合で ROM の整合性を監査</li>
         <li>不足・破損・不完全な ROM を検出</li>
@@ -369,8 +375,8 @@
         <span class="mock-title">ROM Management : Library</span>
       </div>
       <div class="mock-stats">
-        <span class="chip" style="background:var(--info)">Total 25 949</span>
-        <span class="chip" style="background:var(--ok)">Correct 25 817</span>
+        <span class="chip" style="background:var(--info)">Total 29 698</span>
+        <span class="chip" style="background:var(--ok)">Correct 29 566</span>
         <span class="chip" style="background:var(--warn)">Incorrect 23</span>
         <span class="chip" style="background:var(--bad)">Missing 109</span>
         <span class="chip" style="background:var(--violet)">Repairable 14</span>
@@ -431,7 +437,7 @@
       <div class="card">
         <div class="ico">🔄</div>
         <h3 data-i18n="card14.t">DAT ツール</h3>
-        <p data-i18n="card14.p1">FinalBurn Neo の実行ファイルから DAT を生成し、データベースを更新し、FBNeo の最新版をダウンロード : すべてアプリ内で完結します。</p>
+        <p data-i18n="card14.p1">FinalBurn Neo または MAME のバイナリから DAT ファイルを生成し、DAT を配布元から取得し、データベースを更新し、最新の FBNeo をダウンロード。すべてアプリ内で完結します。</p>
       </div>
     </div>
   </div>
@@ -455,7 +461,7 @@
       <div class="card">
         <div class="ico">🕹️</div>
         <h3 data-i18n="card16.t">探すのはキーボードとマウス、遊ぶのはパッド</h3>
-        <p data-i18n="card16.p1">25,000 本から探すのはキーボードの仕事です。ランチャーはそれを前提に作られています。ゲームはジョイスティック対応を有効にした状態で起動し、コントローラープロファイルは保存して再利用できます。</p>
+        <p data-i18n="card16.p1">55,000 本から探すのはキーボードの仕事です。ランチャーはそれを前提に作られています。ゲームはジョイスティック対応を有効にした状態で起動し、コントローラープロファイルは保存して再利用できます。</p>
       </div>
       <div class="card">
         <div class="ico">📺</div>
@@ -480,7 +486,7 @@
         <span class="tag" data-i18n="dl1.tag">推奨</span>
         <h3 data-i18n="dl1.t">AppImage</h3>
         <p data-i18n="dl1.p">どのディストリビューションでも動く単一の可搬ファイル。インストール不要、依存関係もすべて同梱。実行権限を付けてダブルクリックするだけです。</p>
-        <a class="btn btn-accent" data-asset=".AppImage" href="https://github.com/battousai90/fbneo-launcher/releases/latest">Download AppImage</a>
+        <a class="btn btn-accent" data-asset=".AppImage" href="https://github.com/battousai90/bootcade-launcher/releases/latest">Download AppImage</a>
         <span class="dl-size" data-size=".AppImage"></span>
       </div>
 
@@ -488,7 +494,7 @@
         <span class="tag" data-i18n="dl2.tag">Debian · Ubuntu</span>
         <h3 data-i18n="dl2.t">.deb パッケージ</h3>
         <p data-i18n="dl2.p">apt が依存関係を解決するネイティブインストール。アプリケーションメニューにも登録されます。</p>
-        <a class="btn" data-asset=".deb" href="https://github.com/battousai90/fbneo-launcher/releases/latest">Download .deb</a>
+        <a class="btn" data-asset=".deb" href="https://github.com/battousai90/bootcade-launcher/releases/latest">Download .deb</a>
         <span class="dl-size" data-size=".deb"></span>
       </div>
 
@@ -496,7 +502,7 @@
         <span class="tag" data-i18n="dl3.tag">SteamOS · サンドボックス</span>
         <h3 data-i18n="dl3.t">Flatpak</h3>
         <p data-i18n="dl3.p">GNOME ランタイム上で隔離して動作し、ROM フォルダーとリムーバブルドライブにアクセスできます。</p>
-        <a class="btn" data-asset=".flatpak" href="https://github.com/battousai90/fbneo-launcher/releases/latest">Download .flatpak</a>
+        <a class="btn" data-asset=".flatpak" href="https://github.com/battousai90/bootcade-launcher/releases/latest">Download .flatpak</a>
         <span class="dl-size" data-size=".flatpak"></span>
       </div>
 
@@ -504,12 +510,12 @@
         <span class="tag" data-i18n="dl4.tag">すべてのディストロ</span>
         <h3 data-i18n="dl4.t">tar アーカイブ</h3>
         <p data-i18n="dl4.p">バイナリ・リソース・翻訳を <code>.tar.gz</code> にまとめたもの。好きな場所に展開してください。システムライブラリは各自で用意します。</p>
-        <a class="btn" data-asset=".tar.gz" href="https://github.com/battousai90/fbneo-launcher/releases/latest">Download .tar.gz</a>
+        <a class="btn" data-asset=".tar.gz" href="https://github.com/battousai90/bootcade-launcher/releases/latest">Download .tar.gz</a>
         <span class="dl-size" data-size=".tar.gz"></span>
       </div>
     </div>
 
-    <p class="note" data-i18n="dl.note"><strong>AppImage をダウンロードした後:</strong> <code>chmod +x fbneo-launcher-*.AppImage &amp;&amp; ./fbneo-launcher-*.AppImage</code><br> <strong>.deb の場合:</strong> <code>sudo apt install ./fbneo-launcher_*.deb</code><br> エミュレーター FinalBurn Neo 本体も必要です。ランチャーの設定画面から最新版をダウンロードできます。</p>
+    <p class="note" data-i18n="dl.note"><strong>AppImage をダウンロードしたら：</strong> <code>chmod +x bootcade-*.AppImage &amp;&amp; ./bootcade-*.AppImage</code><br> <strong>.deb の場合：</strong> <code>sudo apt install ./bootcade_*.deb</code><br> エミュレーター本体も必要です。ランチャーは設定画面から最新の FinalBurn Neo をダウンロードでき、MAME はディストリビューションのパッケージからインストールすれば自動で見つけます。</p>
   </div>
 </section>
 
@@ -527,11 +533,11 @@ sudo apt install -y build-essential cmake pkg-config \
   zlib1g-dev libsqlite3-dev
 
 <span class="c"># 2 : build</span>
-git clone https://github.com/battousai90/fbneo-launcher.git
-cd fbneo-launcher &amp;&amp; cmake -S . -B build &amp;&amp; cmake --build build -j$(nproc)
+git clone https://github.com/battousai90/bootcade-launcher.git
+cd bootcade-launcher &amp;&amp; cmake -S . -B build &amp;&amp; cmake --build build -j$(nproc)
 
 <span class="c"># 3 : run</span>
-<span class="p">cd</span> build &amp;&amp; ./fbneo-launcher</pre>
+<span class="p">cd</span> build &amp;&amp; ./bootcade</pre>
     <p class="note" style="margin-top:20px" data-i18n="build.note">パッケージが欲しいですか？ <code>./scripts/package.sh</code> が AppImage・.deb・tar アーカイブ・Flatpak バンドルを <code>dist/</code> に生成します。リリースワークフローが実行するのとまったく同じスクリプトです。</p>
   </div>
 </section>
@@ -540,14 +546,15 @@ cd fbneo-launcher &amp;&amp; cmake -S . -B build &amp;&amp; cmake --build build 
 
 <footer>
   <div class="wrap foot">
-    <span data-i18n="foot.legal">Bootcade : MIT ライセンス。FinalBurn Neo チームとは無関係です。</span>
+    <span data-i18n="foot.legal">Bootcade：MIT ライセンス。FinalBurn Neo および MAME のチームとは関係ありません。</span>
     <span class="links">
-      <a href="https://github.com/battousai90/fbneo-launcher">GitHub</a>
-      <a href="https://github.com/battousai90/fbneo-launcher/releases/latest">Releases</a>
-      <a href="https://github.com/battousai90/fbneo-launcher/issues" data-i18n="foot.bug">バグを報告</a>
+      <a href="https://github.com/battousai90/bootcade-launcher">GitHub</a>
+      <a href="https://github.com/battousai90/bootcade-launcher/releases/latest">Releases</a>
+      <a href="https://github.com/battousai90/bootcade-launcher/issues" data-i18n="foot.bug">バグを報告</a>
       <a href="https://fbneo.com/">FinalBurn&nbsp;Neo</a>
       <a href="https://github.com/finalburnneo/FBNeo">FBNeo on GitHub</a>
       <a href="/fbneo-license.txt" data-i18n="foot.fblic">FinalBurn Neo のライセンス</a>
+      <a href="https://www.mamedev.org/">MAME</a>
     </span>
   </div>
 </footer>
@@ -565,7 +572,7 @@ cd fbneo-launcher &amp;&amp; cmake -S . -B build &amp;&amp; cmake --build build 
 // the release assets. Everything here is an enhancement: without it the buttons
 // still work, they just land on the releases page instead of starting a download.
 (function () {
-  var REPO = 'battousai90/fbneo-launcher';
+  var REPO = 'battousai90/bootcade-launcher';
   var API  = 'https://api.github.com/repos/' + REPO + '/releases/latest';
   var CACHE_KEY = 'fbneo-release', CACHE_MS = 30 * 60 * 1000;
 
