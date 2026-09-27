@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Bootcade : Linux 原生街机启动器与 ROM 管理器 与 SteamOS</title>
-<meta name="description" content="面向 Linux 上 FinalBurn Neo 的原生 GTK 启动器与 RomVault 式 ROM 管理器。瞬间浏览 25,000 款游戏，用 DAT 文件校验每个游戏集，并自动重建损坏的游戏集。 面向 Linux 游戏 PC 与客厅 Steam Box：提供 Flatpak、AppImage 和 .deb。">
+<meta name="description" content="面向 Linux 上 FinalBurn Neo 与 MAME 的原生 GTK 启动器与 RomVault 式 ROM 管理器。瞬间浏览 25,000 款游戏，用 DAT 文件校验每个游戏集，并自动重建损坏的游戏集。 面向 Linux 游戏 PC 与客厅 Steam Box：提供 Flatpak、AppImage 和 .deb。">
 <link rel="icon" href="/logo.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -26,7 +26,7 @@
 <meta property="og:locale" content="zh">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Bootcade : Linux 原生街机启动器与 ROM 管理器 与 SteamOS">
-<meta property="og:description" content="面向 Linux 上 FinalBurn Neo 的原生 GTK 启动器与 RomVault 式 ROM 管理器。瞬间浏览 25,000 款游戏，用 DAT 文件校验每个游戏集，并自动重建损坏的游戏集。 面向 Linux 游戏 PC 与客厅 Steam Box：提供 Flatpak、AppImage 和 .deb。">
+<meta property="og:description" content="面向 Linux 上 FinalBurn Neo 与 MAME 的原生 GTK 启动器与 RomVault 式 ROM 管理器。瞬间浏览 25,000 款游戏，用 DAT 文件校验每个游戏集，并自动重建损坏的游戏集。 面向 Linux 游戏 PC 与客厅 Steam Box：提供 Flatpak、AppImage 和 .deb。">
 <meta property="og:image" content="https://bootcade.netlify.app/og.png">
 <meta name="twitter:card" content="summary_large_image">
 
@@ -40,7 +40,7 @@
   "applicationCategory": "GameApplication",
   "applicationSubCategory": "Emulator front-end",
   "operatingSystem": "Linux, SteamOS",
-  "description": "A native GTK launcher and RomVault-style ROM manager for FinalBurn Neo on Linux gaming PCs and SteamOS. Browses a 25,000-game collection, verifies every ROM set against the official DAT files by recomputing CRC32, and rebuilds broken sets automatically.",
+  "description": "A native GTK launcher and RomVault-style ROM manager for FinalBurn Neo and MAME on Linux gaming PCs and SteamOS. Browses a 25,000-game collection, verifies every ROM set against the official DAT files by recomputing CRC32, and rebuilds broken sets automatically.",
   "url": "https://bootcade.netlify.app/",
   "downloadUrl": "https://github.com/battousai90/fbneo-launcher/releases/latest",
   "installUrl": "https://github.com/battousai90/fbneo-launcher/releases/latest",
@@ -138,7 +138,7 @@
     <span class="badge" data-i18n="hero.badge">🐧 100% 原生</span>
     <span class="badge" id="rel-badge" hidden></span>
     <h1 data-i18n="hero.h1">你的街机收藏，<br><span class="grad">终于尽在掌握。</span></h1>
-    <p class="lead" data-i18n="hero.lead">为 <strong>FinalBurn&nbsp;Neo</strong> 打造的快速原生 GTK 启动器兼 ROM 管理器。瞬间浏览 25,000 款游戏，用官方 DAT 文件校验每一个游戏集，并自动重建损坏的游戏集。全程无需终端。</p>
+    <p class="lead" data-i18n="hero.lead">为 <strong>FinalBurn&nbsp;Neo</strong> 以及 1.5 起支持的 <strong>MAME</strong> 打造的快速原生 GTK 启动器兼 ROM 管理器。瞬间浏览 25,000 款游戏，用官方 DAT 文件校验每一个游戏集，并自动重建损坏的游戏集。全程无需终端。</p>
     <div class="hero-actions">
       <a class="btn btn-accent" href="#download">
         <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M7.25 1.5v8.19L4.53 6.97a.75.75 0 10-1.06 1.06l4 4a.75.75 0 001.06 0l4-4a.75.75 0 10-1.06-1.06L8.75 9.69V1.5a.75.75 0 00-1.5 0zM2.5 13a.75.75 0 000 1.5h11a.75.75 0 000-1.5h-11z"/></svg>
@@ -231,6 +231,22 @@
       <a class="btn" href="https://github.com/finalburnneo/FBNeo" data-i18n="fbneo.cta">GitHub 上的 FinalBurn Neo</a>
       <a class="btn" href="https://github.com/battousai90/FBNeo" data-i18n="fbneo.fork.code">我们的分支代码</a>
       <a class="btn" href="https://github.com/battousai90/FBNeo/releases/download/latest/linux-sdl2-x86_64.zip" data-i18n="fbneo.fork.download">下载我们的 Linux 构建版</a>
+    </span>
+  </div>
+</section>
+
+<!-- ── New in 1.5 : MAME ─────────────────────────────────────────────────── -->
+<section id="mame" style="padding:34px 0">
+  <div class="wrap fbneo mame">
+    <div class="fbneo-txt">
+      <h3 data-i18n="mame.t">1.5 新增：MAME 作为第二个模拟器</h3>
+      <p data-i18n="mame.p">Bootcade 现在也能运行 <strong>MAME</strong>。它的机器与你的 FinalBurn Neo 游戏同在一个游戏库中，并各自标明所属模拟器，使用相同的手柄配置（最多 16 个按键）以及来自 catver.ini 的类型。ROM 管理器像 RomVault 一样处理 MAME：每个 DAT 保留自己的合并模式（split、non-merged 或 merged），CHD 会被导入、校验并归档，原始的 <code>-listxml</code> 也可以直接读取。</p>
+      <p data-i18n="mame.p2">MAME 是一个独立项目，有自己的团队。从你的发行版软件包安装它（例如 <code>sudo apt install mame</code>），Bootcade 会自动找到它；也可以在设置中指定你自己编译的版本。在线功能（排行榜、游戏目录、ROM 下载、DAT 变更）目前只支持 FinalBurn Neo，MAME 之后会跟进。</p>
+    </div>
+    <span class="fbneo-links">
+      <a class="btn" href="https://www.mamedev.org/" data-i18n="mame.site">mamedev.org</a>
+      <a class="btn" href="https://docs.mamedev.org/initialsetup/compilingmame.html" data-i18n="mame.build">在 Linux 上编译 MAME</a>
+      <a class="btn" href="https://github.com/mamedev/mame" data-i18n="mame.gh">GitHub 上的 MAME</a>
     </span>
   </div>
 </section>
@@ -406,6 +422,11 @@
         <div class="ico">📋</div>
         <h3 data-i18n="card13.t">可导出的报告</h3>
         <p data-i18n="card13.p1">将缺失 ROM 清单或完整审计结果保存为按系统分组的文本报告，并附上每个待补文件的 CRC 与大小。</p>
+      </div>
+      <div class="card">
+        <div class="ico">⬇️</div>
+        <h3 data-i18n="rm.dl.t">下载缺少的内容</h3>
+        <p data-i18n="rm.dl.p1">审计之后，缺失的 FinalBurn Neo 游戏集可以一键从 Bootcade 服务器下载，使用你的账户及其每日配额。它会经过导入，像其他 ROM 一样被校验和归档。</p>
       </div>
       <div class="card">
         <div class="ico">🔄</div>

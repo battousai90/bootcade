@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Bootcade | Native arcade launcher &amp; ROM manager for Linux and SteamOS</title>
-<meta name="description" content="A fast, native GTK launcher and RomVault-style ROM manager for FinalBurn Neo on Linux gaming PCs and SteamOS. Browse 25,000 games instantly, verify every set against the DAT files, and rebuild broken sets automatically. Flatpak, AppImage and .deb.">
+<meta name="description" content="A fast, native GTK launcher and RomVault-style ROM manager for FinalBurn Neo and MAME on Linux gaming PCs and SteamOS. Browse 25,000 games instantly, verify every set against the DAT files, and rebuild broken sets automatically. Flatpak, AppImage and .deb.">
 <link rel="icon" href="/logo.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -26,7 +26,7 @@
 <meta property="og:locale" content="en">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Bootcade | Native arcade launcher &amp; ROM manager for Linux and SteamOS">
-<meta property="og:description" content="A fast, native GTK launcher and RomVault-style ROM manager for FinalBurn Neo on Linux gaming PCs and SteamOS. Browse 25,000 games instantly, verify every set against the DAT files, and rebuild broken sets automatically. Flatpak, AppImage and .deb.">
+<meta property="og:description" content="A fast, native GTK launcher and RomVault-style ROM manager for FinalBurn Neo and MAME on Linux gaming PCs and SteamOS. Browse 25,000 games instantly, verify every set against the DAT files, and rebuild broken sets automatically. Flatpak, AppImage and .deb.">
 <meta property="og:image" content="https://bootcade.netlify.app/og.png">
 <meta name="twitter:card" content="summary_large_image">
 
@@ -40,7 +40,7 @@
   "applicationCategory": "GameApplication",
   "applicationSubCategory": "Emulator front-end",
   "operatingSystem": "Linux, SteamOS",
-  "description": "A native GTK launcher and RomVault-style ROM manager for FinalBurn Neo on Linux gaming PCs and SteamOS. Browses a 25,000-game collection, verifies every ROM set against the official DAT files by recomputing CRC32, and rebuilds broken sets automatically.",
+  "description": "A native GTK launcher and RomVault-style ROM manager for FinalBurn Neo and MAME on Linux gaming PCs and SteamOS. Browses a 25,000-game collection, verifies every ROM set against the official DAT files by recomputing CRC32, and rebuilds broken sets automatically.",
   "url": "https://bootcade.netlify.app/",
   "downloadUrl": "https://github.com/battousai90/fbneo-launcher/releases/latest",
   "installUrl": "https://github.com/battousai90/fbneo-launcher/releases/latest",
@@ -139,7 +139,8 @@
     <span class="badge" id="rel-badge" hidden></span>
     <h1 data-i18n="hero.h1">Your arcade collection,<br><span class="grad">finally under control.</span></h1>
     <p class="lead" data-i18n="hero.lead">
-      A fast, native GTK launcher and ROM manager for <strong>FinalBurn&nbsp;Neo</strong>.
+      A fast, native GTK launcher and ROM manager for <strong>FinalBurn&nbsp;Neo</strong>
+      and, new in 1.5, <strong>MAME</strong>.
       Browse 25,000 games instantly, verify every set against the official DAT files,
       and rebuild the broken ones automatically. No terminal required.
     </p>
@@ -247,6 +248,29 @@
       <a class="btn" href="https://github.com/finalburnneo/FBNeo" data-i18n="fbneo.cta">FinalBurn Neo on GitHub</a>
       <a class="btn" href="https://github.com/battousai90/FBNeo" data-i18n="fbneo.fork.code">Our Linux fork (code)</a>
       <a class="btn" href="https://github.com/battousai90/FBNeo/releases/download/latest/linux-sdl2-x86_64.zip" data-i18n="fbneo.fork.download">Download our Linux build</a>
+    </span>
+  </div>
+</section>
+
+<!-- ── New in 1.5 : MAME ─────────────────────────────────────────────────── -->
+<section id="mame" style="padding:34px 0">
+  <div class="wrap fbneo mame">
+    <div class="fbneo-txt">
+      <h3 data-i18n="mame.t">New in 1.5: MAME, as a second emulator</h3>
+      <p data-i18n="mame.p">Bootcade now runs <strong>MAME</strong> too. Its machines sit next to your
+        FinalBurn Neo games in one library, each marked with its emulator, with the same controller
+        profiles (up to 16 buttons) and genres from catver.ini. The ROM Manager handles MAME the way
+        RomVault does: each DAT keeps its own merge mode (split, non-merged or merged), CHDs are
+        imported, verified and filed, and a raw <code>-listxml</code> is read directly.</p>
+      <p data-i18n="mame.p2">MAME is a separate project with its own team. Install it from your
+        distribution's packages (for example <code>sudo apt install mame</code>) and Bootcade finds it
+        by itself, or point Settings at your own build. The online features (leaderboards, game
+        catalog, ROM downloads, DAT changes) cover FinalBurn Neo only for now: MAME will follow.</p>
+    </div>
+    <span class="fbneo-links">
+      <a class="btn" href="https://www.mamedev.org/" data-i18n="mame.site">mamedev.org</a>
+      <a class="btn" href="https://docs.mamedev.org/initialsetup/compilingmame.html" data-i18n="mame.build">Build MAME on Linux</a>
+      <a class="btn" href="https://github.com/mamedev/mame" data-i18n="mame.gh">MAME on GitHub</a>
     </span>
   </div>
 </section>
@@ -458,6 +482,13 @@
         <h3 data-i18n="card13.t">Exportable reports</h3>
         <p data-i18n="card13.p1">Save the missing-ROM list or the full audit as a text report, grouped by system,
            with CRC and size for every file you still need.</p>
+      </div>
+      <div class="card">
+        <div class="ico">⬇️</div>
+        <h3 data-i18n="rm.dl.t">Download what is missing</h3>
+        <p data-i18n="rm.dl.p1">After an audit, a missing FinalBurn Neo set downloads from the Bootcade server
+           in one click, with your account and its daily quota. It goes through Import, which checks
+           and files it like any other ROM.</p>
       </div>
       <div class="card">
         <div class="ico">🔄</div>

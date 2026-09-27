@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Bootcade : Lanzador arcade y gestor de ROMs nativo para Linux y SteamOS</title>
-<meta name="description" content="Lanzador GTK nativo y gestor de ROMs al estilo RomVault para FinalBurn Neo en Linux. Explora 25 000 juegos al instante, verifica cada set con los archivos DAT y reconstruye automáticamente los sets defectuosos. Para PCs de juego Linux y Steam Box de salón: Flatpak, AppImage y .deb.">
+<meta name="description" content="Lanzador GTK nativo y gestor de ROMs al estilo RomVault para FinalBurn Neo y MAME en Linux. Explora 25 000 juegos al instante, verifica cada set con los archivos DAT y reconstruye automáticamente los sets defectuosos. Para PCs de juego Linux y Steam Box de salón: Flatpak, AppImage y .deb.">
 <link rel="icon" href="/logo.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -26,7 +26,7 @@
 <meta property="og:locale" content="es">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Bootcade : Lanzador arcade y gestor de ROMs nativo para Linux y SteamOS">
-<meta property="og:description" content="Lanzador GTK nativo y gestor de ROMs al estilo RomVault para FinalBurn Neo en Linux. Explora 25 000 juegos al instante, verifica cada set con los archivos DAT y reconstruye automáticamente los sets defectuosos. Para PCs de juego Linux y Steam Box de salón: Flatpak, AppImage y .deb.">
+<meta property="og:description" content="Lanzador GTK nativo y gestor de ROMs al estilo RomVault para FinalBurn Neo y MAME en Linux. Explora 25 000 juegos al instante, verifica cada set con los archivos DAT y reconstruye automáticamente los sets defectuosos. Para PCs de juego Linux y Steam Box de salón: Flatpak, AppImage y .deb.">
 <meta property="og:image" content="https://bootcade.netlify.app/og.png">
 <meta name="twitter:card" content="summary_large_image">
 
@@ -40,7 +40,7 @@
   "applicationCategory": "GameApplication",
   "applicationSubCategory": "Emulator front-end",
   "operatingSystem": "Linux, SteamOS",
-  "description": "A native GTK launcher and RomVault-style ROM manager for FinalBurn Neo on Linux gaming PCs and SteamOS. Browses a 25,000-game collection, verifies every ROM set against the official DAT files by recomputing CRC32, and rebuilds broken sets automatically.",
+  "description": "A native GTK launcher and RomVault-style ROM manager for FinalBurn Neo and MAME on Linux gaming PCs and SteamOS. Browses a 25,000-game collection, verifies every ROM set against the official DAT files by recomputing CRC32, and rebuilds broken sets automatically.",
   "url": "https://bootcade.netlify.app/",
   "downloadUrl": "https://github.com/battousai90/fbneo-launcher/releases/latest",
   "installUrl": "https://github.com/battousai90/fbneo-launcher/releases/latest",
@@ -138,7 +138,7 @@
     <span class="badge" data-i18n="hero.badge">🐧 100% nativo</span>
     <span class="badge" id="rel-badge" hidden></span>
     <h1 data-i18n="hero.h1">Tu colección arcade,<br><span class="grad">por fin bajo control.</span></h1>
-    <p class="lead" data-i18n="hero.lead">Un lanzador GTK nativo y rápido, y a la vez un gestor de ROMs, para <strong>FinalBurn&nbsp;Neo</strong>. Explora 25 000 juegos al instante, verifica cada set contra los archivos DAT oficiales y reconstruye automáticamente los defectuosos. Sin tocar la terminal.</p>
+    <p class="lead" data-i18n="hero.lead">Un lanzador GTK nativo y rápido, y a la vez un gestor de ROMs, para <strong>FinalBurn&nbsp;Neo</strong> y, novedad de la 1.5, <strong>MAME</strong>. Explora 25 000 juegos al instante, verifica cada set contra los archivos DAT oficiales y reconstruye automáticamente los defectuosos. Sin tocar la terminal.</p>
     <div class="hero-actions">
       <a class="btn btn-accent" href="#download">
         <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M7.25 1.5v8.19L4.53 6.97a.75.75 0 10-1.06 1.06l4 4a.75.75 0 001.06 0l4-4a.75.75 0 10-1.06-1.06L8.75 9.69V1.5a.75.75 0 00-1.5 0zM2.5 13a.75.75 0 000 1.5h11a.75.75 0 000-1.5h-11z"/></svg>
@@ -231,6 +231,22 @@
       <a class="btn" href="https://github.com/finalburnneo/FBNeo" data-i18n="fbneo.cta">FinalBurn Neo en GitHub</a>
       <a class="btn" href="https://github.com/battousai90/FBNeo" data-i18n="fbneo.fork.code">Código de nuestro fork</a>
       <a class="btn" href="https://github.com/battousai90/FBNeo/releases/download/latest/linux-sdl2-x86_64.zip" data-i18n="fbneo.fork.download">Descargar nuestra compilación de Linux</a>
+    </span>
+  </div>
+</section>
+
+<!-- ── New in 1.5 : MAME ─────────────────────────────────────────────────── -->
+<section id="mame" style="padding:34px 0">
+  <div class="wrap fbneo mame">
+    <div class="fbneo-txt">
+      <h3 data-i18n="mame.t">Novedad en la 1.5: MAME, como segundo emulador</h3>
+      <p data-i18n="mame.p">Bootcade ahora también ejecuta <strong>MAME</strong>. Sus máquinas conviven con tus juegos de FinalBurn Neo en una sola biblioteca, cada una marcada con su emulador, con los mismos perfiles de mando (hasta 16 botones) y los géneros de catver.ini. El gestor de ROMs trata MAME como RomVault: cada DAT conserva su propio modo de fusión (split, non-merged o merged), los CHD se importan, verifican y ordenan, y un <code>-listxml</code> en bruto se lee directamente.</p>
+      <p data-i18n="mame.p2">MAME es un proyecto independiente, con su propio equipo. Instálalo desde los paquetes de tu distribución (por ejemplo <code>sudo apt install mame</code>) y Bootcade lo encuentra solo, o indica tu propia compilación en Ajustes. Las funciones en línea (clasificaciones, catálogo de juegos, descarga de ROMs, cambios de DAT) solo cubren FinalBurn Neo por ahora: MAME llegará después.</p>
+    </div>
+    <span class="fbneo-links">
+      <a class="btn" href="https://www.mamedev.org/" data-i18n="mame.site">mamedev.org</a>
+      <a class="btn" href="https://docs.mamedev.org/initialsetup/compilingmame.html" data-i18n="mame.build">Compilar MAME en Linux</a>
+      <a class="btn" href="https://github.com/mamedev/mame" data-i18n="mame.gh">MAME en GitHub</a>
     </span>
   </div>
 </section>
@@ -406,6 +422,11 @@
         <div class="ico">📋</div>
         <h3 data-i18n="card13.t">Informes exportables</h3>
         <p data-i18n="card13.p1">Guarda la lista de ROMs que faltan o la auditoría completa como informe de texto, agrupado por sistema, con el CRC y el tamaño de cada archivo que aún necesitas.</p>
+      </div>
+      <div class="card">
+        <div class="ico">⬇️</div>
+        <h3 data-i18n="rm.dl.t">Descarga lo que falta</h3>
+        <p data-i18n="rm.dl.p1">Tras una auditoría, un set de FinalBurn Neo que falta se descarga del servidor de Bootcade con un clic, con tu cuenta y su cuota diaria. Pasa por Importar, que lo verifica y lo ordena como cualquier otra ROM.</p>
       </div>
       <div class="card">
         <div class="ico">🔄</div>
