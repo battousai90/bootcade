@@ -25,10 +25,26 @@
 (function () {
   'use strict';
 
-  var DATA_URL = 'https://files.bootcade.duckdns.org/dat/catalog-data.json';
-  var CHANGES_URL = 'https://files.bootcade.duckdns.org/dat/changes.json';
+  var FILES = 'https://files.bootcade.duckdns.org';
+  // Local preview only: `?files=http://localhost:8898` reads the catalog JSON
+  // from a local folder, to try a generator change before it is deployed.
+  // Ignored anywhere but localhost.
+  if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) {
+    // Garde dans l'onglet : le retour de Keycloak (connexion silencieuse)
+    // reecrit l'adresse et perdait le parametre.
+    var filesOverride = new URLSearchParams(location.search).get('files');
+    try {
+      if (filesOverride) sessionStorage.setItem('bootcade-files', filesOverride);
+      else filesOverride = sessionStorage.getItem('bootcade-files');
+    } catch (e) { /* sans stockage : le parametre seul */ }
+    if (filesOverride) FILES = filesOverride.replace(/\/+$/, '');
+  }
+  var DAT_BASE = FILES + '/dat/';
+  var DATA_URL = DAT_BASE + 'catalog-data.json';
+  var MAME_URL = DAT_BASE + 'catalog-mame.json';
+  var LIBRARIES_URL = DAT_BASE + 'libraries.json';
+  var CHANGES_URL = DAT_BASE + 'changes.json';
   var ART_BASE = 'https://files.bootcade.duckdns.org/artwork/';
-  var DAT_BASE = 'https://files.bootcade.duckdns.org/dat/';
   var ROMS_BASE = 'https://roms.bootcade.duckdns.org/roms/';
   var ROMFIX_BASE = 'https://roms.bootcade.duckdns.org/romfix/';
   // Score service. Its own host and its own failure domain: a leaderboard that
@@ -36,13 +52,30 @@
   var SCORES_BASE = 'https://scores.bootcade.duckdns.org';
   var PAGE_SIZE = 80;
 
-  function previewUrl(g) { return ART_BASE + 'previews/' + encodeURIComponent(g.n) + '.png'; }
-  function titleUrl(g)   { return ART_BASE + 'titles/'   + encodeURIComponent(g.n) + '.png'; }
-  function datFileUrl(f) { return DAT_BASE + encodeURIComponent(f); }
+  /* The libraries the visitor picks from, in the launcher's order. Each one
+     is its own file: choosing MAME never downloads FinalBurn Neo, and the
+     reverse. The brand names stay untranslated, as in the launcher. */
+  var LIBRARIES = [
+    { id: 'fbneo', name: 'FinalBurn Neo', logo: '/fbneo-logo.png', url: DATA_URL,
+      tagline: 'Arcade boards and a few home systems' },
+    { id: 'mame', name: 'MAME', logo: '/mame-logo.svg', url: MAME_URL,
+      tagline: 'Arcade, and just about every machine ever built' },
+  ];
+  function library(id) { return LIBRARIES.filter(function (l) { return l.id === id; })[0]; }
+  function isMame(g) { return g.e === 'mame'; }
+
+  // The files under Assets/, DAT/ and Roms/ are filed by emulator. FinalBurn
+  // Neo keeps its historical addresses (no emulator segment), which CT 105
+  // still maps onto fbneo/: they are what every link already shared points at.
+  function previewUrl(g) { return ART_BASE + (isMame(g) ? 'mame/snap/' : 'previews/') + encodeURIComponent(g.n) + '.png'; }
+  function titleUrl(g)   { return ART_BASE + (isMame(g) ? 'mame/titles/' : 'titles/') + encodeURIComponent(g.n) + '.png'; }
+  function datFileUrl(m) { return DAT_BASE + (m.e === 'mame' ? 'mame/' : '') + encodeURIComponent(m.name); }
   // Roms/<rf>/<n>.zip on the NAS, mirrored verbatim as the URL path. Access
   // is decided server-side (nginx on CT 105 asks CT 106: account, verified
   // email, quota). The page only PREPARES the player: see romState below.
-  function romUrl(g) { return ROMS_BASE + encodeURIComponent(g.rf) + '/' + encodeURIComponent(g.n) + '.zip'; }
+  function romUrl(g) {
+    return ROMS_BASE + (isMame(g) ? 'mame/' : '') + encodeURIComponent(g.rf) + '/' + encodeURIComponent(g.n) + '.zip';
+  }
 
   function humanSize(bytes) {
     if (!bytes) return '';
@@ -114,6 +147,11 @@
     modalScores: document.getElementById('cat-modal-scores'),
     hiscoreFilter: document.getElementById('cat-hiscore-filter'),
     datList: document.getElementById('cat-dat-list'),
+    emulators: document.getElementById('cat-emulators'),
+    sources: document.getElementById('cat-sources'),
+    libBtn: document.getElementById('cat-lib-btn'),
+    libDialog: document.getElementById('cat-lib'),
+    libCards: document.getElementById('cat-lib-cards'),
     lightbox: document.getElementById('cat-lightbox'),
     lightboxImg: document.getElementById('cat-lightbox-img'),
     lightboxClose: document.getElementById('cat-lightbox-close'),
@@ -132,6 +170,14 @@
   var activeYears = new Set();
   var activeAspects = new Set();
   var activeOrientations = new Set();
+  // Les deux facettes que le launcher a et que le catalogue n'avait pas :
+  // l'emulateur (seulement quand plusieurs sont affiches) et la source,
+  // le dossier du pilote MAME (« capcom », « konami »...).
+  var activeEmulators = new Set();
+  var activeSources = new Set();
+  // 'fbneo', 'mame' ou 'all' : la bibliotheque affichee. null tant que le
+  // visiteur n'a pas choisi.
+  var LIB = null;
   var filtered = [];
   var shown = 0;
   var selectedRow = null;
@@ -150,6 +196,8 @@
   }
 
   function matches(g, query) {
+    if (activeEmulators.size && !activeEmulators.has(g.e)) return false;
+    if (activeSources.size && !activeSources.has(g.sf)) return false;
     if (activeSystems.size && !activeSystems.has(g.s)) return false;
     if (activeGenres.size && !anyOf(g.ge, activeGenres)) return false;
     if (activeFamilies.size && !anyOf(g.fa, activeFamilies)) return false;
@@ -196,7 +244,8 @@
   function anyFilterActive_() {
     return activeSystems.size || activeTypes.size || activeManufacturers.size ||
            activeYears.size || activeAspects.size || activeOrientations.size ||
-           activeGenres.size || activeFamilies.size || activePlayers.size;
+           activeGenres.size || activeFamilies.size || activePlayers.size ||
+           activeEmulators.size || activeSources.size;
   }
 
   // `fs` (first seen) n'existe que pour les jeux apparus depuis que le
@@ -253,12 +302,24 @@
   function updateCount() {
     var tpl = t('catalog.count', '{n} games' + (filtered.length !== GAMES.length ? ' matching' : ' across {s} systems'));
     var sys = new Set(GAMES.map(function (g) { return g.s; }));
+    // MAME seul n'a qu'un systeme : « sur 1 systemes » ne dit rien.
+    if (sys.size === 1 && filtered.length === GAMES.length) {
+      els.count.textContent = filtered.length.toLocaleString(LANG) + ' ' + t('catalog.lib.games', 'games');
+      return;
+    }
     els.count.textContent = tpl
       .replace('{n}', filtered.length.toLocaleString(LANG))
       .replace('{s}', sys.size);
   }
 
-  function isRanked(g) { return ranked.has(g.s + '|' + g.n); }
+  // Le service de scores lit les tables de FinalBurn Neo : un set MAME du
+  // meme nom et du meme systeme (« Arcade/1941 ») n'est pas classe. Meme
+  // regle que MainWindow::game_ranks_online dans le launcher.
+  function isRanked(g) { return g.e === 'fbneo' && ranked.has(g.s + '|' + g.n); }
+
+  // Le nom court n'est unique ni entre systemes (mslugx est en Arcade ET en
+  // Neo Geo) ni entre emulateurs (mslug est un set FBNeo ET un set MAME).
+  function gameKey(e, s, n) { return e + '|' + s + '|' + n; }
 
   function badgesHtml(g, limit) {
     var flags = limit ? g._flags.slice(0, limit) : g._flags;
@@ -286,6 +347,9 @@
   var currentGame = null;
 
   function actionsHtml(g) {
+    // Une machine MAME absente du DAT split n'a pas de zip sur le serveur :
+    // un bouton menerait a une erreur.
+    if (isMame(g) && !(g.r && g.r.length)) return '';
     var label = escapeHtml(t('catalog.dl.rom', 'ROM'));
     var s = romState;
     if (!s) {
@@ -401,7 +465,10 @@
     el.className = 'cat-row';
     el.innerHTML =
       '<div class="cat-row-art"><img loading="lazy" alt="" src="' + previewUrl(g) + '" onerror="this.parentNode.textContent=\'🕹️\'"></div>' +
-      '<div class="cat-row-title"><b>' + escapeHtml(g.d) + '</b><span>' + escapeHtml(g.n) + '</span></div>' +
+      '<div class="cat-row-title"><b>' + escapeHtml(g.d) + '</b><span>' + escapeHtml(g.n) +
+        // Toutes bibliotheques confondues, deux lignes peuvent porter le meme
+        // titre : l'emulateur les departage.
+        (LIB === 'all' ? ' · ' + escapeHtml(library(g.e) ? library(g.e).name : g.e) : '') + '</span></div>' +
       (isRanked(g) ? '<a class="cat-row-hi" href="' + boardHref(g) + '" title="' +
           escapeHtml(t('catalog.hiscore.open', 'Open this game\u2019s leaderboard')) + '">◆</a>' : '') +
       '<span class="cat-row-sys">' + escapeHtml(g.s) + '</span>' +
@@ -454,7 +521,7 @@
     els.modalClone.innerHTML = '';
     if (!g.c) return;
     var parts = t('catalog.cloneof', 'Clone of {n}').split('{n}');
-    var parent = GAMES_BY_NAME[g.s + '|' + g.c];
+    var parent = GAMES_BY_NAME[gameKey(g.e, g.s, g.c)];
     els.modalClone.appendChild(document.createTextNode(parts[0] || ''));
     if (parent) {
       var btn = document.createElement('button');
@@ -488,6 +555,7 @@
     var resolution = (g.w && g.h) ? (g.w + ' × ' + g.h) : '';
     var driverLabel = g.ds ? t('catalog.driver.' + g.ds, g.ds) : '';
     els.modalSpecs.innerHTML =
+      specRow(t('catalog.spec.emulator', 'Emulator'), library(g.e) ? library(g.e).name : g.e) +
       specRow(t('catalog.spec.system', 'System'), g.s) +
       specRow(t('catalog.spec.manufacturer', 'Manufacturer'), g.mf) +
       // Genre, serie et nombre de joueurs viennent de la source de FBNeo,
@@ -502,6 +570,7 @@
       specRow(t('catalog.spec.video', 'Video'), g.vt ? t('catalog.video.' + g.vt, g.vt) : '') +
       specRow(t('catalog.spec.aspect', 'Aspect ratio'), g._aspect || '') +
       specRow(t('catalog.spec.driver', 'Driver'), driverLabel) +
+      specRow(t('catalog.spec.source', 'Source'), g.sf) +
       romsHtml(g);
 
     currentGame = g;
@@ -690,7 +759,11 @@
     container.appendChild(b);
   }
 
-  function buildFacet(container, keyFn, activeSet, sortByCount) {
+  // Rebatie a chaque changement de bibliotheque. Une facette sans aucune
+  // valeur cache toute sa section, comme dans le launcher : « Aspect ratio »
+  // n'existe pas pour MAME, et une liste vide ne dirait rien.
+  function buildFacet(container, keyFn, activeSet, sortByCount, labelFn) {
+    container.innerHTML = '';
     var counts = {};
     GAMES.forEach(function (g) {
       var k = keyFn(g);
@@ -703,18 +776,51 @@
     });
     var keys = Object.keys(counts);
     keys.sort(sortByCount ? function (a, b) { return counts[b] - counts[a]; } : undefined);
-    keys.forEach(function (k) { filterRow(container, k, k, counts[k], activeSet); });
+    keys.forEach(function (k) { filterRow(container, k, labelFn ? labelFn(k) : k, counts[k], activeSet); });
+    var section = container.closest('.cat-filter-section');
+    if (section) section.hidden = keys.length === 0;
+    return keys.length;
   }
 
-  function bindTypeChips() {
-    [].slice.call(els.types.querySelectorAll('.cat-filter-row')).forEach(function (b) {
-      b.addEventListener('click', function () {
-        var key = b.dataset.type;
-        b.classList.toggle('active');
-        if (b.classList.contains('active')) activeTypes.add(key); else activeTypes.delete(key);
-        applyFilters();
-      });
+  // Les types dans l'ordre du launcher, avec leur nombre ; un type sans
+  // aucun jeu dans la bibliotheque n'a pas de ligne (MAME n'a ni hack ni
+  // homebrew, par exemple).
+  function buildTypes() {
+    els.types.innerHTML = '';
+    var counts = {};
+    GAMES.forEach(function (g) {
+      g._flags.forEach(function (f) { counts[f] = (counts[f] || 0) + 1; });
     });
+    var n = 0;
+    TYPES.forEach(function (ty) {
+      if (!counts[ty.id]) return;
+      filterRow(els.types, ty.id, t('catalog.type.' + ty.id, ty.fallback), counts[ty.id], activeTypes);
+      n++;
+    });
+    els.types.closest('.cat-filter-section').hidden = n === 0;
+  }
+
+  // Les annees groupees par decennie, comme l'arbre du launcher : un titre
+  // par decennie, puis ses annees. Les annees incompletes (« 198? ») n'ont
+  // pas de decennie sure et restent apres, a part.
+  function buildYears() {
+    els.years.innerHTML = '';
+    var counts = {};
+    GAMES.forEach(function (g) { if (g.y) counts[g.y] = (counts[g.y] || 0) + 1; });
+    var years = Object.keys(counts).sort();
+    var decade = null;
+    years.forEach(function (y) {
+      var d = /^\d{4}$/.test(y) ? y.slice(0, 3) + '0s' : '?';
+      if (d !== decade) {
+        decade = d;
+        var h = document.createElement('div');
+        h.className = 'cat-filter-decade';
+        h.textContent = d;
+        els.years.appendChild(h);
+      }
+      filterRow(els.years, y, y, counts[y], activeYears);
+    });
+    els.years.closest('.cat-filter-section').hidden = years.length === 0;
   }
 
   function bindCollapsibles() {
@@ -744,7 +850,9 @@
   els.search.addEventListener('input', applyFilters);
   if (els.sort) els.sort.addEventListener('change', applyFilters);
   els.more.addEventListener('click', renderMore);
-  els.reset.addEventListener('click', function () {
+  function clearFilters() {
+    activeEmulators.clear();
+    activeSources.clear();
     activeSystems.clear();
     activeTypes.clear();
     activeManufacturers.clear();
@@ -758,29 +866,37 @@
     if (els.hiscoreFilter) els.hiscoreFilter.classList.remove('on');
     els.search.value = '';
     [].slice.call(document.querySelectorAll('.cat-filter-row.active')).forEach(function (b) { b.classList.remove('active'); });
+  }
+  els.reset.addEventListener('click', function () {
+    clearFilters();
     applyFilters();
   });
 
-  bindTypeChips();
   bindCollapsibles();
   bindFacetSearch();
 
   // ── DAT files panel ────────────────────────────────────────────────────────
   // Fed by catalog-data.json's own `dats` section : the site reads nothing
   // from the launcher's download manifest, which is another contract.
+  // FinalBurn Neo publie un DAT par systeme, nomme d'apres lui ; MAME en
+  // publie trois par contenu (ROMs split, BIOS et peripheriques, CHD), qui
+  // portent leur propre libelle. Les lignes MAME viennent apres, prefixees.
   function buildDatList(dats) {
     var manifestByFile = {};
-    (dats || []).forEach(function (m) { manifestByFile[m.name] = m; });
+    (dats || []).forEach(function (m) { manifestByFile[(m.e || 'fbneo') + '|' + m.name] = m; });
     var bySystem = {};
-    GAMES.forEach(function (g) { if (!bySystem[g.s]) bySystem[g.s] = g.f; });
-    var systems = Object.keys(bySystem).sort();
-    els.datList.innerHTML = systems.map(function (sys) {
-      var file = bySystem[sys];
-      var info = manifestByFile[file];
-      var size = info ? humanSize(info.size) : '';
+    GAMES.forEach(function (g) { if (g.e === 'fbneo' && !bySystem[g.s]) bySystem[g.s] = g.f; });
+    var rows = Object.keys(bySystem).sort().map(function (sys) {
+      var m = manifestByFile['fbneo|' + bySystem[sys]] || {};
+      return { label: sys, name: bySystem[sys], e: 'fbneo', size: m.size };
+    });
+    if (LIB !== 'fbneo') (dats || []).forEach(function (m) {
+      if (m.e === 'mame') rows.push(Object.assign({}, m, { label: 'MAME · ' + m.label }));
+    });
+    els.datList.innerHTML = rows.map(function (m) {
       return (
-        '<div class="cat-dat-row"><span><b>' + escapeHtml(sys) + '</b><span class="size">' + size + '</span></span>' +
-        '<a href="' + datFileUrl(file) + '" rel="noopener">' + escapeHtml(t('catalog.dl.dat', 'DAT')) + '</a></div>'
+        '<div class="cat-dat-row"><span><b>' + escapeHtml(m.label) + '</b><span class="size">' + humanSize(m.size) + '</span></span>' +
+        '<a href="' + datFileUrl(m) + '" rel="noopener">' + escapeHtml(t('catalog.dl.dat', 'DAT')) + '</a></div>'
       );
     }).join('');
 
@@ -838,7 +954,8 @@
 
     // Le filtre « classes » n'existe qu'une fois la liste du service arrivee :
     // c'est pourquoi cette passe repasse apres elle.
-    if (p.get('hiscore') === '1' && els.hiscoreFilter && !els.hiscoreFilter.hidden
+    if (p.get('hiscore') === '1' && els.hiscoreFilter &&
+        !els.hiscoreFilter.closest('.cat-filter-section').hidden
         && !onlyRanked) {
       els.hiscoreFilter.click();
     }
@@ -868,7 +985,7 @@
     // arcade ET dans le DAT Neo Geo).
     var name = p.get('game');
     if (!name) return;
-    var g = (system && GAMES_BY_NAME[system + '|' + name]) || null;
+    var g = (system && GAMES_BY_NAME[gameKey(LIB === 'mame' ? 'mame' : 'fbneo', system, name)]) || null;
     if (!g) {
       for (var i = 0; i < GAMES.length; i++) {
         if (GAMES[i].n === name) { g = GAMES[i]; break; }
@@ -882,69 +999,306 @@
     openModal(g);
   }
 
-  // ── Boot ─────────────────────────────────────────────────────────────────
-  fetch(DATA_URL)
-    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
-    .then(function (d) {
-      GAMES = d.games || [];
-      GAMES.forEach(function (g) {
+  // ── Libraries ────────────────────────────────────────────────────────────
+  /* La modale de choix, comme celle du launcher : une carte par emulateur,
+     plus une carte « tout ». Rien n'est telecharge avant le choix : une
+     bibliotheque pese plusieurs megaoctets, et le visiteur n'en veut souvent
+     qu'une. Les nombres viennent de libraries.json, quelques octets ; s'il
+     manque, les cartes s'affichent sans nombre et fonctionnent pareil. */
+  var LIB_KEY = 'bootcade-catalog-lib';
+  var libCounts = null;
+  var libraryCache = {};
+  var libSeq = 0;
+  var libLoaded = false;
+
+  /* Seules les bibliotheques qui ont des jeux sont proposees, comme dans le
+     launcher. libraries.json absent ou illisible : FinalBurn Neo seul, le
+     catalogue d'avant. C'est ce qui permet de publier le site avant que le
+     catalogue MAME existe sur le serveur. */
+  function availableLibraries() {
+    if (!libCounts) return [library('fbneo')];
+    return LIBRARIES.filter(function (l) { return libCounts[l.id] && libCounts[l.id].games > 0; });
+  }
+  function isAvailable(id) {
+    var av = availableLibraries();
+    if (id === 'all') return av.length > 1;
+    return av.some(function (l) { return l.id === id; });
+  }
+
+  function rememberedLib() {
+    try {
+      var v = localStorage.getItem(LIB_KEY);
+      if (isAvailable(v)) return v;
+    } catch (e) { /* stockage indisponible : rien a retenir */ }
+    return null;
+  }
+
+  function libCard(id, title, logo, tagline, count, current) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'cat-lib-card' + (id === current ? ' is-current' : '');
+    b.dataset.lib = id;
+    b.innerHTML =
+      '<span class="cat-lib-logo">' + (logo
+        ? '<img src="' + logo + '" alt="' + escapeHtml(title) + '">'
+        : '<b>' + escapeHtml(title) + '</b>') + '</span>' +
+      '<span class="cat-lib-text">' +
+        (count != null ? '<span><b>' + count.toLocaleString(LANG) + '</b> ' +
+                         escapeHtml(t('catalog.lib.games', 'games')) + '</span>' : '') +
+        '<small>' + escapeHtml(tagline) + '</small>' +
+      '</span>' +
+      '<span class="cat-lib-check" aria-hidden="true">' + (id === current ? '✓' : '') + '</span>';
+    b.addEventListener('click', function () { closeLibraryPicker(); selectLibrary(id); });
+    return b;
+  }
+
+  function renderLibraryCards() {
+    var current = LIB || rememberedLib();
+    var count = function (id) { return libCounts && libCounts[id] ? libCounts[id].games : null; };
+    var total = null;
+    if (libCounts) {
+      total = 0;
+      availableLibraries().forEach(function (l) { total += count(l.id) || 0; });
+    }
+    els.libCards.innerHTML = '';
+    els.libCards.appendChild(libCard('all', t('catalog.lib.all', 'All libraries'), '',
+      t('catalog.lib.all.tag', 'Everything at once, from every emulator'), total, current));
+    availableLibraries().forEach(function (l) {
+      els.libCards.appendChild(libCard(l.id, l.name, l.logo,
+        t('catalog.lib.' + l.id + '.tag', l.tagline), count(l.id), current));
+    });
+  }
+
+  function openLibraryPicker() {
+    renderLibraryCards();
+    els.libDialog.hidden = false;
+    var cur = els.libCards.querySelector('.is-current') || els.libCards.firstChild;
+    if (cur) cur.focus();
+  }
+
+  // Fermer sans choisir, a la toute premiere visite, garde quand meme une
+  // page utile : la derniere bibliotheque choisie, sinon FinalBurn Neo.
+  function closeLibraryPicker() {
+    els.libDialog.hidden = true;
+  }
+  function cancelLibraryPicker() {
+    closeLibraryPicker();
+    if (!LIB) selectLibrary(rememberedLib() || availableLibraries()[0].id);
+  }
+
+  [].slice.call(document.querySelectorAll('[data-lib-cancel]')).forEach(function (b) {
+    b.addEventListener('click', cancelLibraryPicker);
+  });
+  els.libDialog.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { e.stopPropagation(); cancelLibraryPicker(); }
+  });
+  els.libBtn.addEventListener('click', openLibraryPicker);
+
+  function fetchLibrary(url) {
+    if (!libraryCache[url]) {
+      libraryCache[url] = fetch(url)
+        .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+        .catch(function (e) { delete libraryCache[url]; throw e; });
+    }
+    return libraryCache[url];
+  }
+
+  function renderLibButton() {
+    var l = library(LIB);
+    // Le logo suffit, comme dans le launcher ; le nom reste lu par le texte
+    // alternatif et affiche au survol.
+    els.libBtn.innerHTML = (l
+      ? '<img src="' + l.logo + '" alt="' + escapeHtml(l.name) + '">'
+      : '<span>' + escapeHtml(t('catalog.lib.all', 'All libraries')) + '</span>') + '<i>▾</i>';
+    els.libBtn.title = t('catalog.lib.title', 'Choose a library');
+    // Une seule bibliotheque : rien a choisir, pas de bouton.
+    els.libBtn.hidden = availableLibraries().length < 2;
+  }
+
+  // Ce qui n'existe que pour FinalBurn Neo : journal des changements, ROMs
+  // corriges, archive de tous les DAT. Affiches seulement quand il est la.
+  function renderFbneoOnly() {
+    var hasFbneo = LIB !== 'mame';
+    ['cat-dat-changes', 'cat-dat-zip'].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.hidden = !hasFbneo;
+    });
+    var fix = document.getElementById('cat-romfix');
+    if (fix) fix.hidden = !hasFbneo || fix.getAttribute('href') === '#';
+    // Compte sur la bibliotheque affichee, comme le launcher : absent si
+    // aucun de ses jeux n'est classe.
+    if (els.hiscoreFilter) {
+      var n = 0;
+      GAMES.forEach(function (g) { if (isRanked(g)) n++; });
+      els.hiscoreFilter.textContent = '◆ ' + t('catalog.hiscore', 'Highscore') + ' (' + n.toLocaleString(LANG) + ')';
+      els.hiscoreFilter.classList.toggle('on', onlyRanked);
+      els.hiscoreFilter.closest('.cat-filter-section').hidden = !n;
+    }
+  }
+
+  function selectLibrary(id) {
+    if (id === LIB && libLoaded) return;
+    var wanted = id === 'all' ? LIBRARIES : [library(id)];
+    LIB = id;
+    libLoaded = false;
+    try { localStorage.setItem(LIB_KEY, id); } catch (e) { /* sans memoire */ }
+    var p = new URLSearchParams(location.search);
+    p.set('lib', id);
+    history.replaceState(null, '', location.pathname + '?' + p.toString() + location.hash);
+    renderLibButton();
+
+    var seq = ++libSeq;
+    resetView();
+    els.count.textContent = t('catalog.loading', 'Loading the catalog…');
+
+    Promise.all(wanted.map(function (l) { return fetchLibrary(l.url); }))
+      .then(function (parts) {
+        if (seq !== libSeq) return;          // le visiteur a deja change d'avis
+        var games = [], dats = [];
+        parts.forEach(function (d, i) {
+          var e = wanted[i].id;
+          (d.games || []).forEach(function (g) {
+            // catalog-data.json porte les jeux de tous les emulateurs a qui
+            // il a trouve un .dat : on ne garde que ceux de la bibliotheque.
+            if ((g.e || 'fbneo') === e) { g.e = e; games.push(g); }
+          });
+          (d.dats || []).forEach(function (m) { if ((m.e || 'fbneo') === e) dats.push(m); });
+        });
+        loadGames(games, dats);
+      })
+      .catch(function () {
+        if (seq !== libSeq) return;
+        els.count.textContent = t('catalog.error', 'Could not load the catalog right now : please try again later.');
+      });
+  }
+
+  /* Tout ce que la bibliotheque precedente avait pose : liste, resultats,
+     « Load more », facettes, panneau DAT, fiche. Sans cela, un chargement
+     qui echoue laissait la liste FinalBurn Neo sous le logo MAME, et
+     « Load more » continuait de la derouler. */
+  function resetView() {
+    GAMES = [];
+    GAMES_BY_NAME = {};
+    filtered = [];
+    shown = 0;
+    selectedRow = null;
+    clearFilters();
+    els.grid.innerHTML = '';
+    els.more.hidden = true;
+    els.empty.hidden = true;
+    els.reset.hidden = true;
+    els.modal.hidden = true;
+    els.datList.innerHTML = '';
+    showGroupTitles(false);
+    [].slice.call(document.querySelectorAll('#cat-sidebar .cat-filter-section')).forEach(function (sec) {
+      sec.hidden = true;
+      [].slice.call(sec.querySelectorAll('.cat-filter-list')).forEach(function (l) { l.innerHTML = ''; });
+    });
+  }
+
+  function showGroupTitles(on) {
+    [].slice.call(document.querySelectorAll('#cat-sidebar .cat-filter-group-title')).forEach(function (h) {
+      h.hidden = !on;
+    });
+  }
+
+  // Changer de bibliotheque remet les filtres a zero, comme le launcher : un
+  // fabricant choisi dans l'une n'a aucune raison d'exister dans l'autre, et
+  // un filtre actif sur une dimension absente viderait la liste sans un mot.
+  function loadGames(games, dats) {
+    GAMES = games;
+    GAMES_BY_NAME = {};
+    GAMES.forEach(function (g) {
+      if (!g._flags) {
         g._flags = classify(g);
         g._hay = (g.d + ' ' + g.mf + ' ' + g.n).toLowerCase();
         g._aspect = (g.ax && g.ay) ? (g.ax + ':' + g.ay) : '';
-        // Keyed by system too: short names aren't unique across DATs (e.g.
-        // the same short name could exist on two different systems), and
-        // cloneof always refers to a parent on the same system.
-        GAMES_BY_NAME[g.s + '|' + g.n] = g;
-      });
-      buildFacet(els.systems, function (g) { return g.s; }, activeSystems, true);
-      buildFacet(els.manufacturers, function (g) { return g.mf; }, activeManufacturers, true);
-      buildFacet(els.years, function (g) { return g.y; }, activeYears, false);
-      buildFacet(els.aspects, function (g) { return g._aspect; }, activeAspects, true);
-      buildFacet(els.orientations, function (g) { return g.or; }, activeOrientations, true);
-      buildFacet(els.genres, function (g) { return split(g.ge); }, activeGenres, true);
-      buildFacet(els.families, function (g) { return split(g.fa); }, activeFamilies, true);
-      // Trie par nombre de joueurs et non par population : « 1, 2, 3, 4 »
-      // se lit, « 2, 1, 4, 3 » demande un effort pour rien.
-      buildFacet(els.players, function (g) { return g.pl ? String(g.pl) : ''; },
-                 activePlayers, false);
-      applyFilters();
-      applyUrl('boot');
-
-      // The DAT panel is a bonus, not the catalog itself : an older
-      // catalog-data.json without `dats` just leaves it empty.
-      try { buildDatList(d.dats); } catch (e) { /* DAT panel just stays empty */ }
-
-      // And again for the score service, which lives on another host
-      // entirely: unreachable, the catalog simply shows no leaderboards.
-      fetch(SCORES_BASE + '/api/supported')
-        .then(function (r) { return r.ok ? r.json() : []; })
-        .then(function (list) {
-          (list || []).forEach(function (x) { ranked.add(x.system + '|' + x.game); });
-          if (!ranked.size) return;
-          if (els.hiscoreFilter) {
-            els.hiscoreFilter.hidden = false;
-            els.hiscoreFilter.textContent = '◆ ' + t('catalog.hiscore', 'Highscore') +
-                                            ' (' + ranked.size + ')';
-          }
-          // The list lands after the first rows are already on screen, so
-          // what is displayed has to be rebuilt to carry the badges.
-          applyFilters();
-          applyUrl('ranked');
-        })
-        .catch(function () { /* no leaderboards, everything else stands */ });
-
-      // ROM access state: signed in or not, quota left. Silent on failure,
-      // the button then stays a plain link.
-      refreshRomState();
-
-      // Same reasoning again, one failure domain further: no changes.json,
-      // no "Fixed ROMs" button, everything else still renders.
-      fetch(CHANGES_URL)
-        .then(function (r) { return r.ok ? r.json() : []; })
-        .then(buildRomFixButton)
-        .catch(function () { /* button just stays hidden */ });
-    })
-    .catch(function () {
-      els.count.textContent = t('catalog.error', 'Could not load the catalog right now : please try again later.');
+      }
+      // cloneof designe toujours un parent du meme emulateur et du meme
+      // systeme : c'est la cle qu'utilise renderClone.
+      GAMES_BY_NAME[gameKey(g.e, g.s, g.n)] = g;
     });
+    clearFilters();
+    // Filtre sur l'identifiant, affiche le nom de marque.
+    var emulators = buildFacet(els.emulators, function (g) { return g.e; }, activeEmulators, true,
+                               function (id) { return library(id) ? library(id).name : id; });
+    // Une seule bibliotheque : la facette ne choisirait rien.
+    els.emulators.closest('.cat-filter-section').hidden = emulators < 2;
+    buildFacet(els.systems, function (g) { return g.s; }, activeSystems, true);
+    buildFacet(els.sources, function (g) { return g.sf; }, activeSources, true);
+    buildFacet(els.manufacturers, function (g) { return g.mf; }, activeManufacturers, true);
+    buildTypes();
+    buildYears();
+    buildFacet(els.aspects, function (g) { return g._aspect; }, activeAspects, true);
+    buildFacet(els.orientations, function (g) { return g.or; }, activeOrientations, true);
+    buildFacet(els.genres, function (g) { return split(g.ge); }, activeGenres, true);
+    buildFacet(els.families, function (g) { return split(g.fa); }, activeFamilies, true);
+    // Trie par nombre de joueurs et non par population : « 1, 2, 3, 4 »
+    // se lit, « 2, 1, 4, 3 » demande un effort pour rien.
+    buildFacet(els.players, function (g) { return g.pl ? String(g.pl) : ''; },
+               activePlayers, false);
+    libLoaded = true;
+    showGroupTitles(true);
+    renderFbneoOnly();
+    applyFilters();
+    applyUrl('boot');
+
+    // The DAT panel is a bonus, not the catalog itself : an older
+    // catalog-data.json without `dats` just leaves it empty.
+    try { buildDatList(dats); } catch (e) { /* DAT panel just stays empty */ }
+  }
+
+  // ── Boot ─────────────────────────────────────────────────────────────────
+  (function boot() {
+    /* La bibliotheque vient de l'adresse, sinon on la demande. Un lien venu
+       d'ailleurs sur le site (classement, page d'un jeu) designe un jeu
+       FinalBurn Neo sans dire « lib » : il ouvre FinalBurn Neo directement,
+       comme avant, plutot que d'interposer une question. Il faut d'abord
+       savoir quelles bibliotheques existent : libraries.json, quelques
+       octets. */
+    function start() {
+      var p = new URLSearchParams(location.search);
+      var lib = p.get('lib');
+      var av = availableLibraries();
+      if (isAvailable(lib)) selectLibrary(lib);
+      else if (av.length < 2) selectLibrary(av[0].id);
+      else if (p.get('game') || p.get('system') || p.get('q') || p.get('hiscore')) selectLibrary('fbneo');
+      else {
+        els.count.textContent = '';
+        openLibraryPicker();
+      }
+    }
+    fetch(LIBRARIES_URL)
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) { libCounts = d && typeof d === 'object' ? d : null; }, function () { libCounts = null; })
+      .then(start);
+
+    // And again for the score service, which lives on another host
+    // entirely: unreachable, the catalog simply shows no leaderboards.
+    fetch(SCORES_BASE + '/api/supported')
+      .then(function (r) { return r.ok ? r.json() : []; })
+      .then(function (list) {
+        (list || []).forEach(function (x) { ranked.add(x.system + '|' + x.game); });
+        if (!ranked.size) return;
+        renderFbneoOnly();
+        if (!libLoaded) return;
+        // The list lands after the first rows are already on screen, so
+        // what is displayed has to be rebuilt to carry the badges.
+        applyFilters();
+        applyUrl('ranked');
+      })
+      .catch(function () { /* no leaderboards, everything else stands */ });
+
+    // ROM access state: signed in or not, quota left. Silent on failure,
+    // the button then stays a plain link.
+    refreshRomState();
+
+    // Same reasoning again, one failure domain further: no changes.json,
+    // no "Fixed ROMs" button, everything else still renders.
+    fetch(CHANGES_URL)
+      .then(function (r) { return r.ok ? r.json() : []; })
+      .then(function (entries) { buildRomFixButton(entries); renderFbneoOnly(); })
+      .catch(function () { /* button just stays hidden */ });
+
+  })();
 })();

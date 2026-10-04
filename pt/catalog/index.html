@@ -9,7 +9,7 @@
 <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="stylesheet" href="/style.css?v=2">
-<link rel="stylesheet" href="/catalog/catalog.css?v=2">
+<link rel="stylesheet" href="/catalog/catalog.css?v=3">
 <link rel="stylesheet" href="/roms.css?v=3">
 <link rel="canonical" href="https://bootcade.netlify.app/pt/catalog/">
 <link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/catalog/">
@@ -80,12 +80,12 @@
       <div class="cat-dat-body-head">
         <p data-i18n="catalog.datHint">Um DAT por sistema : cobre todos os jogos listados abaixo para esse sistema.</p>
         <div class="cat-dat-body-actions">
-          <a class="btn" href="changes/" data-i18n="catalog.datChanges">Detalhe das alterações</a>
+          <a class="btn" id="cat-dat-changes" href="changes/" data-i18n="catalog.datChanges">Detalhe das alterações</a>
           <!-- href posé par catalog.js une fois la date du dernier change
                connue ; masqué tant qu'on ne l'a pas, pour ne jamais
                pointer vers un dossier RomFix inexistant. -->
           <a class="btn" id="cat-romfix" href="#" rel="noopener" hidden data-i18n="catalog.romFix">ROMs corrigidas</a>
-          <a class="btn btn-accent" href="https://files.bootcade.duckdns.org/dat/all-dats.zip" rel="noopener" data-i18n="catalog.datZip">Baixar tudo (.zip)</a>
+          <a class="btn btn-accent" id="cat-dat-zip" href="https://files.bootcade.duckdns.org/dat/all-dats.zip" rel="noopener" data-i18n="catalog.datZip">Baixar tudo (.zip)</a>
         </div>
       </div>
       <div id="cat-dat-list" class="cat-dat-list"></div>
@@ -97,6 +97,9 @@
   <div class="wrap cat-toolbar-inner">
     <div class="cat-toolbar-head">
       <span class="cat-section-title" data-i18n="catalog.eyebrow">Catálogo de jogos</span>
+      <!-- La bibliotheque affichee ; ouvre la modale de choix. Rempli par
+           catalog.js une fois le choix fait. -->
+      <button type="button" class="cat-lib-btn" id="cat-lib-btn" hidden></button>
       <span class="cat-count" id="cat-count" data-i18n="catalog.loading">A carregar o catálogo…</span>
       <a class="cat-rom-quota" id="cat-rom-quota" hidden></a>
     </div>
@@ -119,7 +122,24 @@
 
     <aside class="cat-panel cat-sidebar" id="cat-sidebar" aria-label="Filters">
       <button type="button" id="cat-reset" class="cat-reset" data-i18n="catalog.reset" hidden>Limpar filtros</button>
-      <div class="cat-filter-section">
+      <!-- Meme arbre que le launcher (MainWindow::populate_filter_tree), dans
+           le meme ordre. Chaque section part cachee : catalog.js ne montre que
+           celles qui ont au moins une valeur dans la bibliotheque choisie, et
+           les recalcule a chaque changement de bibliotheque. Favoris et etat
+           des ROMs n'existent que dans le launcher : ils dependent de la
+           collection locale du joueur. -->
+      <div class="cat-filter-section" hidden>
+        <button type="button" class="cat-filter-row cat-filter-hiscore" id="cat-hiscore-filter">◆ Highscore</button>
+      </div>
+      <p class="cat-filter-group-title" data-i18n="catalog.filtersTitle">Filtros</p>
+      <!-- Seulement quand plusieurs bibliotheques sont affichees ensemble. -->
+      <div class="cat-filter-section" hidden>
+        <button type="button" class="cat-filter-head" aria-expanded="true" data-target="cat-emulators">
+          <span data-i18n="catalog.emulators">Emulador</span><i>▾</i>
+        </button>
+        <div class="cat-filter-list" id="cat-emulators"></div>
+      </div>
+      <div class="cat-filter-section" hidden>
         <button type="button" class="cat-filter-head" aria-expanded="true" data-target="cat-systems-wrap">
           <span data-i18n="catalog.systems">Sistemas</span><i>▾</i>
         </button>
@@ -128,53 +148,13 @@
           <div class="cat-filter-list" id="cat-systems"></div>
         </div>
       </div>
-      <!-- Masqué tant que le service de scores n'a pas répondu : un filtre
-           qui ne trouverait rien vaut mieux absent. Son libellé porte le
-           nombre de jeux concernés, écrit par catalog.js. -->
-      <div class="cat-filter-section">
-        <button type="button" class="cat-filter-row cat-filter-hiscore" id="cat-hiscore-filter" hidden>◆ Highscore</button>
-      </div>
-      <!-- Genre, serie et nombre de joueurs viennent de la source de FBNeo,
-           fusionnee dans le catalogue par generate-catalog-data.py : aucun
-           DAT ne porte ces informations. -->
-      <div class="cat-filter-section">
-        <button type="button" class="cat-filter-head" aria-expanded="false" data-target="cat-genres-wrap">
-          <span data-i18n="catalog.genres">Géneros</span><i>▾</i>
-        </button>
-        <div class="cat-filter-body is-collapsed" id="cat-genres-wrap">
-          <input type="search" class="cat-filter-search" data-filter="cat-genres" autocomplete="off" placeholder="Search…">
-          <div class="cat-filter-list" id="cat-genres"></div>
-        </div>
-      </div>
-      <div class="cat-filter-section">
-        <button type="button" class="cat-filter-head" aria-expanded="false" data-target="cat-families-wrap">
-          <span data-i18n="catalog.families">Séries</span><i>▾</i>
-        </button>
-        <div class="cat-filter-body is-collapsed" id="cat-families-wrap">
-          <input type="search" class="cat-filter-search" data-filter="cat-families" autocomplete="off" placeholder="Search…">
-          <div class="cat-filter-list" id="cat-families"></div>
-        </div>
-      </div>
-      <div class="cat-filter-section">
-        <button type="button" class="cat-filter-head" aria-expanded="false" data-target="cat-players">
-          <span data-i18n="catalog.players">Jogadores</span><i>▾</i>
-        </button>
-        <div class="cat-filter-list is-collapsed" id="cat-players"></div>
-      </div>
-      <div class="cat-filter-section">
+      <div class="cat-filter-section" hidden>
         <button type="button" class="cat-filter-head" aria-expanded="true" data-target="cat-types">
           <span data-i18n="catalog.types">Tipo</span><i>▾</i>
         </button>
-        <div class="cat-filter-list" id="cat-types">
-          <button type="button" class="cat-filter-row" data-type="original" data-i18n="catalog.type.original">Original</button>
-          <button type="button" class="cat-filter-row" data-type="clone" data-i18n="catalog.type.clone">Clone</button>
-          <button type="button" class="cat-filter-row" data-type="hack" data-i18n="catalog.type.hack">Hack</button>
-          <button type="button" class="cat-filter-row" data-type="homebrew" data-i18n="catalog.type.homebrew">Homebrew</button>
-          <button type="button" class="cat-filter-row" data-type="bootleg" data-i18n="catalog.type.bootleg">Bootleg</button>
-          <button type="button" class="cat-filter-row" data-type="prototype" data-i18n="catalog.type.prototype">Protótipo</button>
-        </div>
+        <div class="cat-filter-list" id="cat-types"></div>
       </div>
-      <div class="cat-filter-section">
+      <div class="cat-filter-section" hidden>
         <button type="button" class="cat-filter-head" aria-expanded="false" data-target="cat-manufacturers-wrap">
           <span data-i18n="catalog.manufacturers">Fabricantes</span><i>▾</i>
         </button>
@@ -183,16 +163,49 @@
           <div class="cat-filter-list" id="cat-manufacturers"></div>
         </div>
       </div>
-      <div class="cat-filter-section">
-        <button type="button" class="cat-filter-head" aria-expanded="false" data-target="cat-years-wrap">
-          <span data-i18n="catalog.years">Anos</span><i>▾</i>
+      <div class="cat-filter-section" hidden>
+        <button type="button" class="cat-filter-head" aria-expanded="false" data-target="cat-genres-wrap">
+          <span data-i18n="catalog.genres">Géneros</span><i>▾</i>
         </button>
-        <div class="cat-filter-body is-collapsed" id="cat-years-wrap">
-          <input type="search" class="cat-filter-search" data-filter="cat-years" autocomplete="off" placeholder="Search…">
-          <div class="cat-filter-list" id="cat-years"></div>
+        <div class="cat-filter-body is-collapsed" id="cat-genres-wrap">
+          <input type="search" class="cat-filter-search" data-filter="cat-genres" autocomplete="off" placeholder="Search…">
+          <div class="cat-filter-list" id="cat-genres"></div>
         </div>
       </div>
-      <div class="cat-filter-section">
+      <div class="cat-filter-section" hidden>
+        <button type="button" class="cat-filter-head" aria-expanded="false" data-target="cat-families-wrap">
+          <span data-i18n="catalog.families">Séries</span><i>▾</i>
+        </button>
+        <div class="cat-filter-body is-collapsed" id="cat-families-wrap">
+          <input type="search" class="cat-filter-search" data-filter="cat-families" autocomplete="off" placeholder="Search…">
+          <div class="cat-filter-list" id="cat-families"></div>
+        </div>
+      </div>
+      <div class="cat-filter-section" hidden>
+        <button type="button" class="cat-filter-head" aria-expanded="false" data-target="cat-players">
+          <span data-i18n="catalog.players">Jogadores</span><i>▾</i>
+        </button>
+        <div class="cat-filter-list is-collapsed" id="cat-players"></div>
+      </div>
+      <!-- Groupees par decennie, comme dans le launcher. -->
+      <div class="cat-filter-section" hidden>
+        <button type="button" class="cat-filter-head" aria-expanded="false" data-target="cat-years">
+          <span data-i18n="catalog.years">Anos</span><i>▾</i>
+        </button>
+        <div class="cat-filter-list is-collapsed" id="cat-years"></div>
+      </div>
+      <!-- Le dossier du pilote MAME (« capcom », « konami »...). -->
+      <div class="cat-filter-section" hidden>
+        <button type="button" class="cat-filter-head" aria-expanded="false" data-target="cat-sources-wrap">
+          <span data-i18n="catalog.sources">Origens</span><i>▾</i>
+        </button>
+        <div class="cat-filter-body is-collapsed" id="cat-sources-wrap">
+          <input type="search" class="cat-filter-search" data-filter="cat-sources" autocomplete="off" placeholder="Search…">
+          <div class="cat-filter-list" id="cat-sources"></div>
+        </div>
+      </div>
+      <p class="cat-filter-group-title" data-i18n="catalog.moreFilters">Mais filtros</p>
+      <div class="cat-filter-section" hidden>
         <button type="button" class="cat-filter-head" aria-expanded="false" data-target="cat-aspects-wrap">
           <span data-i18n="catalog.aspect">Proporção</span><i>▾</i>
         </button>
@@ -201,7 +214,7 @@
           <div class="cat-filter-list" id="cat-aspects"></div>
         </div>
       </div>
-      <div class="cat-filter-section">
+      <div class="cat-filter-section" hidden>
         <button type="button" class="cat-filter-head" aria-expanded="false" data-target="cat-orientations">
           <span data-i18n="catalog.orientationFilter">Orientação</span><i>▾</i>
         </button>
@@ -235,6 +248,23 @@
   </div>
 </main>
 
+<!-- Choix de la bibliotheque, comme dans le launcher. Les cartes sont
+     construites par catalog.js depuis sa liste LIBRARIES. -->
+<div class="cat-lib" id="cat-lib" hidden>
+  <div class="cat-lib-backdrop" data-lib-cancel></div>
+  <div class="cat-lib-dialog" role="dialog" aria-modal="true" aria-labelledby="cat-lib-title">
+    <div class="cat-lib-head">
+      <h2 id="cat-lib-title" data-i18n="catalog.lib.title">Escolher uma biblioteca</h2>
+      <button type="button" class="cat-lib-close" data-lib-cancel aria-label="Close">&times;</button>
+    </div>
+    <p class="cat-lib-intro" data-i18n="catalog.lib.intro">Escolha que coleção a biblioteca mostra. Os filtros são repostos ao mudar.</p>
+    <div class="cat-lib-cards" id="cat-lib-cards"></div>
+    <div class="cat-lib-foot">
+      <button type="button" class="btn" data-lib-cancel data-i18n="catalog.lib.cancel">Cancelar</button>
+    </div>
+  </div>
+</div>
+
 <div class="cat-lightbox" id="cat-lightbox" hidden>
   <button type="button" id="cat-lightbox-close" class="cat-lightbox-close" aria-label="Close">&times;</button>
   <img id="cat-lightbox-img" alt="">
@@ -245,6 +275,6 @@
 <script src="/auth.js"></script>
 <script src="/auth-ui.js"></script>
 <script src="/roms.js?v=2"></script>
-<script src="/catalog/catalog.js?v=2"></script>
+<script src="/catalog/catalog.js?v=3"></script>
 </body>
 </html>
