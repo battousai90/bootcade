@@ -265,6 +265,27 @@
 .profile-page .lb-totals { grid-template-columns: repeat(3, 1fr); }
 
 .pf-settings-wrap { margin-top: var(--lb-gap); }
+
+/* Onglets du profil : un seul bloc a la fois. La classe, et non l'attribut
+   hidden, parce que certains blocs se cachent deja eux-memes tant que le
+   service n'a pas repondu : les deux regles ne doivent pas se marcher dessus. */
+.pf-tabs-wrap { margin-top: var(--lb-gap); }
+.pf-tabs { display: flex; gap: 8px; flex-wrap: wrap; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+.pf-tabs button {
+  font: inherit; font-weight: 600; cursor: pointer;
+  padding: 8px 16px; border-radius: 999px;
+  border: 1px solid var(--border); background: transparent; color: var(--muted);
+}
+.pf-tabs button:hover { color: var(--text); }
+.pf-tabs button[aria-selected="true"] {
+  color: #fff; border-color: transparent;
+  background: linear-gradient(to bottom, var(--accent2, #7c3aed), var(--accent, #2563eb));
+}
+.pf-tab-off { display: none !important; }
+.pf-ra-wrap { margin-top: var(--lb-gap); }
+.pf-ra { display: flex; align-items: center; gap: 16px; }
+.pf-ra img { width: 56px; height: 56px; border-radius: 12px; }
+.pf-ra b { font-size: 1.2rem; }
 .pf-setting + .pf-setting { margin-top: 26px; }
 .pf-setting h3 {
   margin: 0 0 12px;

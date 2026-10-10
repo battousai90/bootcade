@@ -9,7 +9,7 @@
 <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="stylesheet" href="/style.css?v=2">
-<link rel="stylesheet" href="/leaderboard/leaderboard.css?v=30">
+<link rel="stylesheet" href="/leaderboard/leaderboard.css?v=31">
 <link rel="stylesheet" href="/roms.css?v=3">
 <link rel="canonical" href="https://bootcade.netlify.app/de/profile/">
 <link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/profile/">
@@ -63,17 +63,28 @@
     <p class="lb-status" id="pf-status" hidden></p>
     <div class="lb-totals" id="pf-totals"></div>
   </div>
+  <!-- Quatre onglets : le profil s'allongeait d'une carte a chaque nouveaute.
+       Chaque bloc porte data-pf-tab ; profile.js n'affiche que l'onglet choisi
+       (adresse #scores, #achievements, #roms, #settings). -->
+  <div class="wrap pf-tabs-wrap">
+    <nav class="pf-tabs" id="pf-tabs" hidden>
+      <button type="button" data-tab="scores" data-i18n="pf.tab.scores">Punkte</button>
+      <button type="button" data-tab="achievements" data-i18n="pf.tab.achievements">Erfolge</button>
+      <button type="button" data-tab="roms" data-i18n="pf.tab.roms">ROMs</button>
+      <button type="button" data-tab="settings" data-i18n="pf.tab.settings">Einstellungen</button>
+    </nav>
+  </div>
 
   <!-- Telechargements de ROMs : palier, jauge, ce qui compte en ce moment,
        comment monter. Cache tant que le service n'a pas repondu. -->
-  <div class="wrap pf-roms-wrap" id="pf-roms-wrap" hidden>
+  <div class="wrap pf-roms-wrap" id="pf-roms-wrap" data-pf-tab="roms" hidden>
     <div class="lb-profile-card">
       <h2 data-i18n="pf.roms.h2">ROM-Downloads</h2>
       <div id="pf-roms"></div>
     </div>
   </div>
 
-  <div class="wrap lb-boards">
+  <div class="wrap lb-boards" data-pf-tab="scores">
     <div class="lb-grid">
       <section class="lb-card">
         <h2 data-i18n="lb.profile.scores">Deine Punktestände</h2>
@@ -89,7 +100,15 @@
   <!-- Distinctions. Les huit sont toujours affichees : une distinction
        verrouillee montre sa condition, donc un objectif. Cachee, elle ne
        servirait a personne. -->
-  <div class="wrap pf-ach-wrap" id="pf-ach-wrap" hidden>
+  <!-- Le compte RetroAchievements relie depuis le lanceur (attribut Keycloak
+       « retroachievements », lu dans le jeton). -->
+  <div class="wrap pf-ra-wrap" data-pf-tab="achievements">
+    <div class="lb-profile-card">
+      <h2 data-i18n="pf.ra.h2">RetroAchievements</h2>
+      <div id="pf-ra"></div>
+    </div>
+  </div>
+  <div class="wrap pf-ach-wrap" id="pf-ach-wrap" data-pf-tab="achievements" hidden>
     <div class="lb-profile-card">
       <h2><span data-i18n="pf.ach.h2">Auszeichnungen</span> <b id="pf-ach-count"></b></h2>
       <div id="pf-ach"></div>
@@ -98,7 +117,7 @@
 
   <!-- Reglages : c'est ici que vivent le theme et la langue une fois connecte,
        plutot que dans la barre du haut. -->
-  <div class="wrap pf-settings-wrap">
+  <div class="wrap pf-settings-wrap" data-pf-tab="settings">
     <div class="lb-profile-card">
       <h2 data-i18n="pf.settings.h2">Einstellungen</h2>
       <p class="lb-profile-hint" data-i18n="pf.settings.hint">In diesem Browser gespeichert, nicht im Konto: ein anderes Gerät behält seine eigenen.</p>
@@ -112,6 +131,6 @@
 <script src="/auth.js"></script>
 <script src="/auth-ui.js"></script>
 <script src="/roms.js?v=2"></script>
-<script src="/profile/profile.js?v=6"></script>
+<script src="/profile/profile.js?v=7"></script>
 </body>
 </html>

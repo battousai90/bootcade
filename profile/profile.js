@@ -442,6 +442,53 @@
       base + code.toUpperCase().charCodeAt(1) - 65);
   }
 
+  // ── Onglets ───────────────────────────────────────────────────────────
+  var TABS = ['scores', 'achievements', 'roms', 'settings'];
+  function showTab(name) {
+    if (TABS.indexOf(name) < 0) name = 'scores';
+    document.querySelectorAll('[data-pf-tab]').forEach(function (el) {
+      el.classList.toggle('pf-tab-off', el.getAttribute('data-pf-tab') !== name);
+    });
+    document.querySelectorAll('#pf-tabs button').forEach(function (b) {
+      b.setAttribute('aria-selected', b.getAttribute('data-tab') === name ? 'true' : 'false');
+    });
+  }
+  function wireTabs() {
+    var nav = document.getElementById('pf-tabs');
+    if (!nav || nav.dataset.wired) return;
+    nav.dataset.wired = '1';
+    nav.hidden = false;
+    nav.addEventListener('click', function (e) {
+      var b = e.target.closest('button[data-tab]');
+      if (!b) return;
+      var name = b.getAttribute('data-tab');
+      history.replaceState(null, '', '#' + name);
+      showTab(name);
+    });
+    window.addEventListener('hashchange', function () { showTab(location.hash.slice(1)); });
+    showTab(location.hash.slice(1));
+  }
+
+  // Le compte RetroAchievements relie depuis le lanceur : le nom vient du jeton
+  // (attribut Keycloak « retroachievements »), jamais d'un mot de passe.
+  function renderRetroAchievements(user) {
+    var host = document.getElementById('pf-ra');
+    if (!host) return;
+    var name = user && user.retroachievements;
+    if (!name) {
+      host.innerHTML = '<p class="lb-profile-hint">' + esc(t('pf.ra.none',
+        'No RetroAchievements account linked yet. Sign in to RetroAchievements in the Bootcade launcher (Settings › Online) and it will appear here.')) + '</p>';
+      return;
+    }
+    var url = 'https://retroachievements.org/user/' + encodeURIComponent(name);
+    host.innerHTML = '<div class="pf-ra">'
+      + '<img src="https://media.retroachievements.org/UserPic/' + encodeURIComponent(name) + '.png" alt="" loading="lazy">'
+      + '<div><p class="lb-profile-hint">' + esc(t('pf.ra.linked', 'Linked account')) + '</p>'
+      + '<b>' + esc(name) + '</b>'
+      + '<p><a class="btn" href="' + url + '" target="_blank" rel="noopener">'
+      + esc(t('pf.ra.view', 'View on RetroAchievements')) + ' \u2197</a></p></div></div>';
+  }
+
   function renderIdentity(user, account) {
     var name = (user && user.preferred_username) || '';
     document.getElementById('pf-identity').innerHTML =
@@ -477,6 +524,8 @@
     // afficher enfermerait un visiteur dans une langue qu'il ne lit pas.
     renderSettings(false);
     wireSettings();
+    // Sans compte, seuls les reglages ont un sens : pas d'onglets.
+    showTab('settings');
   }
 
   function load() {
@@ -507,6 +556,8 @@
           var u = window.BootcadeAuth.user();
           chosen = (u && u.avatar) || null;
           renderIdentity(u, profile.account);
+          renderRetroAchievements(u);
+          wireTabs();
 
           var totals = profile.totals || {};
           var recs = r[3] || { records: 0, ranks: [] };
