@@ -146,6 +146,7 @@
     modalActions: document.getElementById('cat-modal-actions'),
     modalScores: document.getElementById('cat-modal-scores'),
     hiscoreFilter: document.getElementById('cat-hiscore-filter'),
+    achFilter: document.getElementById('cat-ach-filter'),
     datList: document.getElementById('cat-dat-list'),
     emulators: document.getElementById('cat-emulators'),
     sources: document.getElementById('cat-sources'),
@@ -186,6 +187,11 @@
   // badge, no filter and no leaderboard appear anywhere.
   var ranked = new Set();
   var onlyRanked = false;
+  // "<system>|<game>" -> nombre de succes RetroAchievements, relaye par le
+  // service de scores (le catalogue de RetroAchievements n'est pas lisible
+  // depuis un navigateur). Vide s'il ne repond pas : ni medaille ni filtre.
+  var achievements = new Map();
+  var onlyAchievements = false;
   // Guards against a late reply painting over a game the visitor has left.
   var scoreSeq = 0;
 
@@ -213,6 +219,7 @@
       if (!hit) return false;
     }
     if (onlyRanked && !isRanked(g)) return false;
+    if (onlyAchievements && !achievementsOf(g)) return false;
     if (query) {
       var hay = g._hay;
       for (var j = 0; j < query.length; j++) if (hay.indexOf(query[j]) === -1) return false;
@@ -221,7 +228,7 @@
   }
 
   function anyFilterActive() {
-    if (onlyRanked) return true;
+    if (onlyRanked || onlyAchievements) return true;
     return anyFilterActive_();
   }
 
@@ -316,6 +323,7 @@
   // meme nom et du meme systeme (« Arcade/1941 ») n'est pas classe. Meme
   // regle que MainWindow::game_ranks_online dans le launcher.
   function isRanked(g) { return g.e === 'fbneo' && ranked.has(g.s + '|' + g.n); }
+  function achievementsOf(g) { return g.e === 'fbneo' ? achievements.get(g.s + '|' + g.n) || 0 : 0; }
 
   // Le nom court n'est unique ni entre systemes (mslugx est en Arcade ET en
   // Neo Geo) ni entre emulateurs (mslug est un set FBNeo ET un set MAME).
@@ -329,6 +337,9 @@
       return '<span class="cat-badge' + cls + '">' + escapeHtml(t('catalog.type.' + id, def.fallback)) + '</span>';
     }).join('') + (isRanked(g)
       ? '<span class="cat-badge hiscore">◆ ' + escapeHtml(t('catalog.hiscore', 'Highscore')) + '</span>'
+      : '') + (achievementsOf(g)
+      ? '<span class="cat-badge achievements">\uD83C\uDFC5 ' + escapeHtml(
+          t('catalog.achievements.count', '{n} achievements').replace('{n}', achievementsOf(g))) + '</span>'
       : '');
   }
 
@@ -471,6 +482,8 @@
         (LIB === 'all' ? ' · ' + escapeHtml(library(g.e) ? library(g.e).name : g.e) : '') + '</span></div>' +
       (isRanked(g) ? '<a class="cat-row-hi" href="' + boardHref(g) + '" title="' +
           escapeHtml(t('catalog.hiscore.open', 'Open this game\u2019s leaderboard')) + '">◆</a>' : '') +
+      (achievementsOf(g) ? '<span class="cat-row-ach" title="' + escapeHtml(
+          t('catalog.achievements.count', '{n} achievements').replace('{n}', achievementsOf(g))) + '">\uD83C\uDFC5</span>' : '') +
       '<span class="cat-row-sys">' + escapeHtml(g.s) + '</span>' +
       '<span class="cat-row-year">' + escapeHtml(g.y) + '</span>';
     el.addEventListener('click', function (e) {
@@ -698,6 +711,13 @@
     selectedRow = null;
   }
 
+  if (els.achFilter) {
+    els.achFilter.addEventListener('click', function () {
+      onlyAchievements = !onlyAchievements;
+      els.achFilter.classList.toggle('on', onlyAchievements);
+      applyFilters();
+    });
+  }
   if (els.hiscoreFilter) {
     els.hiscoreFilter.addEventListener('click', function () {
       onlyRanked = !onlyRanked;
@@ -864,6 +884,8 @@
     activePlayers.clear();
     onlyRanked = false;
     if (els.hiscoreFilter) els.hiscoreFilter.classList.remove('on');
+    onlyAchievements = false;
+    if (els.achFilter) els.achFilter.classList.remove('on');
     els.search.value = '';
     [].slice.call(document.querySelectorAll('.cat-filter-row.active')).forEach(function (b) { b.classList.remove('active'); });
   }
@@ -1134,6 +1156,13 @@
       els.hiscoreFilter.classList.toggle('on', onlyRanked);
       els.hiscoreFilter.closest('.cat-filter-section').hidden = !n;
     }
+    if (els.achFilter) {
+      var a = 0;
+      GAMES.forEach(function (g) { if (achievementsOf(g)) a++; });
+      els.achFilter.textContent = '\uD83C\uDFC5 ' + t('catalog.achievements', 'Achievements') + ' (' + a.toLocaleString(LANG) + ')';
+      els.achFilter.classList.toggle('on', onlyAchievements);
+      els.achFilter.closest('.cat-filter-section').hidden = !a;
+    }
   }
 
   function selectLibrary(id) {
@@ -1288,6 +1317,19 @@
         applyUrl('ranked');
       })
       .catch(function () { /* no leaderboards, everything else stands */ });
+
+    // Same again for RetroAchievements: no answer, no medal and no filter.
+    fetch(SCORES_BASE + '/api/retroachievements')
+      .then(function (r) { return r.ok ? r.json() : []; })
+      .then(function (list) {
+        (list || []).forEach(function (x) { achievements.set(x.system + '|' + x.game, x.achievements); });
+        if (!achievements.size) return;
+        renderFbneoOnly();
+        if (!libLoaded) return;
+        applyFilters();
+        applyUrl('ranked');
+      })
+      .catch(function () { /* no achievements, everything else stands */ });
 
     // ROM access state: signed in or not, quota left. Silent on failure,
     // the button then stays a plain link.

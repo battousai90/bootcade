@@ -184,10 +184,10 @@ button.cat-dat-toggle.cat-filter-head {
 /* ── List (center column) ───────────────────────────────────────────────── */
 .cat-list-panel { padding: 0; }
 .cat-row {
-  /* Cinq colonnes, placees explicitement : le losange Highscore est un
-     cinquieme element sur les seuls jeux classes. Avec quatre colonnes
+  /* Six colonnes, placees explicitement : le losange Highscore et la
+     medaille RetroAchievements n'existent que sur certains jeux. Avec quatre colonnes
      implicites, il renvoyait l'annee sur une seconde ligne. */
-  display: grid; grid-template-columns: 38px minmax(0,1fr) auto auto auto; gap: 10px; align-items: center;
+  display: grid; grid-template-columns: 38px minmax(0,1fr) auto auto auto auto; gap: 10px; align-items: center;
   padding: 6px 10px; cursor: pointer; border-bottom: 1px solid var(--border);
 }
 .cat-row:last-child { border-bottom: none; }
@@ -202,9 +202,10 @@ button.cat-dat-toggle.cat-filter-head {
 .cat-row-title b { display: block; font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .cat-row-title span { display: block; font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .cat-row-sys, .cat-row-year { font-size: 11.5px; color: var(--muted); white-space: nowrap; }
-.cat-row-sys { display: none; grid-column: 4; }
-.cat-row-year { grid-column: 5; }
+.cat-row-sys { display: none; grid-column: 5; }
+.cat-row-year { grid-column: 6; }
 .cat-row-hi { grid-column: 3; }
+.cat-row-ach { grid-column: 4; font-size: .9em; line-height: 1; }
 
 @media (min-width: 760px) { .cat-row-sys { display: block; } }
 
@@ -408,6 +409,16 @@ button.cat-dat-toggle.cat-filter-head {
 .cat-filter-hiscore.on {
   color: #7aa2ff;
   background: rgba(122, 162, 255, .14);
+}
+/* RetroAchievements : l'or de la medaille, distinct du bleu Highscore. */
+.cat-badge.achievements {
+  color: #e8b33a;
+  border-color: rgba(232, 179, 58, .45);
+  background: rgba(232, 179, 58, .12);
+}
+.cat-filter-ach.on {
+  color: #e8b33a;
+  background: rgba(232, 179, 58, .14);
 }
 .cat-hiscore { margin-top: 18px; }
 .cat-hiscore h3 {
