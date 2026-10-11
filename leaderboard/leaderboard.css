@@ -262,7 +262,10 @@
 }
 
 /* Trois chiffres, pas quatre comme le bandeau public. */
-.profile-page .lb-totals { grid-template-columns: repeat(3, 1fr); }
+.profile-page .lb-totals { grid-template-columns: repeat(2, 1fr); }
+/* Une seule liste par onglet : pleine largeur, pas une colonne sur deux. */
+.profile-page .lb-grid.pf-single { grid-template-columns: 1fr; }
+.profile-page .lb-boards .lb-grid { margin-top: 22px; }
 
 .pf-settings-wrap { margin-top: var(--lb-gap); }
 

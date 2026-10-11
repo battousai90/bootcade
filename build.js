@@ -141,7 +141,14 @@ function render(page, source, pageSlots, lang) {
       `<script>window.AUTH_I18N=${JSON.stringify({
         signin:  cat['auth.signin']  || 'Sign in',
         signup:  cat['auth.signup']  || 'Create account',
-        signout: cat['auth.signout'] || 'Sign out'
+        signout: cat['auth.signout'] || 'Sign out',
+        // Menu du compte : memes libelles que les onglets du profil.
+        menu:    cat['auth.menu'] || 'Menu',
+        'pf.tab.scores':       cat['pf.tab.scores']       || 'Scores',
+        'pf.tab.activity':     cat['pf.tab.activity']     || 'Activity',
+        'pf.tab.achievements': cat['pf.tab.achievements'] || 'Achievements',
+        'pf.tab.roms':         cat['pf.tab.roms']         || 'ROMs',
+        'pf.tab.settings':     cat['pf.tab.settings']     || 'Settings'
       })};</script>`)
     .replace(/data-href="home" href="[^"]*"/g, `data-href="home" href="${home}"`)
     .replace(/data-href="catalog" href="[^"]*"/g, `data-href="catalog" href="${catalogHref}"`)

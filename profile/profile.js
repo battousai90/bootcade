@@ -443,7 +443,7 @@
   }
 
   // ── Onglets ───────────────────────────────────────────────────────────
-  var TABS = ['scores', 'achievements', 'roms', 'settings'];
+  var TABS = ['scores', 'activity', 'achievements', 'roms', 'settings'];
   function showTab(name) {
     if (TABS.indexOf(name) < 0) name = 'scores';
     document.querySelectorAll('[data-pf-tab]').forEach(function (el) {
@@ -561,19 +561,23 @@
 
           var totals = profile.totals || {};
           var recs = r[3] || { records: 0, ranks: [] };
-          // Quatre cartes, et la derniere est celle qui compte : le nombre de
-          // premieres places detenues dit ce que le joueur VAUT, la ou un
-          // total de scores envoyes ne dit que sa perseverance.
-          var cells = [
+          // Les chiffres suivent leur onglet. Scores : ce que le joueur VAUT
+          // (les premieres places detenues disent plus que le nombre d'envois,
+          // qui ne dit que sa perseverance). Activite : ce qu'il a joue.
+          var stats = function (id, cells) {
+            document.getElementById(id).innerHTML = cells.map(function (c) {
+              return '<div class="lb-stat"><b>' + esc(c[0]) + '</b><span>'
+                   + esc(c[1]) + '</span></div>';
+            }).join('');
+          };
+          stats('pf-totals-scores', [
             [totals.scores == null ? 0 : totals.scores, t('lb.me.scores', 'your scores')],
-            [totals.games == null ? 0 : totals.games, t('lb.me.games', 'games played')],
-            [formatTime(totals.seconds), t('lb.me.time', 'time played')],
             ['\uD83C\uDFC6 ' + (recs.records || 0), t('lb.me.records', 'world records')]
-          ];
-          document.getElementById('pf-totals').innerHTML = cells.map(function (c) {
-            return '<div class="lb-stat"><b>' + esc(c[0]) + '</b><span>'
-                 + esc(c[1]) + '</span></div>';
-          }).join('');
+          ]);
+          stats('pf-totals-activity', [
+            [totals.games == null ? 0 : totals.games, t('lb.me.games', 'games played')],
+            [formatTime(totals.seconds), t('lb.me.time', 'time played')]
+          ]);
 
           // `ranks` et non `/api/me/scores` : une ligne par JEU, portant le
           // meilleur score et son rang. La liste brute des envois repetait le

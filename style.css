@@ -571,6 +571,7 @@ footer { border-top: 1px solid var(--border); background: var(--bg2); padding: 4
 .nav-account { display: inline-flex; align-items: center; gap: 8px; }
 
 .nav-user {
+  font: inherit; color: inherit; cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -613,17 +614,27 @@ footer { border-top: 1px solid var(--border); background: var(--bg2); padding: 4
   flex: 0 0 auto;
 }
 
-.nav-signout {
-  display: inline-flex;
-  align-items: center;
-  padding: 4px;
-  border: 0;
-  border-radius: 50%;
-  background: transparent;
-  color: var(--muted);
-  cursor: pointer;
+
+/* Menu du compte : bouton burger a cote du nom, liste des sections du profil. */
+.nav-account { position: relative; }
+.nav-user:hover, .nav-user[aria-expanded="true"] { background: var(--surface2); }
+.nav-burger-ico { color: var(--muted); margin: 0 4px 0 2px; flex: none; }
+.nav-menu {
+  position: absolute; top: calc(100% + 10px); right: 0; z-index: 50;
+  min-width: 190px; padding: 6px;
+  display: flex; flex-direction: column;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); box-shadow: 0 12px 32px var(--shadow);
 }
-.nav-signout:hover { color: var(--text); background: var(--surface2); }
+.nav-menu[hidden] { display: none; }
+.nav-menu a { padding: 9px 12px; border-radius: 8px; color: var(--text); font-weight: 600; font-size: 0.92rem; }
+.nav-menu a:hover, .nav-menu button:hover { background: var(--surface2); }
+.nav-menu hr { width: 100%; margin: 6px 0; border: 0; border-top: 1px solid var(--border); }
+.nav-menu button {
+  font: inherit; font-weight: 600; font-size: 0.92rem; text-align: left;
+  padding: 9px 12px; border: 0; border-radius: 8px;
+  background: transparent; color: var(--muted); cursor: pointer;
+}
 
 @media (max-width: 720px) {
   /* Sur mobile l'avatar suffit à dire qui est connecté, et la barre est déjà

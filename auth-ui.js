@@ -99,17 +99,31 @@
     // aussi le theme et la langue.
     var lang = document.documentElement.lang || 'en';
     var href = lang === 'en' ? '/profile/' : '/' + lang + '/profile/';
+    /* Le menu liste les sections du profil, pour que le joueur sache qu'elles
+       existent sans avoir a ouvrir son profil d'abord. Chaque entree mene
+       directement a l'onglet (#scores, #activity...). */
+    var items = [['scores', 'Scores'], ['activity', 'Activity'],
+                 ['achievements', 'Achievements'], ['roms', 'ROMs'],
+                 ['settings', 'Settings']];
+    var menuLabel = t('auth.menu', 'Menu');
+    // Le chip avatar + nom EST le bouton du menu : un seul element, comme le
+    // bouton de connexion qu'il remplace, plutot qu'un second bouton a cote.
     slot.innerHTML =
-      '<a class="nav-user" href="' + href + '">'
+      '<button type="button" class="nav-user" id="nav-burger" aria-haspopup="true" '
+      + 'aria-expanded="false" aria-controls="nav-menu" aria-label="' + esc(menuLabel)
+      + ' : ' + esc(name) + '">'
       + avatar(name, user.avatar)
-      + '<span class="nav-user-name">' + esc(name) + '</span></a>'
-      + '<button type="button" class="nav-signout" id="signout-btn" title="'
-      + esc(t('auth.signout', 'Sign out')) + '" aria-label="'
-      + esc(t('auth.signout', 'Sign out')) + '">'
-      + '<svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true">'
-      + '<path d="M6 2H3.5A1.5 1.5 0 002 3.5v9A1.5 1.5 0 003.5 14H6M10.5 11L14 8l-3.5-3M14 8H6"'
-      + ' fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"'
-      + ' stroke-linejoin="round"/></svg></button>';
+      + '<span class="nav-user-name">' + esc(name) + '</span>'
+      + '<svg class="nav-burger-ico" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">'
+      + '<path d="M2 4h12M2 8h12M2 12h12" fill="none" stroke="currentColor" '
+      + 'stroke-width="1.6" stroke-linecap="round"/></svg></button>'
+      + '<nav class="nav-menu" id="nav-menu" hidden>'
+      + items.map(function (i) {
+          return '<a href="' + href + '#' + i[0] + '">'
+               + esc(t('pf.tab.' + i[0], i[1])) + '</a>';
+        }).join('')
+      + '<hr><button type="button" id="signout-btn">'
+      + esc(t('auth.signout', 'Sign out')) + '</button></nav>';
 
     // Une fois connecte, le theme et la langue vivent dans le profil : la barre
     // se reduit au nom. Deconnecte, ils restent ici, sinon un visiteur serait
@@ -117,6 +131,44 @@
     hideNavPreferences(true);
     document.getElementById('signout-btn')
       .addEventListener('click', function () { window.BootcadeAuth.logout(); });
+    wireMenu();
+  }
+
+  /* Ouverture et fermeture du menu. Les ecouteurs de document ne sont poses
+     qu'une fois : render() se rappelle apres chaque changement d'avatar, et
+     les empiler fermerait/ouvrirait le menu plusieurs fois par clic. */
+  var menuWired = false;
+  function wireMenu() {
+    var btn = document.getElementById('nav-burger');
+    var menu = document.getElementById('nav-menu');
+    if (!btn || !menu) return;
+    function setOpen(open) {
+      menu.hidden = !open;
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      setOpen(menu.hidden);
+    });
+    // Un lien vers le profil depuis le profil ne recharge pas la page, il ne
+    // change que le #hash : sans fermeture explicite le menu resterait ouvert.
+    menu.addEventListener('click', function () { setOpen(false); });
+    if (menuWired) return;
+    menuWired = true;
+    document.addEventListener('click', function (e) {
+      var m = document.getElementById('nav-menu');
+      if (m && !m.hidden && !e.target.closest('#nav-menu')) {
+        m.hidden = true;
+        document.getElementById('nav-burger').setAttribute('aria-expanded', 'false');
+      }
+    });
+    document.addEventListener('keydown', function (e) {
+      var m = document.getElementById('nav-menu');
+      if (e.key === 'Escape' && m && !m.hidden) {
+        m.hidden = true;
+        document.getElementById('nav-burger').setAttribute('aria-expanded', 'false');
+      }
+    });
   }
 
   // On attend la fin de l'échange de jetons avant de dessiner : sinon un
