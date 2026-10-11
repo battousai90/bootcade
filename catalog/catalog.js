@@ -336,7 +336,7 @@
       var cls = id === 'original' ? ' original' : '';
       return '<span class="cat-badge' + cls + '">' + escapeHtml(t('catalog.type.' + id, def.fallback)) + '</span>';
     }).join('') + (isRanked(g)
-      ? '<span class="cat-badge hiscore">◆ ' + escapeHtml(t('catalog.hiscore', 'Highscore')) + '</span>'
+      ? '<span class="cat-badge hiscore">\uD83C\uDFC6 ' + escapeHtml(t('catalog.hiscore', 'Highscore')) + '</span>'
       : '') + (achievementsOf(g)
       ? '<span class="cat-badge achievements">\uD83C\uDFC5 ' + escapeHtml(
           t('catalog.achievements.count', '{n} achievements').replace('{n}', achievementsOf(g))) + '</span>'
@@ -481,7 +481,7 @@
         // titre : l'emulateur les departage.
         (LIB === 'all' ? ' · ' + escapeHtml(library(g.e) ? library(g.e).name : g.e) : '') + '</span></div>' +
       (isRanked(g) ? '<a class="cat-row-hi" href="' + boardHref(g) + '" title="' +
-          escapeHtml(t('catalog.hiscore.open', 'Open this game\u2019s leaderboard')) + '">◆</a>' : '') +
+          escapeHtml(t('catalog.hiscore.open', 'Open this game\u2019s leaderboard')) + '">\uD83C\uDFC6</a>' : '') +
       (achievementsOf(g) ? '<span class="cat-row-ach" title="' + escapeHtml(
           t('catalog.achievements.count', '{n} achievements').replace('{n}', achievementsOf(g))) + '">\uD83C\uDFC5</span>' : '') +
       '<span class="cat-row-sys">' + escapeHtml(g.s) + '</span>' +
@@ -1150,15 +1150,17 @@
     // Compte sur la bibliotheque affichee, comme le launcher : absent si
     // aucun de ses jeux n'est classe.
     if (els.hiscoreFilter) {
-      var n = 0;
-      GAMES.forEach(function (g) { if (isRanked(g)) n++; });
-      els.hiscoreFilter.textContent = '◆ ' + t('catalog.hiscore', 'Highscore') + ' (' + n.toLocaleString(LANG) + ')';
+      // Un jeu compte une fois, pas une fois par systeme : un jeu Neo Geo est
+      // listé en Arcade ET en Neo Geo, comme dans le launcher et l'admin.
+      var seen = {}, n = 0;
+      GAMES.forEach(function (g) { if (isRanked(g) && !seen[g.n]) { seen[g.n] = 1; n++; } });
+      els.hiscoreFilter.textContent = '\uD83C\uDFC6 ' + t('catalog.hiscore', 'Highscore') + ' (' + n.toLocaleString(LANG) + ')';
       els.hiscoreFilter.classList.toggle('on', onlyRanked);
       els.hiscoreFilter.closest('.cat-filter-section').hidden = !n;
     }
     if (els.achFilter) {
-      var a = 0;
-      GAMES.forEach(function (g) { if (achievementsOf(g)) a++; });
+      var seenA = {}, a = 0;
+      GAMES.forEach(function (g) { if (achievementsOf(g) && !seenA[g.n]) { seenA[g.n] = 1; a++; } });
       els.achFilter.textContent = '\uD83C\uDFC5 ' + t('catalog.achievements', 'Achievements') + ' (' + a.toLocaleString(LANG) + ')';
       els.achFilter.classList.toggle('on', onlyAchievements);
       els.achFilter.closest('.cat-filter-section').hidden = !a;
