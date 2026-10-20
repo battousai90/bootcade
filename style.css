@@ -644,3 +644,11 @@ footer { border-top: 1px solid var(--border); background: var(--bg2); padding: 4
 
 /* Appel a l'action en fin de section : centre, detache du dernier bloc. */
 .section-cta { margin: 28px 0 0; text-align: center; }
+
+/* Logos des systemes (Windows, Tux) : trait plein, a la couleur du site. */
+.os-ico { width: 1.05em; height: 1.05em; vertical-align: -0.16em; margin-right: 0.15em; color: var(--accent2); flex: none; }
+.btn .os-ico { color: currentColor; margin: 0 0 0 0.35em; }
+.badge .os-ico { width: 1.1em; height: 1.1em; vertical-align: -0.2em; }
+
+/* Les quatre formats Linux sur une ligne, Windows seul sur la suivante. */
+@media (min-width: 1000px) { .dl-grid { grid-template-columns: repeat(4, 1fr); } }
