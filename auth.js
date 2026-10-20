@@ -87,9 +87,23 @@
      l'inscription n'est donc pas un parcours séparé à maintenir, c'est la
      même danse OAuth qui commence sur un autre écran. Un joueur qui s'inscrit
      est connecté dans la foulée, sans second aller-retour. */
+  // Les paramètres de la page (?s=Arcade&n=gtmr) : Keycloak ne ramène que l'adresse sans query, la page
+  // du jeu n'aurait plus rien à afficher. On les garde le temps de l'aller-retour.
+  var RET = 'bootcade.returnQuery';
+  var AUTH_PARAMS = ['code', 'state', 'session_state', 'iss', 'error', 'error_description', 'sso'];
+  function paramsWithoutAuth() {
+    var q = new URLSearchParams(location.search);
+    AUTH_PARAMS.forEach(function (k) { q.delete(k); });
+    var s = q.toString();
+    return s ? '?' + s : '';
+  }
+
   function start(endpoint, prompt) {
     var verifier = random(64);
     var state = random(16);
+    try {
+      sessionStorage.setItem(RET, paramsWithoutAuth());
+    } catch (e) {}
     try {
       sessionStorage.setItem(PKCE, JSON.stringify({ v: verifier, s: state }));
     } catch (e) {
@@ -129,6 +143,20 @@
    *     anonyme, qui est le cas le plus frequent, ne subit aucun aller-retour.
    *   - une seule tentative par onglet, sinon un refus renverrait en boucle.
    */
+  // Retour de Keycloak : on rend à l'adresse ses paramètres d'avant, AVANT que la page ne les lise.
+  (function restoreReturnQuery() {
+    try {
+      var saved = sessionStorage.getItem(RET);
+      if (saved === null) return;
+      var cur = new URLSearchParams(location.search);
+      if (!cur.get('code') && !cur.get('error')) return;   // pas un retour : on ne touche a rien
+      sessionStorage.removeItem(RET);
+      var merged = new URLSearchParams(saved);
+      cur.forEach(function (v, k) { merged.set(k, v); });
+      history.replaceState({}, '', location.pathname + '?' + merged.toString() + location.hash);
+    } catch (e) {}
+  })();
+
   var SEEN = 'bootcade.hasAccount';
   var TRIED = 'bootcade.ssoTried';
 
@@ -226,7 +254,8 @@
   // Retire code et state de la barre d'adresse : les laisser rendrait un
   // rechargement ou un partage de lien inutilisable, et exposerait le code.
   function clean() {
-    history.replaceState({}, '', redirectUri());
+    // Les traces de l'authentification partent ; les paramètres de la page restent.
+    history.replaceState({}, '', redirectUri() + paramsWithoutAuth());
   }
 
   /* Le jeton d'accès, rafraîchi s'il est sur le point d'expirer. Rend null
