@@ -1,0 +1,233 @@
+/* Bootcade : page Galerie.
+ *
+ * Memes regles que leaderboard.css (en-tete de ce fichier-la) : couleurs et
+ * rayons tires des jetons de style.css, padding vertical explicite sur tout
+ * element qui porte aussi .wrap, un seul ecart par intervalle.
+ *
+ * La grille est « justifiee » : chaque vignette prend une largeur
+ * proportionnelle a son format (flex-grow = largeur / hauteur), si bien
+ * qu'une rangee garde une hauteur unique quel que soit le melange de
+ * captures 16:9, 4:3 ou verticales. Aucune image n'est rognee.
+ */
+
+.gal-block { padding-top: var(--lb-gap); }
+
+/* ── Filtres ─────────────────────────────────────────────────────────────── */
+.gal-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.gal-filters:empty { display: none; }
+.gal-chip {
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 14px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: color .15s, border-color .15s, background-color .15s;
+}
+.gal-chip:hover { color: var(--text); border-color: var(--accent); }
+.gal-chip[aria-pressed="true"] {
+  color: #fff;
+  border-color: transparent;
+  /* .btn-accent */
+  background-image: linear-gradient(135deg, var(--accent), var(--accent2));
+}
+.gal-chip-n {
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  opacity: .7;
+}
+
+/* ── Grille justifiee ────────────────────────────────────────────────────── */
+.gal-grid {
+  --row: 260px;                 /* hauteur cible d'une rangee */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+/* Une derniere rangee incomplete ne s'etire pas en vignettes geantes : ce
+   bouche-trou avale la place restante. */
+.gal-grid::after { content: ""; flex-grow: 999; }
+
+.gal-item {
+  position: relative;
+  flex-grow: var(--r);
+  flex-basis: calc(var(--r) * var(--row));
+  aspect-ratio: var(--r);
+  /* Une capture tres large seule sur sa rangee ne depasse pas sa taille
+     naturelle d'affichage. */
+  max-width: calc(var(--r) * var(--row) * 1.6);
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--surface);
+  cursor: zoom-in;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  isolation: isolate;
+  transition: translate .25s ease, box-shadow .25s ease, border-color .25s ease;
+  animation: gal-in .45s ease both;
+  animation-delay: calc(var(--i, 0) * 40ms);
+}
+.gal-item:hover,
+.gal-item:focus-visible {
+  /* `translate` et non `transform` : l'animation d'entree, gardee par son
+     fill-mode, ecraserait un transform pose ici. */
+  translate: 0 -3px;
+  border-color: var(--accent);
+  box-shadow: 0 18px 40px -18px var(--shadow);
+  outline: none;
+}
+.gal-item[hidden] { display: none; }
+
+.gal-item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .5s ease, opacity .4s ease;
+  opacity: 0;
+}
+.gal-item img.is-loaded { opacity: 1; }
+.gal-item:hover img { transform: scale(1.04); }
+
+/* Legende en surimpression, revelee au survol (toujours visible au doigt,
+   ou le survol n'existe pas). */
+.gal-cap {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 56px 14px 12px;
+  /* Assez opaque pour rester lisible sur une capture en theme clair. */
+  background: linear-gradient(to top, rgba(7, 10, 14, .94) 35%, rgba(7, 10, 14, 0));
+  color: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity .25s ease, transform .25s ease;
+}
+.gal-item:hover .gal-cap,
+.gal-item:focus-visible .gal-cap { opacity: 1; transform: none; }
+@media (hover: none) {
+  .gal-cap { opacity: 1; transform: none; }
+}
+.gal-cap-title { font-weight: 600; font-size: 14.5px; line-height: 1.3; }
+.gal-cap-tag {
+  font-size: 11px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--accent3);
+}
+
+@keyframes gal-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.gal-empty { margin: 0; }
+
+/* ── Visionneuse ─────────────────────────────────────────────────────────── */
+.gal-lightbox {
+  width: 100vw;
+  height: 100vh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #f8fafc;
+  overflow: hidden;
+}
+.gal-lightbox[open] { display: grid; place-items: center; }
+.gal-lightbox::backdrop {
+  background: rgba(5, 7, 10, .92);
+  backdrop-filter: blur(8px);
+}
+.gal-lightbox[open]::backdrop { animation: gal-fade .2s ease; }
+
+.gal-lb-figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  max-width: calc(100vw - 160px);
+  max-height: calc(100vh - 64px);
+}
+.gal-lb-figure img {
+  display: block;
+  max-width: 100%;
+  max-height: calc(100vh - 140px);
+  border-radius: var(--radius);
+  box-shadow: 0 30px 80px -20px rgba(0, 0, 0, .8);
+  animation: gal-zoom .25s ease;
+}
+.gal-lb-cap {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.gal-lb-title { font-weight: 600; }
+.gal-lb-desc { color: #a1a7b3; font-size: 14px; }
+.gal-lb-desc:empty { display: none; }
+
+.gal-lb-count {
+  position: absolute;
+  top: 22px;
+  left: 24px;
+  font-size: 13px;
+  color: #a1a7b3;
+  font-variant-numeric: tabular-nums;
+}
+
+.gal-lb-btn {
+  position: absolute;
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, .14);
+  background: rgba(255, 255, 255, .06);
+  color: #f8fafc;
+  cursor: pointer;
+  transition: background-color .15s, border-color .15s;
+}
+.gal-lb-btn:hover { background: rgba(255, 255, 255, .14); border-color: rgba(255, 255, 255, .3); }
+.gal-lb-btn svg { width: 22px; height: 22px; }
+.gal-lb-btn[hidden] { display: none; }
+.gal-lb-close { top: 14px; right: 16px; }
+.gal-lb-prev  { left: 20px;  top: 50%; transform: translateY(-50%); }
+.gal-lb-next  { right: 20px; top: 50%; transform: translateY(-50%); }
+
+@keyframes gal-fade { from { opacity: 0; } }
+@keyframes gal-zoom { from { opacity: 0; transform: scale(.97); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .gal-item, .gal-item img, .gal-lb-figure img { animation: none; transition: none; }
+  .gal-item:hover img { transform: none; }
+}
+
+@media (max-width: 700px) {
+  .gal-grid { --row: 170px; gap: 10px; }
+  .gal-lb-figure { max-width: calc(100vw - 24px); }
+  /* Sur un telephone on change d'image d'un balayage : les fleches
+     masqueraient l'image, qui occupe toute la largeur. */
+  .gal-lb-prev, .gal-lb-next { display: none; }
+}

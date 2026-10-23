@@ -8,7 +8,7 @@
 <link rel="icon" href="/logo.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="stylesheet" href="/style.css?v=4">
+<link rel="stylesheet" href="/style.css?v=6">
 <link rel="stylesheet" href="/roms.css?v=3">
 <link rel="canonical" href="https://bootcade.netlify.app/zh/">
 <link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/">
@@ -85,14 +85,9 @@
       <span>Bootcade<small data-i18n="brand.sub">Linux 街机游戏库</small></span>
     </a>
     <nav class="nav-links">
-      <a href="#features" data-i18n="nav.features">功能</a>
-      <a href="#hiscore" data-i18n="nav.hiscore">最高分</a>
-      <a href="#rom-manager" data-i18n="nav.rom">ROM 管理</a>
-      <a href="#steamos" data-i18n="nav.steam">SteamOS</a>
-      <a href="#download" data-i18n="nav.dl">下载</a>
-      <a href="#build" data-i18n="nav.build">构建</a>
       <a data-href="catalog" href="/zh/catalog/" data-i18n="nav.catalog">游戏目录</a>
       <a data-href="leaderboard" href="/zh/leaderboard/" data-i18n="nav.leaderboard">排行榜</a>
+      <a data-href="gallery" href="/zh/gallery/" data-i18n="nav.gallery">图库</a>
       <button type="button" id="theme-btn" class="theme-btn" aria-label="Theme" title="Theme">
         <svg class="ico-sys"   viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zm0 1.5v10a5 5 0 010-10z" fill="currentColor"/></svg>
         <svg class="ico-light" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3.2" fill="currentColor"/><path d="M8 .8v2M8 13.2v2M.8 8h2M13.2 8h2M2.9 2.9l1.4 1.4M11.7 11.7l1.4 1.4M13.1 2.9l-1.4 1.4M4.3 11.7l-1.4 1.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
@@ -152,66 +147,35 @@
   </div>
 </section>
 
-<!-- ── Library mock-up ───────────────────────────────────────────────────── -->
+<!-- ── Captures : diaporama ─────────────────────────────────────────────────
+     Remplace l'ancienne maquette HTML de la bibliotheque. Les diapositives
+     viennent de gallery/shots.json (entrees "featured"), via
+     gallery/slider.js ; la premiere est ecrite ici pour s'afficher tout de
+     suite, et rester visible sans JavaScript. -->
 <section style="padding-top:0">
   <div class="wrap">
-    <div class="mock" role="img" aria-label="Screenshot of the Bootcade library, showing the sidebar filters and a list of arcade games with their verification status.">
-      <div class="mock-bar">
-        <div class="mock-dots"><i></i><i></i><i></i></div>
-        <span class="mock-title">Bootcade</span>
-        <span class="mock-search">Search game…</span>
-      </div>
-      <div class="mock-body">
-        <aside class="mock-side">
-          <div class="on">▤ All Games (56 897)</div>
-          <div>▸ 🖥 Systems</div>
-          <div>▸ ★ Favorites</div>
-          <div>▸ ◈ Type</div>
-          <div>▸ 🏭 Manufacturers</div>
-          <div>▸ 📅 Years</div>
-          <div>▸ 📄 Sources</div>
-          <div>▸ ⛶ Aspect Ratio</div>
-          <div>▸ ↻ Orientation</div>
-          <div>▸ ⓘ ROM Status</div>
-        </aside>
-        <div class="mock-main">
-          <div class="mock-row sel">
-            <span class="mock-art"></span>
-            <span class="mock-name">Metal Slug: Super Vehicle-001<small>mslug</small></span>
-            <span class="mock-sys">Neo Geo · 1996</span>
-            <span class="pill pill-ok">Available</span>
-          </div>
-          <div class="mock-row">
-            <span class="mock-art"></span>
-            <span class="mock-name">Street Fighter II': Champion Edition<small>sf2ce</small></span>
-            <span class="mock-sys">Arcade · 1992</span>
-            <span class="pill pill-ok">Available</span>
-          </div>
-          <div class="mock-row">
-            <span class="mock-art"></span>
-            <span class="mock-name">Hyper Xevious<small>hyxevious</small></span>
-            <span class="mock-sys">Arcade · 2026</span>
-            <span class="pill pill-warn">Incorrect</span>
-          </div>
-          <div class="mock-row">
-            <span class="mock-art"></span>
-            <span class="mock-name">Blue's Journey<small>blueandr</small></span>
-            <span class="mock-sys">Neo Geo · 1990</span>
-            <span class="pill pill-bad">Missing</span>
-          </div>
-          <div class="mock-row">
-            <span class="mock-art"></span>
-            <span class="mock-name">Galaga<small>galaga · MAME</small></span>
-            <span class="mock-sys">Arcade · 1981</span>
-            <span class="pill pill-ok">Available</span>
-          </div>
+    <div class="shots" id="shots" role="region" aria-roledescription="carousel" aria-label="Screenshots">
+      <div class="shots-frame">
+        <div class="shots-stage">
+          <img class="shots-img is-on" src="/gallery/shots/library-game-info.webp" width="1844" height="1410"
+               alt="The game library" fetchpriority="high" decoding="async">
         </div>
+        <button type="button" class="shots-nav shots-prev"><span class="sr-only" data-i18n="gal.prev">上一张</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button type="button" class="shots-nav shots-next"><span class="sr-only" data-i18n="gal.next">下一张</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
       </div>
-      <div class="mock-status">
-        <span style="color:var(--ok)">● Available 56 765</span>
-        <span style="color:var(--warn)">● Incorrect 23</span>
-        <span style="color:var(--bad)">● Missing 109</span>
-        <span style="margin-left:auto">Total 56 897</span>
+      <div class="shots-foot">
+        <div class="shots-cap" aria-live="polite">
+          <!-- Vides ici : une legende anglaise statique clignoterait sur les
+               pages traduites avant que slider.js ne la remplace. -->
+          <span class="shots-title"></span>
+          <span class="shots-desc"></span>
+        </div>
+        <div class="shots-dots"></div>
+        <a class="shots-all" data-href="gallery" href="/zh/gallery/" data-i18n="home.shots.all">查看全部截图 →</a>
       </div>
     </div>
   </div>
@@ -556,6 +520,7 @@ cd bootcade-launcher &amp;&amp; cmake -S . -B build &amp;&amp; cmake --build bui
   <div class="wrap foot">
     <span data-i18n="foot.legal">Bootcade：MIT 许可。与 FinalBurn Neo 和 MAME 团队无关。</span>
     <span class="links">
+      <a data-href="gallery" href="/zh/gallery/" data-i18n="nav.gallery">图库</a>
       <a href="https://github.com/battousai90/bootcade-launcher">GitHub</a>
       <a href="https://github.com/battousai90/bootcade-launcher/releases/latest">Releases</a>
       <a href="https://github.com/battousai90/bootcade-launcher/issues" data-i18n="foot.bug">报告问题</a>
@@ -574,6 +539,7 @@ cd bootcade-launcher &amp;&amp; cmake -S . -B build &amp;&amp; cmake --build bui
 <script src="/app.js" defer></script>
 <script src="/auth.js" defer></script>
 <script src="/auth-ui.js?v=3" defer></script>
+<script src="/gallery/slider.js?v=1" defer></script>
 
 <script>
 // Fill in the current version and turn the download buttons into direct links to
