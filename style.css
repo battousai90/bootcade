@@ -313,6 +313,99 @@ section { padding: 88px 0; }
 .card ul { margin: 12px 0 0; padding-left: 18px; color: var(--muted); font-size: 0.93rem; }
 .card ul li { margin: 5px 0; }
 
+/* ── Captures : diaporama de l'accueil (gallery/slider.js) ─────────────────
+   La scene a un format fixe : les captures vont de 1,31 a 1,47, et une
+   hauteur qui changerait a chaque image ferait sauter toute la page. Chaque
+   image y est contenue entiere, jamais rognee. Les diapositives se fondent
+   l'une dans l'autre, et une barre sous le point actif montre le temps
+   restant avant la suivante. */
+/* Le diaporama tient en entier dans la fenetre, legende comprise : a pleine
+   largeur (1360 px) la scene mesurait 970 px de haut et debordait d'un
+   ecran de portable. */
+.shots { max-width: min(100%, calc((100vh - 190px) * 1.4)); margin: 0 auto; }
+.shots-frame {
+  position: relative;
+  border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
+  background: var(--sunken);
+  box-shadow: 0 24px 60px -34px var(--shadow);
+}
+.shots-stage { position: relative; aspect-ratio: 1.4; }
+.shots-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity .7s ease;
+}
+.shots-img.is-on { opacity: 1; }
+
+.shots-nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 44px; height: 44px; display: grid; place-items: center;
+  border-radius: 50%; cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, .16);
+  background: rgba(7, 10, 14, .62); color: #f8fafc;
+  backdrop-filter: blur(6px);
+  opacity: 0; transition: opacity .2s, background-color .15s;
+}
+.shots-nav svg { width: 22px; height: 22px; }
+.shots-nav:hover { background: rgba(7, 10, 14, .85); }
+.shots-prev { left: 14px; }
+.shots-next { right: 14px; }
+/* Les fleches n'apparaissent qu'une fois les diapositives chargees, et au
+   survol : au repos, rien ne recouvre la capture. */
+.shots.is-ready .shots-frame:hover .shots-nav,
+.shots.is-ready .shots-nav:focus-visible { opacity: 1; }
+
+.shots-foot {
+  display: grid; grid-template-columns: 1fr auto auto;
+  align-items: center; gap: 24px; margin-top: 18px;
+}
+/* Hauteur reservee pour deux lignes : une legende plus courte ne fait pas
+   remonter le reste de la page a chaque diapositive. */
+.shots-cap { display: flex; flex-direction: column; gap: 2px; min-height: 3.3em; min-width: 0; }
+.shots-title { font-weight: 600; }
+.shots-desc { color: var(--muted); font-size: 0.93rem; }
+
+.shots-dots { display: flex; gap: 6px; }
+.shots-dots button {
+  width: 22px; height: 22px; padding: 0; border: 0; background: none; cursor: pointer;
+  display: grid; place-items: center;
+}
+.shots-dots i {
+  display: block; position: relative; overflow: hidden;
+  width: 8px; height: 8px; border-radius: 999px;
+  background: var(--border);
+  transition: width .3s ease, background-color .2s;
+}
+.shots-dots button:hover i { background: var(--muted); }
+.shots-dots button[aria-current] i { width: 26px; background: var(--tint-line); }
+.shots-dots button[aria-current] i::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transform-origin: left;
+}
+.shots.is-ticking .shots-dots button[aria-current] i::after { animation: shots-tick 6s linear; }
+.shots.is-paused .shots-dots button[aria-current] i::after { transform: none; }
+@keyframes shots-tick { from { transform: scaleX(0); } }
+
+.shots-all { font-weight: 600; font-size: 0.93rem; white-space: nowrap; }
+
+@media (prefers-reduced-motion: reduce) {
+  .shots-img { transition: none; }
+}
+@media (max-width: 700px) {
+  .shots-foot { grid-template-columns: 1fr auto; gap: 10px 16px; }
+  .shots-cap { grid-column: 1 / -1; }
+  .shots-desc { display: none; }
+  .shots-cap { min-height: 0; }
+}
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
 /* ── App mock-up: a faithful HTML rendering of the real interface ────────── */
 .mock {
   border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
@@ -432,40 +525,17 @@ footer { border-top: 1px solid var(--border); background: var(--bg2); padding: 4
 .foot .links { margin-left: auto; display: flex; gap: 20px; flex-wrap: wrap; }
 
 /* ── Responsive ──────────────────────────────────────────────────────────── */
-/* La barre porte huit liens plus trois commandes, et les libellés traduits
-   sont plus longs qu'en anglais (« Fonctionnalités », « Télécharger »).
-   L'étranglement commence donc bien avant le point de rupture historique de
-   860 px : on resserre d'abord, on n'efface qu'ensuite, et en commençant par
-   les entrées dont la section reste atteignable en faisant défiler la page. */
-/* Le sous-titre part en premier : c'est de l'ornement, il vaut environ
-   170 px en français, et le supprimer garde tous les liens. Retirer un lien
-   avant lui sacrifierait une fonction pour préserver une décoration. */
-@media (max-width: 1300px) {
+/* La barre ne porte que des liens vers des pages (les ancres de l'accueil
+   en sont sorties le 2026-10-23 : la page se parcourt en la faisant
+   defiler). Le sous-titre de la marque, pur ornement, part le premier quand
+   la place manque. */
+@media (max-width: 920px) {
   .brand small { display: none; }
-}
-/* Puis les liens, du moins utile au plus utile, et seulement quand la place
-   manque vraiment : chaque section reste atteignable en faisant défiler la
-   page, aucun contenu n'est perdu. Les seuils sont réglés sur le français,
-   dont les libellés sont les plus longs des huit langues. */
-@media (max-width: 1120px) {
-  .nav-links a[href="#build"] { display: none; }
-}
-@media (max-width: 1020px) {
-  .nav-links a[href="#steamos"] { display: none; }
-}
-@media (max-width: 940px) {
-  .nav-links a[href="#download"] { display: none; }
 }
 
 @media (max-width: 860px) {
   .mock-body { grid-template-columns: 1fr; }
   .mock-side { display: none; }
-  /* Seules les ANCRES s'effacent : leur section reste atteignable en faisant
-     defiler la page, rien n'est perdu. Catalog, Leaderboard et le profil sont
-     des PAGES distinctes, que le defilement ne remplace pas : les masquer les
-     rendait purement inaccessibles depuis un telephone, et le badge de compte
-     disparaissait avec eux puisqu'il s'injecte comme un lien. */
-  .nav-links a[href^="#"] { display: none; }
   .hero { padding: 60px 0 52px; }
   section { padding: 58px 0; }
 }
@@ -507,6 +577,24 @@ footer { border-top: 1px solid var(--border); background: var(--bg2); padding: 4
    d'un jeu et les changements du catalogue debordaient de 20 a 70 px. */
 @media (max-width: 470px) {
   #theme-btn { display: none; }
+}
+/* La Galerie est une vitrine, pas un outil : sur telephone elle cede sa
+   place a Catalog, Leaderboard et au compte, qui debordaient sinon
+   jusqu'a 720 px (mesure le 2026-10-23). Elle reste atteignable depuis le
+   pied de page de l'accueil. */
+@media (max-width: 720px) {
+  .nav-links a[data-href="gallery"] { display: none; }
+}
+/* Entre 470 et 640 px, l'accueil debordait deja avant la Galerie : le
+   drapeau seul suffit a reconnaitre la langue, son nom part donc plus tot. */
+@media (max-width: 640px) {
+  #lang-name { display: none; }
+  .lang-btn { padding: 6px 8px; gap: 5px; }
+}
+/* Meme raison entre 470 et 570 px : le mot « Bootcade » s'efface au profit
+   du logo, comme il le fait deja sous 470 px. */
+@media (max-width: 570px) {
+  .brand span { display: none; }
 }
 
 /* Sous 380 px il faut trancher : Catalog, Leaderboard et le compte passent

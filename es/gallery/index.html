@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bootcade : galería</title>
+<meta name="description" content="Capturas de pantalla de Bootcade: la biblioteca de juegos del lanzador arcade, el gestor de ROMs, los mandos y los ajustes.">
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/style.css?v=6">
+<link rel="stylesheet" href="/leaderboard/leaderboard.css?v=29">
+<link rel="stylesheet" href="/gallery/gallery.css?v=2">
+<link rel="canonical" href="https://bootcade.netlify.app/es/gallery/">
+<link rel="alternate" hreflang="en" href="https://bootcade.netlify.app/gallery/">
+<link rel="alternate" hreflang="fr" href="https://bootcade.netlify.app/fr/gallery/">
+<link rel="alternate" hreflang="es" href="https://bootcade.netlify.app/es/gallery/">
+<link rel="alternate" hreflang="de" href="https://bootcade.netlify.app/de/gallery/">
+<link rel="alternate" hreflang="pt" href="https://bootcade.netlify.app/pt/gallery/">
+<link rel="alternate" hreflang="ja" href="https://bootcade.netlify.app/ja/gallery/">
+<link rel="alternate" hreflang="zh" href="https://bootcade.netlify.app/zh/gallery/">
+<link rel="alternate" hreflang="th" href="https://bootcade.netlify.app/th/gallery/">
+<link rel="alternate" hreflang="x-default" href="https://bootcade.netlify.app/gallery/">
+
+<meta property="og:locale" content="es">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Bootcade : galería">
+<meta property="og:description" content="Capturas de pantalla de Bootcade: la biblioteca de juegos del lanzador arcade, el gestor de ROMs, los mandos y los ajustes.">
+<meta property="og:image" content="https://bootcade.netlify.app/og.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<script>
+(function () {
+  try {
+    var m = localStorage.getItem('fbneo-theme');
+    if (m === 'light' || m === 'dark') document.documentElement.dataset.theme = m;
+  } catch (e) {}
+})();
+</script>
+</head>
+<body class="lb-page gal-page">
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" data-href="home" href="/es/" style="color:inherit">
+      <img src="/logo.svg" alt="">
+      <span>Bootcade<small data-i18n="brand.sub">Biblioteca arcade para Linux</small></span>
+    </a>
+    <nav class="nav-links">
+      <a data-href="home" href="/es/" data-i18n="catalog.back">← Volver a Bootcade</a>
+      <a data-href="catalog" href="/es/catalog/" data-i18n="nav.catalog">Catálogo</a>
+      <a data-href="leaderboard" href="/es/leaderboard/" data-i18n="nav.leaderboard">Clasificación</a>
+      <span class="nav-account" id="nav-account"></span>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap lb-head">
+    <h1 data-i18n="gal.h1">Galería</h1>
+    <p class="lead" data-i18n="gal.lead">Bootcade tal como se ve en pantalla: la biblioteca de juegos, el gestor de ROMs, los mandos y los ajustes.</p>
+  </div>
+
+  <div class="wrap gal-block">
+    <!-- Filtres et grille remplis par gallery.js a partir de shots.json. -->
+    <div class="gal-filters" id="gal-filters" role="toolbar" aria-label="Filter"></div>
+    <div class="gal-grid" id="gal-grid"></div>
+    <p class="lb-empty gal-empty" id="gal-empty" hidden data-i18n="gal.empty">Aún no hay capturas.</p>
+  </div>
+</main>
+
+<!-- Visionneuse plein ecran. <dialog> donne gratuitement le piege du focus,
+     Echap et le fond inerte. -->
+<dialog class="gal-lightbox" id="gal-lightbox" aria-label="Screenshot">
+  <figure class="gal-lb-figure">
+    <img id="gal-lb-img" alt="">
+    <figcaption class="gal-lb-cap">
+      <span class="gal-lb-title" id="gal-lb-title"></span>
+      <span class="gal-lb-desc" id="gal-lb-desc"></span>
+    </figcaption>
+  </figure>
+  <span class="gal-lb-count" id="gal-lb-count"></span>
+  <button type="button" class="gal-lb-btn gal-lb-close" id="gal-lb-close" aria-label="Close">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  </button>
+  <button type="button" class="gal-lb-btn gal-lb-prev" id="gal-lb-prev" aria-label="Previous">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <button type="button" class="gal-lb-btn gal-lb-next" id="gal-lb-next" aria-label="Next">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+</dialog>
+
+<script src="/i18n.js"></script>
+<script src="/app.js"></script>
+<script src="/auth.js"></script>
+<script src="/auth-ui.js?v=3"></script>
+<script src="/gallery/gallery.js?v=2"></script>
+</body>
+</html>

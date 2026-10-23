@@ -1,0 +1,295 @@
+[
+  {
+    "file": "library-game-info.webp",
+    "w": 1844,
+    "h": 1410,
+    "tag": "library",
+    "title": {
+      "en": "The game library",
+      "fr": "La bibliothèque de jeux",
+      "es": "La biblioteca de juegos",
+      "de": "Die Spielebibliothek",
+      "pt": "A biblioteca de jogos",
+      "ja": "ゲームライブラリ",
+      "zh": "游戏库",
+      "th": "คลังเกม"
+    },
+    "desc": {
+      "en": "57,532 games from FinalBurn Neo and MAME, with filters by system, genre or year, and each game's details on the right.",
+      "fr": "57 532 jeux FinalBurn Neo et MAME, des filtres par système, genre ou année, et la fiche de chaque jeu à droite.",
+      "es": "57.532 juegos de FinalBurn Neo y MAME, filtros por sistema, género o año, y la ficha de cada juego a la derecha.",
+      "de": "57.532 Spiele aus FinalBurn Neo und MAME, Filter nach System, Genre oder Jahr, und rechts die Details zu jedem Spiel.",
+      "pt": "57 532 jogos FinalBurn Neo e MAME, filtros por sistema, género ou ano, e a ficha de cada jogo à direita.",
+      "ja": "FinalBurn Neo と MAME の 57,532 本のゲーム。システム、ジャンル、年代で絞り込み、右側に各ゲームの詳細を表示。",
+      "zh": "57,532 款 FinalBurn Neo 与 MAME 游戏，可按系统、类型或年份筛选，右侧显示每款游戏的详情。",
+      "th": "เกม FinalBurn Neo และ MAME 57,532 เกม กรองตามระบบ ประเภท หรือปี พร้อมรายละเอียดของแต่ละเกมทางขวา"
+    },
+    "featured": 1
+  },
+  {
+    "file": "library-light.webp",
+    "w": 1841,
+    "h": 1406,
+    "tag": "library",
+    "title": {
+      "en": "Light theme",
+      "fr": "Thème clair",
+      "es": "Tema claro",
+      "de": "Helles Design",
+      "pt": "Tema claro",
+      "ja": "ライトテーマ",
+      "zh": "浅色主题",
+      "th": "ธีมสว่าง"
+    },
+    "desc": {
+      "en": "The same library in the light theme. Bootcade follows the system theme, or the one you pick.",
+      "fr": "La même bibliothèque en thème clair. Bootcade suit le thème du système, ou celui que tu choisis.",
+      "es": "La misma biblioteca con el tema claro. Bootcade sigue el tema del sistema, o el que elijas.",
+      "de": "Dieselbe Bibliothek im hellen Design. Bootcade folgt dem Systemdesign oder deiner Wahl.",
+      "pt": "A mesma biblioteca no tema claro. O Bootcade segue o tema do sistema, ou o que escolheres.",
+      "ja": "ライトテーマのライブラリ。Bootcade はシステムのテーマ、または選んだテーマに従います。",
+      "zh": "浅色主题下的同一游戏库。Bootcade 跟随系统主题，也可以自行选择。",
+      "th": "คลังเกมเดียวกันในธีมสว่าง Bootcade ใช้ธีมของระบบ หรือธีมที่คุณเลือก"
+    },
+    "featured": 7
+  },
+  {
+    "file": "library-records.webp",
+    "w": 1839,
+    "h": 1407,
+    "tag": "library",
+    "title": {
+      "en": "Records and achievements",
+      "fr": "Records et succès",
+      "es": "Récords y logros",
+      "de": "Rekorde und Erfolge",
+      "pt": "Recordes e conquistas",
+      "ja": "記録と実績",
+      "zh": "纪录与成就",
+      "th": "สถิติและความสำเร็จ"
+    },
+    "desc": {
+      "en": "Your best score, the world leaderboard and the game's achievements, right in the launcher.",
+      "fr": "Ton meilleur score, le classement mondial et les succès du jeu, directement dans le lanceur.",
+      "es": "Tu mejor puntuación, la clasificación mundial y los logros del juego, en el propio lanzador.",
+      "de": "Dein bester Punktestand, die Weltrangliste und die Erfolge des Spiels, direkt im Launcher.",
+      "pt": "A tua melhor pontuação, a classificação mundial e as conquistas do jogo, no próprio launcher.",
+      "ja": "自己のベストスコア、世界ランキング、ゲームの実績をランチャー内で確認。",
+      "zh": "你的最高分、世界排行榜和游戏成就，都在启动器里。",
+      "th": "คะแนนสูงสุดของคุณ ตารางคะแนนโลก และความสำเร็จของเกม ในตัวเปิดเกมเลย"
+    },
+    "featured": 3
+  },
+  {
+    "file": "game-launch.webp",
+    "w": 1842,
+    "h": 1409,
+    "tag": "library",
+    "title": {
+      "en": "A game running",
+      "fr": "Une partie en cours",
+      "es": "Una partida en marcha",
+      "de": "Ein laufendes Spiel",
+      "pt": "Um jogo a correr",
+      "ja": "ゲームのプレイ中",
+      "zh": "游戏运行中",
+      "th": "เกมกำลังเล่น"
+    },
+    "desc": {
+      "en": "Fatal Fury Special launched in FinalBurn Neo. At the end of the game, the launcher reads the score and tells you where it stands.",
+      "fr": "Fatal Fury Special lancé dans FinalBurn Neo. En fin de partie, le lanceur lit le score et te dit où il se place.",
+      "es": "Fatal Fury Special lanzado en FinalBurn Neo. Al terminar la partida, el lanzador lee la puntuación y te dice dónde queda.",
+      "de": "Fatal Fury Special läuft in FinalBurn Neo. Nach dem Spiel liest der Launcher den Punktestand und zeigt dir deine Platzierung.",
+      "pt": "Fatal Fury Special lançado no FinalBurn Neo. No fim do jogo, o launcher lê a pontuação e diz-te onde ficou.",
+      "ja": "FinalBurn Neo で起動した餓狼伝説スペシャル。終了後、ランチャーがスコアを読み取り順位を知らせます。",
+      "zh": "在 FinalBurn Neo 中运行的饿狼传说 Special。游戏结束后，启动器读取分数并告诉你名次。",
+      "th": "Fatal Fury Special เปิดใน FinalBurn Neo เมื่อจบเกม ตัวเปิดเกมจะอ่านคะแนนและบอกอันดับของคุณ"
+    },
+    "featured": 2
+  },
+  {
+    "file": "roms-audit.webp",
+    "w": 1546,
+    "h": 1260,
+    "tag": "roms",
+    "title": {
+      "en": "Library audit",
+      "fr": "Audit de la bibliothèque",
+      "es": "Auditoría de la biblioteca",
+      "de": "Bibliotheksprüfung",
+      "pt": "Auditoria da biblioteca",
+      "ja": "ライブラリの検査",
+      "zh": "游戏库校验",
+      "th": "ตรวจสอบคลังเกม"
+    },
+    "desc": {
+      "en": "Every set checked against the DAT files: correct, missing, incorrect or misnamed, and what can be fixed.",
+      "fr": "Chaque set vérifié contre les fichiers DAT : correct, manquant, incorrect ou mal nommé, et ce qui peut être réparé.",
+      "es": "Cada set comprobado con los archivos DAT: correcto, ausente, incorrecto o mal nombrado, y lo que se puede reparar.",
+      "de": "Jedes Set wird mit den DAT-Dateien abgeglichen: korrekt, fehlend, fehlerhaft oder falsch benannt, und was sich reparieren lässt.",
+      "pt": "Cada set verificado contra os ficheiros DAT: correto, em falta, incorreto ou mal nomeado, e o que pode ser reparado.",
+      "ja": "すべてのセットを DAT ファイルと照合：正常、欠落、不正、名前違い、そして修復可能なもの。",
+      "zh": "每个合集都与 DAT 文件比对：正确、缺失、错误或命名不符，以及可修复的内容。",
+      "th": "ทุกชุดตรวจสอบกับไฟล์ DAT: ถูกต้อง หายไป ไม่ถูกต้อง หรือชื่อผิด และสิ่งที่ซ่อมได้"
+    },
+    "featured": 4
+  },
+  {
+    "file": "roms-dat.webp",
+    "w": 1407,
+    "h": 956,
+    "tag": "roms",
+    "title": {
+      "en": "DAT files",
+      "fr": "Fichiers DAT",
+      "es": "Archivos DAT",
+      "de": "DAT-Dateien",
+      "pt": "Ficheiros DAT",
+      "ja": "DAT ファイル",
+      "zh": "DAT 文件",
+      "th": "ไฟล์ DAT"
+    },
+    "desc": {
+      "en": "DAT groups per emulator, generated from the emulator itself or downloaded from the Bootcade server.",
+      "fr": "Des groupes de DAT par émulateur, générés par l'émulateur lui-même ou téléchargés depuis le serveur Bootcade.",
+      "es": "Grupos de DAT por emulador, generados por el propio emulador o descargados del servidor de Bootcade.",
+      "de": "DAT-Gruppen pro Emulator, vom Emulator selbst erzeugt oder vom Bootcade-Server geladen.",
+      "pt": "Grupos de DAT por emulador, gerados pelo próprio emulador ou descarregados do servidor Bootcade.",
+      "ja": "エミュレーターごとの DAT グループ。エミュレーター自身が生成、または Bootcade サーバーから取得。",
+      "zh": "按模拟器划分的 DAT 组，由模拟器自身生成或从 Bootcade 服务器下载。",
+      "th": "กลุ่ม DAT แยกตามอีมูเลเตอร์ สร้างจากตัวอีมูเลเตอร์เอง หรือดาวน์โหลดจากเซิร์ฟเวอร์ Bootcade"
+    },
+    "featured": 5
+  },
+  {
+    "file": "roms-downloads.webp",
+    "w": 1546,
+    "h": 1260,
+    "tag": "roms",
+    "title": {
+      "en": "Missing sets",
+      "fr": "Sets manquants",
+      "es": "Sets ausentes",
+      "de": "Fehlende Sets",
+      "pt": "Sets em falta",
+      "ja": "不足しているセット",
+      "zh": "缺失的合集",
+      "th": "ชุดที่ขาดหาย"
+    },
+    "desc": {
+      "en": "The sets your library lacks, downloaded and checked against the DAT before they are filed.",
+      "fr": "Les sets qui manquent à ta bibliothèque, téléchargés puis vérifiés contre le DAT avant d'être rangés.",
+      "es": "Los sets que faltan en tu biblioteca, descargados y comprobados con el DAT antes de archivarse.",
+      "de": "Die Sets, die deiner Bibliothek fehlen, heruntergeladen und vor dem Einsortieren mit der DAT geprüft.",
+      "pt": "Os sets que faltam na tua biblioteca, descarregados e verificados contra o DAT antes de serem arrumados.",
+      "ja": "ライブラリに不足しているセットをダウンロードし、整理する前に DAT と照合。",
+      "zh": "下载游戏库缺少的合集，并在归档前与 DAT 比对。",
+      "th": "ดาวน์โหลดชุดที่คลังเกมของคุณขาด และตรวจสอบกับ DAT ก่อนจัดเก็บ"
+    }
+  },
+  {
+    "file": "controller-detected.webp",
+    "w": 1500,
+    "h": 1070,
+    "tag": "controllers",
+    "title": {
+      "en": "Controller setup",
+      "fr": "Configuration des manettes",
+      "es": "Configuración de mandos",
+      "de": "Controller-Einrichtung",
+      "pt": "Configuração de comandos",
+      "ja": "コントローラー設定",
+      "zh": "手柄设置",
+      "th": "ตั้งค่าคอนโทรลเลอร์"
+    },
+    "desc": {
+      "en": "The controller is detected and a recommended mapping is offered. Two players, analog controls included.",
+      "fr": "La manette est détectée et un mappage recommandé est proposé. Deux joueurs, commandes analogiques comprises.",
+      "es": "El mando se detecta y se propone una asignación recomendada. Dos jugadores, controles analógicos incluidos.",
+      "de": "Der Controller wird erkannt und eine empfohlene Belegung vorgeschlagen. Zwei Spieler, inklusive Analogsteuerung.",
+      "pt": "O comando é detetado e é proposto um mapeamento recomendado. Dois jogadores, controlos analógicos incluídos.",
+      "ja": "コントローラーを検出し、推奨マッピングを提案。2 人プレイ、アナログ操作にも対応。",
+      "zh": "自动识别手柄并推荐按键映射。支持双人和模拟操作。",
+      "th": "ตรวจพบคอนโทรลเลอร์และเสนอการจับคู่ปุ่มที่แนะนำ รองรับสองผู้เล่นและการควบคุมแบบอนาล็อก"
+    },
+    "featured": 6
+  },
+  {
+    "file": "controller-test.webp",
+    "w": 1507,
+    "h": 927,
+    "tag": "controllers",
+    "title": {
+      "en": "Controller test",
+      "fr": "Test de la manette",
+      "es": "Prueba del mando",
+      "de": "Controller-Test",
+      "pt": "Teste do comando",
+      "ja": "コントローラーテスト",
+      "zh": "手柄测试",
+      "th": "ทดสอบคอนโทรลเลอร์"
+    },
+    "desc": {
+      "en": "Every button, stick and trigger shown live, to check the mapping before playing.",
+      "fr": "Chaque bouton, stick et gâchette affiché en direct, pour vérifier le mappage avant de jouer.",
+      "es": "Cada botón, stick y gatillo en directo, para comprobar la asignación antes de jugar.",
+      "de": "Jede Taste, jeder Stick und Trigger live angezeigt, um die Belegung vor dem Spielen zu prüfen.",
+      "pt": "Cada botão, stick e gatilho em tempo real, para verificar o mapeamento antes de jogar.",
+      "ja": "すべてのボタン、スティック、トリガーをリアルタイム表示。プレイ前にマッピングを確認。",
+      "zh": "实时显示每个按键、摇杆和扳机，开玩前检查映射。",
+      "th": "แสดงทุกปุ่ม สติ๊ก และทริกเกอร์แบบสด เพื่อตรวจการจับคู่ก่อนเล่น"
+    }
+  },
+  {
+    "file": "settings-online.webp",
+    "w": 1404,
+    "h": 960,
+    "tag": "settings",
+    "title": {
+      "en": "Online features",
+      "fr": "Fonctions en ligne",
+      "es": "Funciones en línea",
+      "de": "Online-Funktionen",
+      "pt": "Funcionalidades online",
+      "ja": "オンライン機能",
+      "zh": "在线功能",
+      "th": "ฟีเจอร์ออนไลน์"
+    },
+    "desc": {
+      "en": "Your Bootcade account, published scores and the RetroAchievements link, in one place.",
+      "fr": "Ton compte Bootcade, les scores publiés et le lien RetroAchievements, au même endroit.",
+      "es": "Tu cuenta de Bootcade, las puntuaciones publicadas y el enlace con RetroAchievements, en un solo lugar.",
+      "de": "Dein Bootcade-Konto, veröffentlichte Punktestände und die RetroAchievements-Verknüpfung an einem Ort.",
+      "pt": "A tua conta Bootcade, as pontuações publicadas e a ligação ao RetroAchievements, no mesmo sítio.",
+      "ja": "Bootcade アカウント、公開スコア、RetroAchievements 連携をひとつの画面で。",
+      "zh": "你的 Bootcade 账号、已发布的分数和 RetroAchievements 关联，集中在一处。",
+      "th": "บัญชี Bootcade คะแนนที่เผยแพร่ และการเชื่อมต่อ RetroAchievements ในที่เดียว"
+    }
+  },
+  {
+    "file": "settings-library.webp",
+    "w": 1398,
+    "h": 1144,
+    "tag": "settings",
+    "title": {
+      "en": "Library settings",
+      "fr": "Réglages de la bibliothèque",
+      "es": "Ajustes de la biblioteca",
+      "de": "Bibliothekseinstellungen",
+      "pt": "Definições da biblioteca",
+      "ja": "ライブラリ設定",
+      "zh": "游戏库设置",
+      "th": "ตั้งค่าคลังเกม"
+    },
+    "desc": {
+      "en": "ROM folders for each emulator, and the sources the artwork is downloaded from.",
+      "fr": "Les dossiers de ROMs de chaque émulateur, et les sources d'où les illustrations sont téléchargées.",
+      "es": "Las carpetas de ROMs de cada emulador y las fuentes de las que se descargan las imágenes.",
+      "de": "Die ROM-Ordner jedes Emulators und die Quellen, aus denen die Bilder geladen werden.",
+      "pt": "As pastas de ROMs de cada emulador e as fontes de onde as imagens são descarregadas.",
+      "ja": "エミュレーターごとの ROM フォルダーと、アートワークのダウンロード元。",
+      "zh": "每个模拟器的 ROM 文件夹，以及图片的下载来源。",
+      "th": "โฟลเดอร์ ROM ของแต่ละอีมูเลเตอร์ และแหล่งดาวน์โหลดภาพประกอบ"
+    }
+  }
+]
